@@ -1,1 +1,3 @@
 - Linking file between the two rounds of IHDS Household Surveys 2005 and 2011: download [37382-0011-Data.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/37382-0011-Data.do)
+- Use Linking file to map households
+    - Which households in the 2012 Survey had electricity in 2005? download [electricity2005.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/electricity2005.do)
