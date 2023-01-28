@@ -1,6 +1,5 @@
 //==============================================================================
-// IHDS - 2012 (Individual + Household + School + Village + 
-//              2005 HH Electricity)
+// IHDS - 2012 (Individual + Household + School + Village + 2005 HH Electricity)
 // - merge all files ...
 //==============================================================================
 //	Written	by Suresh Paul, Algorithm Basics
