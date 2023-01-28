@@ -1,1 +1,1 @@
-- Linking file between the two rounds of IHDS Surveys 2005 and 2011: click [here](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/linkfile.do)
+- Linking file between the two rounds of IHDS Household Surveys 2005 and 2011: download [37382-0011-Data.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/37382-0011-Data.do)
