@@ -12,6 +12,6 @@
     - Household file, download code [36151-0002-Data.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/36151-0002-Data.do)
     - School Facilities file, download code [36151-0009-Data.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/36151-0009-Data.do)
     - Village file, download code [36151-0012-Data.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/36151-0012-Data.do)
-- Data formation: Merge all datasets, download code [36151.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/36151.do)
 - Add census and electricity transmission line data: download code [districtinfo.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/districtinfo.do)
+- Data formation: Merge all datasets, download code [36151.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/36151.do)
 
