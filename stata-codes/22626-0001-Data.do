@@ -179,7 +179,7 @@ ds idhh idvillage caseid hhid personid idpsu hhsplitid dist01 , not
 describe `r(varlist)'
 mdesc 
 
-save 22626-0001-Data-out, replace
+save 22626-0001-Data_out, replace
 
 
 
