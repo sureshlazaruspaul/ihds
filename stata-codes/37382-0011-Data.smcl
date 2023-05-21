@@ -1,0 +1,302 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\data\ICPSR_37382\DS0011\37382-0011-Data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}28 Jan 2023, 11:33:51
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. // set dir for data
+. //------------------------------------------------------------------------------
+. 
+. local dirpath "C:\data\ICPSR_37382\DS0011"
+{txt}
+{com}. 
+. cd `dirpath'
+{res}C:\data\ICPSR_37382\DS0011
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. // Some Macros: 
+. //      Program pe: Print Execute with loops
+. //------------------------------------------------------------------------------
+. 
+. program define pe
+{txt}  1{com}.         if `"`0'"' != " " {c -(}
+{txt}  2{com}.                 display as text `"`0'"'
+{txt}  3{com}.                 `0'
+{txt}  4{com}.                 display("")
+{txt}  5{com}.         {c )-}
+{txt}  6{com}. end
+{txt}
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // 2012 HH file - keep HH identifiers only ...
+. //------------------------------------------------------------------------------
+. 
+. use "C:\data\ICPSR_36151\DS0002\36151-0002-Data.dta" , clear 
+{txt}(India Human Development Survey-II (IHDS-II), 2011-12, Household)
+
+{com}. 
+. rename (HHID HHSPLITID) (HHID12 HHSPLITID12)
+{res}{txt}
+{com}. 
+. keep STATEID DISTID PSUID HHID12 HHSPLITID12 
+{txt}
+{com}. 
+. sort STATEID DISTID PSUID HHID12 HHSPLITID12 // remove duplicates by all 
+{txt}
+{com}.         quietly by STATEID DISTID PSUID HHID12 HHSPLITID12 : gen dup = cond(_N==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 0
+{txt}(0 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. save file2012 , replace 
+{txt}{p 0 4 2}
+(file {bf}
+file2012.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+file2012.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // 2005 HH file - keep HH identifiers only ...
+. //------------------------------------------------------------------------------
+. 
+. use "C:\data\ICPSR_22626\DS0002\22626-0002-Data.dta" , clear 
+{txt}(India Human Development Survey (IHDS), 2005, Household)
+
+{com}. 
+. rename (HHID HHSPLITID) (HHID05 HHSPLITID05)
+{res}{txt}
+{com}. 
+. keep STATEID DISTID PSUID HHID05 HHSPLITID05 
+{txt}
+{com}. 
+. sort STATEID DISTID PSUID HHID05 HHSPLITID05 // remove duplicates by all 
+{txt}
+{com}.         quietly by STATEID DISTID PSUID HHID05 HHSPLITID05 : gen dup = cond(_N==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 0
+{txt}(0 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. save file2005 , replace 
+{txt}{p 0 4 2}
+(file {bf}
+file2005.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+file2005.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. //------------------------------------------------------------------------------
+. 
+. sysuse 37382-0011-Data , clear
+{txt}(India Human Development Survey Panel (IHDS, IHDS-II), 2005, 2011-2012, Household)
+
+{com}. 
+. do 37382-0011-Supplemental_syntax.do // run supplemental file ...
+{txt}
+{com}. /*-------------------------------------------------------------------------*
+>  |                                                                         
+>  |            STATA SUPPLEMENTAL SYNTAX FILE FOR ICPSR 37382
+>  |         INDIA HUMAN DEVELOPMENT SURVEY PANEL (IHDS, IHDS-II),
+>  |                            2005, 2011-2012
+>  |          (DATASET 0011: HOUSEHOLDS - LONG PANEL (PUBLIC-USE))
+>  |
+>  |
+>  | This Stata missing value recode program is provided for optional use with
+>  | the Stata system version of this data file as distributed by ICPSR.
+>  | The program replaces user-defined numeric missing values (e.g., -9)
+>  | with generic system missing "."  Note that Stata allows you to specify
+>  | up to 27 unique missing value codes.  Only variables with user-defined
+>  | missing values are included in this program.
+>  |
+>  | To apply the missing value recodes, users need to first open the
+>  | Stata data file on their system, apply the missing value recodes if
+>  | desired, then save a new copy of the data file with the missing values
+>  | applied.  Users are strongly advised to use a different filename when
+>  | saving the new file.
+>  |
+>  *------------------------------------------------------------------------*/
+. 
+. replace ID13 = . if (ID13 == 99)
+{txt}(79,956 real changes made, 79,956 to missing)
+
+{com}. replace GROUPS = . if (GROUPS == 99)
+{txt}(80,014 real changes made, 80,014 to missing)
+
+{com}. 
+. 
+. 
+{txt}end of do-file
+
+{com}. 
+. keep STATEID DISTID PSUID HHID HHID2005 HHID2012 HHSPLITID HHSPLITID2005 HHSPLITID2012
+{txt}
+{com}. 
+. g HHID12 = HHID 
+{txt}
+{com}. g HHSPLITID12 = HHSPLITID
+{txt}
+{com}. 
+. sort STATEID DISTID PSUID HHID12 HHSPLITID12 
+{txt}
+{com}. 
+. merge m:1 STATEID DISTID PSUID HHID12 HHSPLITID12 using file2012
+{res}{txt}(label {bf:{txt}STATEID} already defined)
+
+{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}           5,290
+{txt}{col 9}from master{col 30}{res}           2,104{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           3,186{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}          77,932{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop if _merge == 2 // left join
+{txt}(3,186 observations deleted)
+
+{com}.         drop _merge 
+{txt}
+{com}. 
+. g HHID05 = HHID2005
+{txt}
+{com}. g HHSPLITID05 = HHSPLITID2005
+{txt}
+{com}. 
+. sort STATEID DISTID PSUID HHID05 HHSPLITID05 
+{txt}
+{com}. 
+. merge m:1 STATEID DISTID PSUID HHID05 HHSPLITID05 using file2005
+{res}{txt}(label {bf:{txt}STATEID} already defined)
+
+{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}           9,994
+{txt}{col 9}from master{col 30}{res}           2,104{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,890{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}          77,932{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop if _merge == 2 // left join
+{txt}(7,890 observations deleted)
+
+{com}.         drop _merge HHID HHID2005 HHID2012 HHSPLITID HHSPLITID2005 HHSPLITID2012
+{txt}
+{com}. 
+. sort STATEID DISTID PSUID HHID05 HHSPLITID05 HHID12 HHSPLITID12 // remove duplicates by all 
+{txt}
+{com}.         quietly by STATEID DISTID PSUID HHID05 HHSPLITID05 HHID12 HHSPLITID12 : gen dup = cond(_N==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 1
+{txt}(40,018 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. local filelist : dir . files "file*.dta" 
+{txt}
+{com}. foreach f of local filelist {c -(}
+{txt}  2{com}.         pe erase "`f'" 
+{txt}  3{com}. {c )-}  
+{txt}erase "file2005.dta"
+
+erase "file2012.dta"
+
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // label variables ... 
+. //------------------------------------------------------------------------------
+. 
+. label variable HHID05       "HHID (2005)" 
+{txt}
+{com}. label variable HHID12       "HHID (2012)" 
+{txt}
+{com}. label variable HHSPLITID05  "HHSPLITID (2005)" 
+{txt}
+{com}. label variable HHSPLITID12  "HHSPLITID (2012)" 
+{txt}
+{com}. 
+. 
+. local outfile IHDS_HH_linkfile
+{txt}
+{com}. save `outfile', replace
+{txt}{p 0 4 2}
+(file {bf}
+IHDS_HH_linkfile.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+IHDS_HH_linkfile.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. export delimited using "C:\data\ICPSR_37382\DS0011\IHDS_HH_linkfile.csv", replace
+{res}{txt}{p 0 4 2}
+(file {bf}
+C:\data\ICPSR_37382\DS0011\IHDS_HH_linkfile.csv{rm}
+not found)
+{p_end}
+{txt}file {bf:C:\data\ICPSR_37382\DS0011\IHDS_HH_linkfile.csv} saved
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // describe variables ... 
+. //------------------------------------------------------------------------------
+. 
+. describe `r(varlist)'
+
+{txt}Contains data from {res}IHDS_HH_linkfile.dta
+{txt} Observations:{res}        40,018                  India Human Development Survey Panel (IHDS, IHDS-II), 2005,
+                                                2011-2012, Household
+{txt}    Variables:{res}             7                  28 Jan 2023 11:33
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:STATEID        }{txt}{bind: int     }{bind:{txt}%21.0f    }{space 1}{bind:STATEID  }{bind:  }{res}{res}HQ0 State code{p_end}
+{p 0 48}{bind:DISTID         }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ0 District code{p_end}
+{p 0 48}{bind:PSUID          }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ0 PSU: village/neighborhood code{p_end}
+{p 0 48}{bind:HHID12         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}HHID (2012){p_end}
+{p 0 48}{bind:HHSPLITID12    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}HHSPLITID (2012){p_end}
+{p 0 48}{bind:HHID05         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}HHID (2005){p_end}
+{p 0 48}{bind:HHSPLITID05    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}HHSPLITID (2005){p_end}
+{txt}{hline}
+Sorted by: {res}STATEID  DISTID  PSUID  HHID05  HHSPLITID05  HHID12  HHSPLITID12
+{txt}
+{com}.      
+. 
+. 
+. ********** CLOSE OUTPUT
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\data\ICPSR_37382\DS0011\37382-0011-Data.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}28 Jan 2023, 11:33:52
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
