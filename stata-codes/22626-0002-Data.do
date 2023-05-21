@@ -156,7 +156,7 @@ qui bys idhh : gen dup = cond(_N==1,0,_n)
 	keep if dup == 0
 	drop dup 
 
-save 22626-0002-Data-out, replace
+save 22626-0002-Data_out, replace
 
 
 
