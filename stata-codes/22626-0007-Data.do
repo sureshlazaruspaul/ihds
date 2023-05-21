@@ -141,7 +141,7 @@ qui bys idvillage : gen dup = cond(_N==1,0,_n)
 	keep if dup == 0
 	drop dup 
 
-save 22626-0007-Data-out, replace
+save 22626-0007-Data_out, replace
 
 ********** CLOSE OUTPUT
 log close
