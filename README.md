@@ -14,4 +14,5 @@
     - Village file, download code [36151-0012-Data.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/36151-0012-Data.do)
 - Add census and electricity transmission line data: download code [districtinfo.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/districtinfo.do)
 - Data formation: Merge all datasets, download code [36151.do](https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main/stata-codes/36151.do)
+    - requires census_elec.dta (available upon request) 
 
