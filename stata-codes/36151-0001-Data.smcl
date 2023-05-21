@@ -1,0 +1,484 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\36151-0001-Data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}21 May 2023, 02:26:37
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. // set dir for data
+. //------------------------------------------------------------------------------
+. 
+. local dirpath "C:\ihds"
+{txt}
+{com}. 
+. cd `dirpath'
+{res}C:\ihds
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // Some Macros: 
+. //      Program append2empty: append to an empty dataset 
+. //      Program pe: Print Execute with loops
+. //------------------------------------------------------------------------------
+. 
+. capture program drop append2empty
+{txt}
+{com}. program define append2empty
+{txt}  1{com}.         tempvar qwerty // create tempvars 
+{txt}  2{com}.                 gen `qwerty' = 1
+{txt}  3{com}.         append using `1' // append all datasets  
+{txt}  4{com}. end 
+{txt}
+{com}. /*------------------------------------------------------------------------------
+> clear
+> append_empty somedataset
+> ------------------------------------------------------------------------------*/
+. 
+. program define pe
+{txt}  1{com}.         if `"`0'"' != " " {c -(}
+{txt}  2{com}.                 display as text `"`0'"'
+{txt}  3{com}.                 `0'
+{txt}  4{com}.                 display("")
+{txt}  5{com}.         {c )-}
+{txt}  6{com}. end
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // Github url
+. //------------------------------------------------------------------------------
+. 
+. local giturl = "https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main" 
+{txt}
+{com}. 
+. 
+. 
+. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // read data ... 
+. //------------------------------------------------------------------------------
+. 
+. use "https://www.dropbox.com/s/yutqdd2i5v7yfng/36151-0001-Data.dta?dl=1" , clear
+{txt}(India Human Development Survey-II (IHDS-II), 2011-12, Individual)
+
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // reassign variables by removing formatting ...
+. //------------------------------------------------------------------------------
+. /*
+> foreach v of var * {c -(}
+>         cap label val `v'
+> {c )-}
+> */
+. 
+. do "`giturl'/supp-codes/36151-0001-Supplemental_syntax.do" // run supplemental file ...
+{txt}
+{com}. /*-------------------------------------------------------------------------*
+>  |                                                                         
+>  |            STATA SUPPLEMENTAL SYNTAX FILE FOR ICPSR 36151
+>  |          INDIA HUMAN DEVELOPMENT SURVEY-II (IHDS-II), 2011-12
+>  |                       (DATASET 0001: INDIVIDUAL)
+>  |
+>  |
+>  | This Stata missing value recode program is provided for optional use with
+>  | the Stata system version of this data file as distributed by ICPSR.
+>  | The program replaces user-defined numeric missing values (e.g., -9)
+>  | with generic system missing "."  Note that Stata allows you to specify
+>  | up to 27 unique missing value codes.  Only variables with user-defined
+>  | missing values are included in this program.
+>  |
+>  | To apply the missing value recodes, users need to first open the
+>  | Stata data file on their system, apply the missing value recodes if
+>  | desired, then save a new copy of the data file with the missing values
+>  | applied.  Users are strongly advised to use a different filename when
+>  | saving the new file.
+>  |
+>  *------------------------------------------------------------------------*/
+. 
+. replace MB21B = . if (MB21B == 8)
+{txt}(1 real change made, 1 to missing)
+
+{com}. 
+. 
+. 
+{txt}end of do-file
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // clean/transform/calculate variables ... 
+. //------------------------------------------------------------------------------
+. 
+. replace NCHILDM = 0 if missing( NCHILDM )
+{txt}(1 real change made)
+
+{com}. replace NCHILDF = 0 if missing( NCHILDF )
+{txt}(1 real change made)
+
+{com}. replace NTEENM  = 0 if missing( NTEENM )
+{txt}(1 real change made)
+
+{com}. replace NTEENF  = 0 if missing( NTEENF )
+{txt}(1 real change made)
+
+{com}. replace NADULTM = 0 if missing( NADULTM )
+{txt}(1 real change made)
+
+{com}. replace NADULTF = 0 if missing( NADULTF )
+{txt}(1 real change made)
+
+{com}. 
+. gen NCHILDREN = NCHILDM + NCHILDF 
+{txt}
+{com}. gen NTEENS    = NTEENM  + NTEENF 
+{txt}
+{com}. gen NADULTS   = NADULTM + NADULTF
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // rename variables ... 
+. //------------------------------------------------------------------------------
+. 
+. ren IDPERSON  CASEID 
+{res}{txt}
+{com}. ren URBAN2011 URBAN 
+{res}{txt}
+{com}. ren GROUPS    GROUPS8X 
+{res}{txt}
+{com}. ren RO3       RO3X 
+{res}{txt}
+{com}. ren RO4       RO4X 
+{res}{txt}
+{com}. ren RO5       AGE 
+{res}{txt}
+{com}. ren RO6       RO6X 
+{res}{txt}
+{com}. ren RO9       FATHERID 
+{res}{txt}
+{com}. ren RO10      MOTHERID 
+{res}{txt}
+{com}. ren ED4       ED3X 
+{res}{txt}
+{com}. ren ED5       ED4X 
+{res}{txt}
+{com}. ren ED6       ED5X 
+{res}{txt}
+{com}. ren CH6       CH6X 
+{res}{txt}
+{com}. ren CH22      CH22X 
+{res}{txt}
+{com}. ren CS10      CS8X 
+{res}{txt}
+{com}. ren CS11      CS9X 
+{res}{txt}
+{com}. ren CS12      CS10X 
+{res}{txt}
+{com}. ren CS13      CS11X 
+{res}{txt}
+{com}. ren CS4       CS3X 
+{res}{txt}
+{com}. ren CS5       CS4X 
+{res}{txt}
+{com}. ren CS6       CS5X 
+{res}{txt}
+{com}. ren TA3       TA3X 
+{res}{txt}
+{com}. ren TA4       TA4X 
+{res}{txt}
+{com}. ren TA6       TA6X 
+{res}{txt}
+{com}. ren TA8A      TA7LANG 
+{res}{txt}
+{com}. ren TA8B      TA7LVL 
+{res}{txt}
+{com}. ren TA9A      TA8LANG 
+{res}{txt}
+{com}. ren TA9B      TA8LVL 
+{res}{txt}
+{com}. ren TA10A     TA9LANG 
+{res}{txt}
+{com}. ren TA10B     TA9LVL 
+{res}{txt}
+{com}. ren ASSETS    HHASSETS 
+{res}{txt}
+{com}. ren HHEDUC    HHED5ADULT 
+{res}{txt}
+{com}. ren HHEDUCF   HHED5F 
+{res}{txt}
+{com}. ren HHEDUCM   HHED5M 
+{res}{txt}
+{com}. ren WT        WEIGHT 
+{res}{txt}
+{com}. ren RO7       RO7X
+{res}{txt}
+{com}. ren SM3       SM2X
+{res}{txt}
+{com}. ren SM4       SMF
+{res}{txt}
+{com}. ren SM5       SMC
+{res}{txt}
+{com}. ren SM6       SMCB
+{res}{txt}
+{com}. ren SM7       SMD
+{res}{txt}
+{com}. ren WKANY5    WKANY
+{res}{txt}
+{com}. ren WS8YEAR   WKHRS
+{res}{txt}
+{com}. 
+. 
+. replace FATHERID = . if inlist( FATHERID, 69, 75 ) // Left home OR Deceased
+{txt}(59,030 real changes made, 59,030 to missing)
+
+{com}. replace MOTHERID = . if inlist( MOTHERID, 69, 75 ) // Left home OR Deceased
+{txt}(49,299 real changes made, 49,299 to missing)
+
+{com}. 
+. 
+. ********** INDENTIFIER VARIABLES
+. local indvars CASEID HHID PERSONID IDHH STATEID DISTRICT DISTID PSUID IDPSU HHSPLITID DIST01 URBAN DEFLATOR WKANY WEIGHT
+{txt}
+{com}. 
+. ********** FAMILY VARIABLES
+. local famvars NPERSONS NCHILDREN HHASSETS HHED5ADULT HHED5F HHED5M INCOME INCOMEPC COPC WS14 
+{txt}
+{com}. 
+. ********** DEMOGRAPHIC VARIABLES
+. local demovars GROUPS8X RO3X RO4X AGE RO6X RO7X FATHERID MOTHERID ED3X ED4X ED5X CS11X CS3X CS4X CS5X CS8X CS9X TA3X TA4X TA6X TA7LANG TA7LVL TA8LANG TA8LVL TA9LANG TA9LVL 
+{txt}
+{com}. 
+. ********** OTHER VARIABLES
+. local othvars NCHILDM NCHILDF NTEENM NTEENF NADULTM NADULTF NTEENS NADULTS SM2X SMF SMC SMCB SMD CH6X CH22X CS10X WKHOURS WKHRS
+{txt}
+{com}. 
+. ********** CHANGE FORMAT OF VARIABLES
+. destring IDHH CASEID, replace
+{txt}IDHH: all characters numeric; {res}replaced {txt}as {res}double
+{txt}CASEID: all characters numeric; {res}replaced {txt}as {res}double
+{txt}(1 missing value generated)
+{res}{txt}
+{com}. 
+. ********** KEEP RELEVANT VARIABLES
+. keep `indvars' `famvars' `demovars' `othvars'
+{txt}
+{com}. 
+.         label variable CH6X "Is Teacher absent?"
+{txt}
+{com}.         label variable CH22X "School ID" 
+{txt}
+{com}. 
+. // Create an ID variable that unites STATEID DISTID PSUID 
+. gen idvillage = (100+STATEID)*10000 + DISTID*100 + PSUID  
+{txt}
+{com}.         label variable idvillage "Village ID" 
+{txt}
+{com}. 
+. 
+. // rename all variables ... 
+. rename *, lower 
+{res}{txt}
+{com}. 
+. // order variables alphabetically ... 
+. order _all, alphabetic
+{txt}
+{com}. 
+. 
+. local outfile "`dirpath'\36151-0001-Data_out.dta" 
+{txt}
+{com}. save `outfile', replace
+{txt}{p 0 4 2}
+(file {bf}
+C:\ihds\36151-0001-Data_out.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+C:\ihds\36151-0001-Data_out.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // describe variables ... 
+. //------------------------------------------------------------------------------
+. 
+. describe `r(varlist)'
+
+{txt}Contains data from {res}C:\ihds\36151-0001-Data_out.dta
+{txt} Observations:{res}       204,569                  India Human Development Survey-II (IHDS-II), 2011-12,
+                                                Individual
+{txt}    Variables:{res}            70                  21 May 2023 02:26
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:age            }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.5 Age{p_end}
+{p 0 48}{bind:caseid         }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Person id, unique 12 byte{p_end}
+{p 0 48}{bind:ch22x          }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}School ID{p_end}
+{p 0 48}{bind:ch6x           }{txt}{bind: int     }{bind:{txt}%14.0f    }{space 1}{bind:CH6      }{bind:  }{res}{res}Is Teacher absent?{p_end}
+{p 0 48}{bind:copc           }{txt}{bind: double  }{bind:{txt}%15.7f    }{space 1}{bind:         }{bind:  }{res}{res}HQ23 14. household expenditure /capita{p_end}
+{p 0 48}{bind:cs10x          }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ4 2.12 private Tuition hours/week{p_end}
+{p 0 48}{bind:cs11x          }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ4 2.13 Days/month absent{p_end}
+{p 0 48}{bind:cs3x           }{txt}{bind: int     }{bind:{txt}%31.0f    }{space 1}{bind:CS4      }{bind:  }{res}{res}EQ4 2.4 School type{p_end}
+{p 0 48}{bind:cs4x           }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ4 2.5 School distance (Km){p_end}
+{p 0 48}{bind:cs5x           }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:CS6      }{bind:  }{res}{res}EQ4 2.6 Standard (years) <1=0{p_end}
+{p 0 48}{bind:cs8x           }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ4 2.10 School hours/week{p_end}
+{p 0 48}{bind:cs9x           }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ4 2.11 Homework hours/week{p_end}
+{p 0 48}{bind:deflator       }{txt}{bind: double  }{bind:{txt}%15.13f   }{space 1}{bind:         }{bind:  }{res}{res}Deflator for converting 2012 prices, CPI based, month adj.{p_end}
+{p 0 48}{bind:dist01         }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}H1sp: District ID Census 2001{p_end}
+{p 0 48}{bind:distid         }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}District code{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%27.0f    }{space 1}{bind:DISTRICT }{bind:  }{res}{res}2001 Census state id + district id, labeled{p_end}
+{p 0 48}{bind:ed3x           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:ED4      }{bind:  }{res}{res}HQ19 11.4 Education: Attended school{p_end}
+{p 0 48}{bind:ed4x           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:ED5      }{bind:  }{res}{res}HQ19 11.5 Education: Enrolled now{p_end}
+{p 0 48}{bind:ed5x           }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:ED6      }{bind:  }{res}{res}HQ19 11.6 Education: Completed Years, never,<1=0{p_end}
+{p 0 48}{bind:fatherid       }{txt}{bind: int     }{bind:{txt}%47.0f    }{space 1}{bind:RO9      }{bind:  }{res}{res}HQ4 2.9 Father's ID{p_end}
+{p 0 48}{bind:groups8x       }{txt}{bind: int     }{bind:{txt}%23.0f    }{space 1}{bind:GROUPS   }{bind:  }{res}{res}HQ3 1.13-15 Caste & religion{p_end}
+{p 0 48}{bind:hhassets       }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}Total household assets (0-33){p_end}
+{p 0 48}{bind:hhed5adult     }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:HHEDUC   }{bind:  }{res}{res}HQ19 11.6 Highest adult Education{p_end}
+{p 0 48}{bind:hhed5f         }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:HHEDUCF  }{bind:  }{res}{res}HQ19 11.6 Highest female adult education{p_end}
+{p 0 48}{bind:hhed5m         }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:HHEDUCM  }{bind:  }{res}{res}HQ19 11.6 Highest male adult education{p_end}
+{p 0 48}{bind:hhid           }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}Household ID (3-digit){p_end}
+{p 0 48}{bind:hhsplitid      }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}Split household ID{p_end}
+{p 0 48}{bind:idhh           }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Household id, unique 10 byte string{p_end}
+{p 0 48}{bind:idpsu          }{txt}{bind: long    }{bind:{txt}%6.0f     }{space 1}{bind:         }{bind:  }{res}{res}PSU id unique 6 digit long int =cluster{p_end}
+{p 0 48}{bind:idvillage      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Village ID{p_end}
+{p 0 48}{bind:income         }{txt}{bind: double  }{bind:{txt}%15.6f    }{space 1}{bind:         }{bind:  }{res}{res}HQ Total income{p_end}
+{p 0 48}{bind:incomepc       }{txt}{bind: double  }{bind:{txt}%15.7f    }{space 1}{bind:         }{bind:  }{res}{res}HQ per capita income{p_end}
+{p 0 48}{bind:motherid       }{txt}{bind: int     }{bind:{txt}%47.0f    }{space 1}{bind:RO10     }{bind:  }{res}{res}HQ4 2.1 Mother's ID{p_end}
+{p 0 48}{bind:nadultf        }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.5 N 21+ women in Household{p_end}
+{p 0 48}{bind:nadultm        }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.5 # 21+ men in Household{p_end}
+{p 0 48}{bind:nadults        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:nchildf        }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.5 # 0-14 girls in Household{p_end}
+{p 0 48}{bind:nchildm        }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.5 # 0-14 boys in Household{p_end}
+{p 0 48}{bind:nchildren      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:npersons       }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.0 N in household{p_end}
+{p 0 48}{bind:nteenf         }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.5 # 15-20 girls in Household{p_end}
+{p 0 48}{bind:nteenm         }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.5 # 15-20 boys in Household{p_end}
+{p 0 48}{bind:nteens         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:personid       }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.1 Roster ID within 2012 household{p_end}
+{p 0 48}{bind:psuid          }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}PSU: village/neighborhood code{p_end}
+{p 0 48}{bind:ro3x           }{txt}{bind: int     }{bind:{txt}%8.0f     }{space 1}{bind:RO3      }{bind:  }{res}{res}HQ4 2.3 Sex{p_end}
+{p 0 48}{bind:ro4x           }{txt}{bind: int     }{bind:{txt}%17.0f    }{space 1}{bind:RO4      }{bind:  }{res}{res}HQ4 2.4 Relationship to head{p_end}
+{p 0 48}{bind:ro6x           }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:RO6      }{bind:  }{res}{res}HQ4 2.6 Marital Status{p_end}
+{p 0 48}{bind:ro7x           }{txt}{bind: int     }{bind:{txt}%20.0f    }{space 1}{bind:RO7      }{bind:  }{res}{res}HQ4 2.7 Primary Activity Status{p_end}
+{p 0 48}{bind:sm2x           }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ12 8.3 Short Term Morbidity Days ill last 30 days{p_end}
+{p 0 48}{bind:smc            }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:SM5      }{bind:  }{res}{res}EQ12 8.5 Short Term Morbidity Cough last 30 days{p_end}
+{p 0 48}{bind:smcb           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:SM6      }{bind:  }{res}{res}EQ12 8.6 Short Term Morbidity Cough with short breaths{p_end}
+{p 0 48}{bind:smd            }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:SM7      }{bind:  }{res}{res}EQ12 8.7 Diarrhea{p_end}
+{p 0 48}{bind:smf            }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:SM4      }{bind:  }{res}{res}EQ12 8.4 Short Term Morbidity Fever last 30 days{p_end}
+{p 0 48}{bind:stateid        }{txt}{bind: int     }{bind:{txt}%21.0f    }{space 1}{bind:STATEID  }{bind:  }{res}{res}State code{p_end}
+{p 0 48}{bind:ta3x           }{txt}{bind: int     }{bind:{txt}%18.0f    }{space 1}{bind:TA3      }{bind:  }{res}{res}HQ34 26.3 Test child: Ever school{p_end}
+{p 0 48}{bind:ta4x           }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ34 26.4 Test child: Class{p_end}
+{p 0 48}{bind:ta6x           }{txt}{bind: int     }{bind:{txt}%17.0f    }{space 1}{bind:TA6      }{bind:  }{res}{res}HQ34 26.6 Test child: Teacher nice{p_end}
+{p 0 48}{bind:ta7lang        }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:TA8A     }{bind:  }{res}{res}HQ34 26.8 Test: Reading language{p_end}
+{p 0 48}{bind:ta7lvl         }{txt}{bind: int     }{bind:{txt}%13.0f    }{space 1}{bind:TA8B     }{bind:  }{res}{res}HQ34 26.8 Test: Reading level{p_end}
+{p 0 48}{bind:ta8lang        }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:TA9A     }{bind:  }{res}{res}HQ34 26.9 Test: Math language{p_end}
+{p 0 48}{bind:ta8lvl         }{txt}{bind: int     }{bind:{txt}%18.0f    }{space 1}{bind:TA9B     }{bind:  }{res}{res}HQ34 26.9 Test: Math level{p_end}
+{p 0 48}{bind:ta9lang        }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:TA10A    }{bind:  }{res}{res}HQ34 26.10 Test: Writing language{p_end}
+{p 0 48}{bind:ta9lvl         }{txt}{bind: int     }{bind:{txt}%14.0f    }{space 1}{bind:TA10B    }{bind:  }{res}{res}HQ34 26.10 Test: Writing level{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: int     }{bind:{txt}%7.0f     }{space 1}{txt}URBAN2011{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Urban residence from census 2011{p_end}
+{p 0 48}{bind:weight         }{txt}{bind: double  }{bind:{txt}%15.8f    }{space 1}{bind:         }{bind:  }{res}{res}Weights for 2012{p_end}
+{p 0 48}{bind:wkany          }{txt}{bind: int     }{bind:{txt}%15.0f    }{space 1}{bind:WKANY5   }{bind:  }{res}{res}HQ work participation (farm, business, wage|salary){p_end}
+{p 0 48}{bind:wkhours        }{txt}{bind: int     }{bind:{txt}%4.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ work hours /year (farm, business, wage|salary){p_end}
+{p 0 48}{bind:wkhrs          }{txt}{bind: int     }{bind:{txt}%4.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ13 7.5&6.6 Work hours/year -person total{p_end}
+{p 0 48}{bind:ws14           }{txt}{bind: int     }{bind:{txt}%20.0f    }{space 1}{bind:WS14     }{bind:  }{res}{res}HQ13 7.14 Government, NREGA, private{p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. 
+. mdesc 
+
+{txt}    Variable{col 17}{c |}     Missing          Total     Percent Missing
+{hline 16}{c +}{hline 47}
+            age{col 17}{c |} {res}          4        204,569           0.00
+         {txt}caseid{col 17}{c |} {res}          1        204,569           0.00
+          {txt}ch22x{col 17}{c |} {res}    191,218        204,569          93.47
+           {txt}ch6x{col 17}{c |} {res}    191,226        204,569          93.48
+           {txt}copc{col 17}{c |} {res}         91        204,569           0.04
+          {txt}cs10x{col 17}{c |} {res}    160,356        204,569          78.39
+          {txt}cs11x{col 17}{c |} {res}    158,003        204,569          77.24
+           {txt}cs3x{col 17}{c |} {res}    149,961        204,569          73.31
+           {txt}cs4x{col 17}{c |} {res}    150,160        204,569          73.40
+           {txt}cs5x{col 17}{c |} {res}    149,962        204,569          73.31
+           {txt}cs8x{col 17}{c |} {res}    157,210        204,569          76.85
+           {txt}cs9x{col 17}{c |} {res}    157,587        204,569          77.03
+       {txt}deflator{col 17}{c |} {res}          1        204,569           0.00
+         {txt}dist01{col 17}{c |} {res}        106        204,569           0.05
+         {txt}distid{col 17}{c |} {res}          0        204,569           0.00
+       {txt}district{col 17}{c |} {res}        106        204,569           0.05
+           {txt}ed3x{col 17}{c |} {res}        192        204,569           0.09
+           {txt}ed4x{col 17}{c |} {res}     59,243        204,569          28.96
+           {txt}ed5x{col 17}{c |} {res}        233        204,569           0.11
+       {txt}fatherid{col 17}{c |} {res}    108,628        204,569          53.10
+       {txt}groups8x{col 17}{c |} {res}         82        204,569           0.04
+       {txt}hhassets{col 17}{c |} {res}        112        204,569           0.05
+     {txt}hhed5adult{col 17}{c |} {res}         32        204,569           0.02
+         {txt}hhed5f{col 17}{c |} {res}      1,445        204,569           0.71
+         {txt}hhed5m{col 17}{c |} {res}      8,791        204,569           4.30
+           {txt}hhid{col 17}{c |} {res}          0        204,569           0.00
+      {txt}hhsplitid{col 17}{c |} {res}          0        204,569           0.00
+           {txt}idhh{col 17}{c |} {res}          0        204,569           0.00
+          {txt}idpsu{col 17}{c |} {res}          0        204,569           0.00
+      {txt}idvillage{col 17}{c |} {res}          0        204,569           0.00
+         {txt}income{col 17}{c |} {res}          1        204,569           0.00
+       {txt}incomepc{col 17}{c |} {res}          1        204,569           0.00
+       {txt}motherid{col 17}{c |} {res}     99,398        204,569          48.59
+        {txt}nadultf{col 17}{c |} {res}          0        204,569           0.00
+        {txt}nadultm{col 17}{c |} {res}          0        204,569           0.00
+        {txt}nadults{col 17}{c |} {res}          0        204,569           0.00
+        {txt}nchildf{col 17}{c |} {res}          0        204,569           0.00
+        {txt}nchildm{col 17}{c |} {res}          0        204,569           0.00
+      {txt}nchildren{col 17}{c |} {res}          0        204,569           0.00
+       {txt}npersons{col 17}{c |} {res}          1        204,569           0.00
+         {txt}nteenf{col 17}{c |} {res}          0        204,569           0.00
+         {txt}nteenm{col 17}{c |} {res}          0        204,569           0.00
+         {txt}nteens{col 17}{c |} {res}          0        204,569           0.00
+       {txt}personid{col 17}{c |} {res}          1        204,569           0.00
+          {txt}psuid{col 17}{c |} {res}          0        204,569           0.00
+           {txt}ro3x{col 17}{c |} {res}          1        204,569           0.00
+           {txt}ro4x{col 17}{c |} {res}          1        204,569           0.00
+           {txt}ro6x{col 17}{c |} {res}          4        204,569           0.00
+           {txt}ro7x{col 17}{c |} {res}          4        204,569           0.00
+           {txt}sm2x{col 17}{c |} {res}          1        204,569           0.00
+            {txt}smc{col 17}{c |} {res}          1        204,569           0.00
+           {txt}smcb{col 17}{c |} {res}    180,596        204,569          88.28
+            {txt}smd{col 17}{c |} {res}          1        204,569           0.00
+            {txt}smf{col 17}{c |} {res}          1        204,569           0.00
+        {txt}stateid{col 17}{c |} {res}          0        204,569           0.00
+           {txt}ta3x{col 17}{c |} {res}    192,421        204,569          94.06
+           {txt}ta4x{col 17}{c |} {res}    192,581        204,569          94.14
+           {txt}ta6x{col 17}{c |} {res}    192,609        204,569          94.15
+        {txt}ta7lang{col 17}{c |} {res}    192,624        204,569          94.16
+         {txt}ta7lvl{col 17}{c |} {res}    192,712        204,569          94.20
+        {txt}ta8lang{col 17}{c |} {res}    192,743        204,569          94.22
+         {txt}ta8lvl{col 17}{c |} {res}    192,763        204,569          94.23
+        {txt}ta9lang{col 17}{c |} {res}    192,833        204,569          94.26
+         {txt}ta9lvl{col 17}{c |} {res}    192,832        204,569          94.26
+          {txt}urban{col 17}{c |} {res}          1        204,569           0.00
+         {txt}weight{col 17}{c |} {res}          1        204,569           0.00
+          {txt}wkany{col 17}{c |} {res}          1        204,569           0.00
+        {txt}wkhours{col 17}{c |} {res}          1        204,569           0.00
+          {txt}wkhrs{col 17}{c |} {res}    151,164        204,569          73.89
+           {txt}ws14{col 17}{c |} {res}    151,104        204,569          73.86
+{txt}{hline 16}{c +}{hline 47}
+
+{com}. 
+. ********** CLOSE OUTPUT
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\36151-0001-Data.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}21 May 2023, 02:26:46
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

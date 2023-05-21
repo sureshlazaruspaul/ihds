@@ -1,0 +1,461 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\36151-0012-Data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}21 May 2023, 02:26:52
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. // set directory
+. //------------------------------------------------------------------------------
+. 
+. local dirpath "C:\ihds"
+{txt}
+{com}. 
+. cd `dirpath'
+{res}C:\ihds
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // Some Macros: 
+. //      Program append2empty: append to an empty dataset 
+. //      Program pe: Print Execute with loops
+. //------------------------------------------------------------------------------
+. 
+. capture program drop append2empty
+{txt}
+{com}. program define append2empty
+{txt}  1{com}.         tempvar qwerty // create tempvars 
+{txt}  2{com}.                 gen `qwerty' = 1
+{txt}  3{com}.         append using `1' // append all datasets  
+{txt}  4{com}. end 
+{txt}
+{com}. /*------------------------------------------------------------------------------
+> clear
+> append_empty somedataset
+> ------------------------------------------------------------------------------*/
+. 
+. program define pe
+{txt}  1{com}.         if `"`0'"' != " " {c -(}
+{txt}  2{com}.                 display as text `"`0'"'
+{txt}  3{com}.                 `0'
+{txt}  4{com}.                 display("")
+{txt}  5{com}.         {c )-}
+{txt}  6{com}. end
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // Github url
+. //------------------------------------------------------------------------------
+. 
+. local giturl = "https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main" 
+{txt}
+{com}. 
+. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // read data ... 
+. //------------------------------------------------------------------------------
+. 
+. use "https://www.dropbox.com/s/hjeslyjump3vfe6/36151-0012-Data.dta?dl=1", clear
+{txt}(India Human Development Survey-II (IHDS-II), 2011-12, Village)
+
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // reassign variables by removing formatting ...
+. //------------------------------------------------------------------------------
+. /*
+> foreach v of var * {c -(}
+>         cap label val `v'
+> {c )-}
+> */
+. 
+. 
+. do "`giturl'/supp-codes/36151-0012-Supplemental_syntax.do" // run supplemental file ...
+{txt}
+{com}. /*-------------------------------------------------------------------------*
+>  |                                                                         
+>  |            STATA SUPPLEMENTAL SYNTAX FILE FOR ICPSR 36151
+>  |          INDIA HUMAN DEVELOPMENT SURVEY-II (IHDS-II), 2011-12
+>  |                        (DATASET 0012: VILLAGE)
+>  |
+>  |
+>  | This Stata missing value recode program is provided for optional use with
+>  | the Stata system version of this data file as distributed by ICPSR.
+>  | The program replaces user-defined numeric missing values (e.g., -9)
+>  | with generic system missing "."  Note that Stata allows you to specify
+>  | up to 27 unique missing value codes.  Only variables with user-defined
+>  | missing values are included in this program.
+>  |
+>  | To apply the missing value recodes, users need to first open the
+>  | Stata data file on their system, apply the missing value recodes if
+>  | desired, then save a new copy of the data file with the missing values
+>  | applied.  Users are strongly advised to use a different filename when
+>  | saving the new file.
+>  |
+>  *------------------------------------------------------------------------*/
+. 
+. replace VG14A = . if (VG14A == 9)
+{txt}(16 real changes made, 16 to missing)
+
+{com}. replace VG15A = . if (VG15A == 9)
+{txt}(130 real changes made, 130 to missing)
+
+{com}. replace VG16A = . if (VG16A == 9)
+{txt}(15 real changes made, 15 to missing)
+
+{com}. replace VG17A = . if (VG17A == 9)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace VG17E = . if (VG17E == 8)
+{txt}(7 real changes made, 7 to missing)
+
+{com}. replace VG18A = . if (VG18A == 9)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace VG18E = . if (VG18E == 8)
+{txt}(49 real changes made, 49 to missing)
+
+{com}. replace VG19A = . if (VG19A == 9)
+{txt}(0 real changes made)
+
+{com}. replace VG19E = . if (VG19E == 8)
+{txt}(64 real changes made, 64 to missing)
+
+{com}. replace VG20A = . if (VG20A == 9)
+{txt}(3 real changes made, 3 to missing)
+
+{com}. replace VG21A = . if (VG21A == 9)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace VG22A = . if (VG22A == 9)
+{txt}(4 real changes made, 4 to missing)
+
+{com}. replace VG23A = . if (VG23A == 9)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace VG24A = . if (VG24A == 9)
+{txt}(55 real changes made, 55 to missing)
+
+{com}. replace VI12A = . if (VI12A == 9)
+{txt}(122 real changes made, 122 to missing)
+
+{com}. replace VI12B = . if (VI12B == 9)
+{txt}(17 real changes made, 17 to missing)
+
+{com}. replace VI17 = . if (VI17 == 99)
+{txt}(153 real changes made, 153 to missing)
+
+{com}. replace VSE5 = . if (VSE5 == 888)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace VSE6 = . if (VSE6 == 888)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace VSE7 = . if (VSE7 == 888)
+{txt}(12 real changes made, 12 to missing)
+
+{com}. replace VSE8 = . if (VSE8 == 888)
+{txt}(149 real changes made, 149 to missing)
+
+{com}. replace VSE9 = . if (VSE9 == 888)
+{txt}(22 real changes made, 22 to missing)
+
+{com}. replace VSE10 = . if (VSE10 == 888)
+{txt}(32 real changes made, 32 to missing)
+
+{com}. replace VMB1 = . if (VMB1 == 99)
+{txt}(751 real changes made, 751 to missing)
+
+{com}. replace VMC1 = . if (VMC1 == 9)
+{txt}(751 real changes made, 751 to missing)
+
+{com}. replace VMB2 = . if (VMB2 == 99)
+{txt}(1,224 real changes made, 1,224 to missing)
+
+{com}. replace VMC2 = . if (VMC2 == 9)
+{txt}(1,224 real changes made, 1,224 to missing)
+
+{com}. replace VMB3 = . if (VMB3 == 99)
+{txt}(1,211 real changes made, 1,211 to missing)
+
+{com}. replace VMC3 = . if (VMC3 == 9)
+{txt}(1,211 real changes made, 1,211 to missing)
+
+{com}. replace VMB4 = . if (VMB4 == 99)
+{txt}(1,358 real changes made, 1,358 to missing)
+
+{com}. replace VMC4 = . if (VMC4 == 9)
+{txt}(1,358 real changes made, 1,358 to missing)
+
+{com}. replace VMB5 = . if (VMB5 == 99)
+{txt}(1,401 real changes made, 1,401 to missing)
+
+{com}. replace VMC5 = . if (VMC5 == 9)
+{txt}(1,401 real changes made, 1,401 to missing)
+
+{com}. replace VMB6 = . if (VMB6 == 99)
+{txt}(1,344 real changes made, 1,344 to missing)
+
+{com}. replace VMC6 = . if (VMC6 == 9)
+{txt}(1,344 real changes made, 1,344 to missing)
+
+{com}. replace VMB7 = . if (VMB7 == 99)
+{txt}(1,007 real changes made, 1,007 to missing)
+
+{com}. replace VMC7 = . if (VMC7 == 9)
+{txt}(1,007 real changes made, 1,007 to missing)
+
+{com}. replace VMB8 = . if (VMB8 == 99)
+{txt}(735 real changes made, 735 to missing)
+
+{com}. replace VMC8 = . if (VMC8 == 9)
+{txt}(735 real changes made, 735 to missing)
+
+{com}. replace VMB9 = . if (VMB9 == 99)
+{txt}(1,331 real changes made, 1,331 to missing)
+
+{com}. replace VMC9 = . if (VMC9 == 9)
+{txt}(1,331 real changes made, 1,331 to missing)
+
+{com}. replace VMB10 = . if (VMB10 == 99)
+{txt}(982 real changes made, 982 to missing)
+
+{com}. replace VMC10 = . if (VMC10 == 9)
+{txt}(982 real changes made, 982 to missing)
+
+{com}. replace VMB11 = . if (VMB11 == 99)
+{txt}(1,357 real changes made, 1,357 to missing)
+
+{com}. replace VMC11 = . if (VMC11 == 9)
+{txt}(1,357 real changes made, 1,357 to missing)
+
+{com}. replace VMB12 = . if (VMB12 == 99)
+{txt}(1,082 real changes made, 1,082 to missing)
+
+{com}. replace VMC12 = . if (VMC12 == 9)
+{txt}(1,082 real changes made, 1,082 to missing)
+
+{com}. replace VMB13 = . if (VMB13 == 99)
+{txt}(807 real changes made, 807 to missing)
+
+{com}. replace VMC13 = . if (VMC13 == 9)
+{txt}(807 real changes made, 807 to missing)
+
+{com}. replace VMB14 = . if (VMB14 == 99)
+{txt}(623 real changes made, 623 to missing)
+
+{com}. replace VMC14 = . if (VMC14 == 9)
+{txt}(623 real changes made, 623 to missing)
+
+{com}. replace VMB15 = . if (VMB15 == 99)
+{txt}(790 real changes made, 790 to missing)
+
+{com}. replace VMC15 = . if (VMC15 == 9)
+{txt}(790 real changes made, 790 to missing)
+
+{com}. replace VMB16 = . if (VMB16 == 99)
+{txt}(941 real changes made, 941 to missing)
+
+{com}. replace VMC16 = . if (VMC16 == 9)
+{txt}(941 real changes made, 941 to missing)
+
+{com}. replace VJ3A = . if (VJ3A == 9)
+{txt}(0 real changes made)
+
+{com}. replace VJ3B = . if (VJ3B == 9)
+{txt}(0 real changes made)
+
+{com}. replace VJ3C = . if (VJ3C == 9)
+{txt}(0 real changes made)
+
+{com}. replace VJ3D = . if (VJ3D == 9)
+{txt}(0 real changes made)
+
+{com}. replace VJ3E = . if (VJ3E == 9)
+{txt}(0 real changes made)
+
+{com}. replace VJ3F = . if (VJ3F == 9)
+{txt}(0 real changes made)
+
+{com}. replace VJ3G = . if (VJ3G == 9)
+{txt}(0 real changes made)
+
+{com}. replace VJ3H = . if (VJ3H == 9)
+{txt}(0 real changes made)
+
+{com}. replace VJ3I = . if (VJ3I == 9)
+{txt}(0 real changes made)
+
+{com}. 
+. 
+. 
+{txt}end of do-file
+
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // transform/calc variables ... 
+. //------------------------------------------------------------------------------
+. 
+. destring VI4B, replace
+{txt}VI4B: all characters numeric; {res}replaced {txt}as {res}int
+{txt}(721 missing values generated)
+{res}{txt}
+{com}.         replace VI4B   = .           if VI4B < 1900 
+{txt}(5 real changes made, 5 to missing)
+
+{com}.         replace VI4B   = .           if VI4B > 2012 
+{txt}(3 real changes made, 3 to missing)
+
+{com}. 
+. // Compute first year of electricity 
+. gen VI4B12 = VI4B if VI4B > 0 
+{txt}(729 missing values generated)
+
+{com}.         replace VI4B12 = 2012 - VI4C if mi( VI4B12 )  
+{txt}(695 real changes made)
+
+{com}.                 drop VI4B VI4C 
+{txt}
+{com}. 
+. // Create an ID variable that unites STATEID DISTID PSUID 
+. gen idvillage = (100+STATEID)*10000 + DISTID*100 + PSUID 
+{txt}
+{com}. 
+. // Price of Firewood in Rupees
+. gen firewood_prc = VP7B 
+{txt}(774 missing values generated)
+
+{com}.         format firewood_prc %9.2f 
+{txt}
+{com}. 
+. // Price of Kerosene (per liter) in Rupees
+. gen kerosene_prc = VP8A  
+{txt}(138 missing values generated)
+
+{com}.         format kerosene_prc %9.2f 
+{txt}
+{com}.         
+. //------------------------------------------------------------------------------
+. // rename variables ... 
+. //------------------------------------------------------------------------------
+. 
+. ren VI4B12 fyrelec
+{res}{txt}
+{com}. ren VI4D   hourselec 
+{res}{txt}
+{com}. ren VMA1   healthsubcenter
+{res}{txt}
+{com}. ren VI18K  safewater 
+{res}{txt}
+{com}. ren VI18L  sanitation 
+{res}{txt}
+{com}. 
+. // rename all variables ... 
+. rename *, lower 
+{res}{txt}
+{com}. 
+. ********** INDENTIFIER VARIABLES
+. local indvars idvillage 
+{txt}
+{com}. 
+. ********** VILLAGE VARIABLES
+. local villagevars vi4a fyrelec hourselec firewood_prc kerosene_prc healthsubcenter safewater sanitation 
+{txt}
+{com}. 
+. ********** CHANGE FORMAT OF VARIABLES
+. // destring IDHH, replace
+. 
+. ********** KEEP RELEVANT VARIABLES
+. keep `indvars' `villagevars' 
+{txt}
+{com}. 
+. // order variables alphabetically ... 
+. order _all, alphabetic
+{txt}
+{com}. 
+. label variable idvillage    "Village ID" 
+{txt}
+{com}. label variable firewood_prc "Firewood price (Rs.)"  
+{txt}
+{com}. label variable kerosene_prc "Kerosene price (Rs.)"  
+{txt}
+{com}. label variable vi4a         "Pct hh with Electricity" 
+{txt}
+{com}. label variable fyrelec      "Electricity since YYYY" 
+{txt}
+{com}. label variable hourselec    "Hours Per Day Electricity" 
+{txt}
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // check if there are duplicates 
+. //------------------------------------------------------------------------------
+. qui bys idvillage : gen dup = cond(_N==1,0,_n)
+{txt}
+{com}.         keep if dup == 0
+{txt}(0 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. local outfile "`dirpath'\36151-0012-Data_out.dta" 
+{txt}
+{com}. save `outfile', replace
+{txt}{p 0 4 2}
+(file {bf}
+C:\ihds\36151-0012-Data_out.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+C:\ihds\36151-0012-Data_out.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // describe variables ... 
+. //------------------------------------------------------------------------------
+. 
+. describe `r(varlist)'
+
+{txt}Contains data from {res}C:\ihds\36151-0012-Data_out.dta
+{txt} Observations:{res}         1,410                  India Human Development Survey-II (IHDS-II), 2011-12,
+                                                Village
+{txt}    Variables:{res}             9                  21 May 2023 02:26
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:firewood_prc   }{txt}{bind: float   }{bind:{txt}%9.2f     }{space 1}{bind:         }{bind:  }{res}{res}Firewood price (Rs.){p_end}
+{p 0 48}{bind:fyrelec        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Electricity since YYYY{p_end}
+{p 0 48}{bind:healthsubcenter}{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}VQ11 9.1 Health Subcenter Number{p_end}
+{p 0 48}{bind:hourselec      }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}Hours Per Day Electricity{p_end}
+{p 0 48}{bind:idvillage      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Village ID{p_end}
+{p 0 48}{bind:kerosene_prc   }{txt}{bind: float   }{bind:{txt}%9.2f     }{space 1}{bind:         }{bind:  }{res}{res}Kerosene price (Rs.){p_end}
+{p 0 48}{bind:safewater      }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:VI18K    }{bind:  }{res}{res}VQ9 7.18k Safe Drinking Water{p_end}
+{p 0 48}{bind:sanitation     }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:VI18L    }{bind:  }{res}{res}VQ9 7.18l Sanitation/Latrines{p_end}
+{p 0 48}{bind:vi4a           }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}Pct hh with Electricity{p_end}
+{txt}{hline}
+Sorted by: {res}idvillage
+{txt}
+{com}. 
+. 
+. ********** CLOSE OUTPUT
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\36151-0012-Data.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}21 May 2023, 02:26:54
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
