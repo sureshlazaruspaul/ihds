@@ -131,12 +131,16 @@ gen GW = inlist( FMA, 1, 2, 3 ) | inlist( FMB, 1, 2, 3 )
 	label define yesno 0 "0 no" 1 "1 yes" 
 	label values GW yesno  
 
-local keepvars IDHH FU1 FU1A FU1B FU1C POOR FMA FMB GW WSA CGA WALKFUEL_FADU WALKFUEL_F WALKFUEL_M WATERTIME_FADU WATERTIME_F WATERTIME_M CG5X CG16X CG20X CG11X CG9X CG19X CG21X CG15X CG7X CG8X MM4W MM4C MM1W MM1C MM2W MM2C SA4 
+// Create an ID variable that unites STATEID DISTID PSUID 
+gen idvillage = (100+STATEID)*10000 + DISTID*100 + PSUID  
+	label variable idvillage "Village ID" 
+
+local keepvars IDHH idvillage FU1 FU1A FU1B FU1C POOR FMA FMB GW WSA CGA WALKFUEL_FADU WALKFUEL_F WALKFUEL_M WATERTIME_FADU WATERTIME_F WATERTIME_M CG5X CG16X CG20X CG11X CG9X CG19X CG21X CG15X CG7X CG8X MM4W MM4C MM1W MM1C MM2W MM2C SA4 
 
 keep `keepvars'
 
 // rename all variables ... 
-ds IDHH , not
+ds IDHH idvillage , not
 rename (`r(varlist)') (=2005) 
 rename * , lower 
 
