@@ -1,0 +1,2760 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\electricity2005.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}21 May 2023, 01:19:06
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. // set directory ...
+. //------------------------------------------------------------------------------
+. 
+. local dirpath "C:\ihds"
+{txt}
+{com}. 
+. cd `dirpath'
+{res}C:\ihds
+{txt}
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // Some Macros: 
+. //      Program append2empty: append to an empty dataset 
+. //      Program pe: Print Execute with loops
+. //------------------------------------------------------------------------------
+. 
+. capture program drop append2empty
+{txt}
+{com}. program define append2empty
+{txt}  1{com}.         tempvar qwerty // create tempvars 
+{txt}  2{com}.                 gen `qwerty' = 1
+{txt}  3{com}.         append using `1' // append all datasets  
+{txt}  4{com}. end 
+{txt}
+{com}. /*------------------------------------------------------------------------------
+> clear
+> append_empty somedataset
+> ------------------------------------------------------------------------------*/
+. 
+. program define pe
+{txt}  1{com}.         if `"`0'"' != " " {c -(}
+{txt}  2{com}.                 display as text `"`0'"'
+{txt}  3{com}.                 `0'
+{txt}  4{com}.                 display("")
+{txt}  5{com}.         {c )-}
+{txt}  6{com}. end
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // Github url
+. //------------------------------------------------------------------------------
+. 
+. local giturl = "https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main" 
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // get 2005 HH electricity ... 
+. //------------------------------------------------------------------------------
+. 
+. use "https://www.dropbox.com/s/cb2k345kmi5cp8k/22626-0002-Data.dta?dl=1" , clear 
+{txt}(India Human Development Survey (IHDS), 2005, Household)
+
+{com}. 
+. 
+. do "`giturl'/supp-codes/22626-0002-Supplemental_syntax.do"
+{txt}
+{com}. /*-------------------------------------------------------------------------*
+>  |                                                                         
+>  |            STATA SUPPLEMENTAL SYNTAX FILE FOR ICPSR 22626
+>  |              INDIA HUMAN DEVELOPMENT SURVEY (IHDS), 2005
+>  |                       (DATASET 0002: HOUSEHOLD)
+>  |
+>  |
+>  | This Stata missing value recode program is provided for optional use with
+>  | the Stata system version of this data file as distributed by ICPSR.
+>  | The program replaces user-defined numeric missing values (e.g., -9)
+>  | with generic system missing "."  Note that Stata allows you to specify
+>  | up to 27 unique missing value codes.  Only variables with user-defined
+>  | missing values are included in this program.
+>  |
+>  | To apply the missing value recodes, users need to first open the
+>  | Stata data file on their system, apply the missing value recodes if
+>  | desired, then save a new copy of the data file with the missing values
+>  | applied.  Users are strongly advised to use a different filename when
+>  | saving the new file.
+>  |
+>  *------------------------------------------------------------------------*/
+. 
+. replace DISTID = . if (DISTID >= -7 & DISTID <= -1)
+{txt}(0 real changes made)
+
+{com}. replace PSUID = . if (PSUID >= -7 & PSUID <= -1)
+{txt}(0 real changes made)
+
+{com}. replace HHID = . if (HHID >= -7 & HHID <= -1)
+{txt}(0 real changes made)
+
+{com}. replace HHSPLITID = . if (HHSPLITID >= -7 & HHSPLITID <= -1)
+{txt}(0 real changes made)
+
+{com}. replace COPC = . if (COPC >= -7 & COPC <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace HHED5ADULT = . if (HHED5ADULT >= -7 & HHED5ADULT <= -1)
+{txt}(55 real changes made, 55 to missing)
+
+{com}. replace HHED5F = . if (HHED5F >= -7 & HHED5F <= -1)
+{txt}(784 real changes made, 784 to missing)
+
+{com}. replace HHED5M = . if (HHED5M >= -7 & HHED5M <= -1)
+{txt}(2,282 real changes made, 2,282 to missing)
+
+{com}. replace POOR = . if (POOR >= -6 & POOR <= -4)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace HC3 = . if (HC3 >= -7 & HC3 <= -1)
+{txt}(0 real changes made)
+
+{com}. replace HC6 = . if (HC6 >= -7 & HC6 <= -1)
+{txt}(1,068 real changes made, 1,068 to missing)
+
+{com}. replace HC9 = . if (HC9 >= -7 & HC9 <= -1)
+{txt}(27,654 real changes made, 27,654 to missing)
+
+{com}. replace HC10 = . if (HC10 >= -7 & HC10 <= -1)
+{txt}(0 real changes made)
+
+{com}. replace HC12 = . if (HC12 >= -7 & HC12 <= -1)
+{txt}(41,361 real changes made, 41,361 to missing)
+
+{com}. replace HC14 = . if (HC14 >= -7 & HC14 <= -1)
+{txt}(41,519 real changes made, 41,519 to missing)
+
+{com}. replace HC15 = . if (HC15 >= -7 & HC15 <= -1)
+{txt}(4,748 real changes made, 4,748 to missing)
+
+{com}. replace HS1 = . if (HS1 >= -7 & HS1 <= -1)
+{txt}(4 real changes made, 4 to missing)
+
+{com}. replace HS3 = . if (HS3 >= -7 & HS3 <= -1)
+{txt}(0 real changes made)
+
+{com}. replace HS3B = . if (HS3B >= -7 & HS3B <= -1)
+{txt}(5 real changes made, 5 to missing)
+
+{com}. replace ID1 = . if (ID1 >= -7 & ID1 <= -1)
+{txt}(22,917 real changes made, 22,917 to missing)
+
+{com}. replace ID2 = . if (ID2 >= -7 & ID2 <= -1)
+{txt}(0 real changes made)
+
+{com}. replace ID4 = . if (ID4 >= -7 & ID4 <= -1)
+{txt}(0 real changes made)
+
+{com}. replace ID5 = . if (ID5 >= -7 & ID5 <= -1)
+{txt}(779 real changes made, 779 to missing)
+
+{com}. replace ID6 = . if (ID6 >= -7 & ID6 <= -1)
+{txt}(0 real changes made)
+
+{com}. replace ID7A = . if (ID7A >= -7 & ID7A <= -1)
+{txt}(0 real changes made)
+
+{com}. replace ID8A = . if (ID8A >= -7 & ID8A <= -1)
+{txt}(0 real changes made)
+
+{com}. replace ID16 = . if (ID16 >= -7 & ID16 <= -1)
+{txt}(53 real changes made, 53 to missing)
+
+{com}. replace ID17 = . if (ID17 >= -7 & ID17 <= -1)
+{txt}(3 real changes made, 3 to missing)
+
+{com}. replace ID18 = . if (ID18 >= -7 & ID18 <= -1)
+{txt}(9 real changes made, 9 to missing)
+
+{com}. replace ID19 = . if (ID19 >= -7 & ID19 <= -1)
+{txt}(3,163 real changes made, 3,163 to missing)
+
+{com}. replace ID20 = . if (ID20 >= -7 & ID20 <= -1)
+{txt}(24,407 real changes made, 24,407 to missing)
+
+{com}. replace FM2 = . if (FM2 >= -7.00 & FM2 <= -1.00)
+{txt}(24,044 real changes made, 24,044 to missing)
+
+{com}. replace FM3 = . if (FM3 >= -7 & FM3 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace FM4 = . if (FM4 >= -7.00 & FM4 <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace FM5 = . if (FM5 >= -7.00 & FM5 <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace FM6A = . if (FM6A >= -7.00 & FM6A <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace FM6B = . if (FM6B >= -7 & FM6B <= -1)
+{txt}(3,885 real changes made, 3,885 to missing)
+
+{com}. replace FM6C = . if (FM6C >= -7 & FM6C <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM6D = . if (FM6D >= -7 & FM6D <= -1)
+{txt}(3,266 real changes made, 3,266 to missing)
+
+{com}. replace FM6E = . if (FM6E >= -7 & FM6E <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM7 = . if (FM7 >= -7.00 & FM7 <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace FM8A = . if (FM8A >= -7.00 & FM8A <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace FM8B = . if (FM8B >= -7 & FM8B <= -1)
+{txt}(2,688 real changes made, 2,688 to missing)
+
+{com}. replace FM8C = . if (FM8C >= -7 & FM8C <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM9A = . if (FM9A >= -7 & FM9A <= -1)
+{txt}(9,969 real changes made, 9,969 to missing)
+
+{com}. replace FM9B = . if (FM9B >= -7 & FM9B <= -1)
+{txt}(388 real changes made, 388 to missing)
+
+{com}. replace FM9C = . if (FM9C >= -7 & FM9C <= -1)
+{txt}(1,831 real changes made, 1,831 to missing)
+
+{com}. replace FM9D = . if (FM9D >= -7.00 & FM9D <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace FM19A = . if (FM19A >= -7 & FM19A <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM19B = . if (FM19B >= -7 & FM19B <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM20A = . if (FM20A >= -7 & FM20A <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM20B = . if (FM20B >= -7 & FM20B <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM20C = . if (FM20C >= -7 & FM20C <= -1)
+{txt}(10,422 real changes made, 10,422 to missing)
+
+{com}. replace FM21A = . if (FM21A >= -7 & FM21A <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM21B = . if (FM21B >= -7 & FM21B <= -1)
+{txt}(582 real changes made, 582 to missing)
+
+{com}. replace FM22 = . if (FM22 >= -7 & FM22 <= -1)
+{txt}(24,211 real changes made, 24,211 to missing)
+
+{com}. replace FM23 = . if (FM23 >= -7 & FM23 <= -1)
+{txt}(24,902 real changes made, 24,902 to missing)
+
+{com}. replace FM24 = . if (FM24 >= -7 & FM24 <= -1)
+{txt}(25,149 real changes made, 25,149 to missing)
+
+{com}. replace FM25 = . if (FM25 >= -7 & FM25 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace FM26 = . if (FM26 >= -7 & FM26 <= -1)
+{txt}(25,687 real changes made, 25,687 to missing)
+
+{com}. replace FM27 = . if (FM27 >= -7 & FM27 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace FMTOTAL = . if (FMTOTAL >= -7 & FMTOTAL <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM31 = . if (FM31 >= -7 & FM31 <= -1)
+{txt}(24,157 real changes made, 24,157 to missing)
+
+{com}. replace FM32A = . if (FM32A >= -7 & FM32A <= -1)
+{txt}(12,278 real changes made, 12,278 to missing)
+
+{com}. replace FM32B = . if (FM32B >= -7 & FM32B <= -1)
+{txt}(12,114 real changes made, 12,114 to missing)
+
+{com}. replace FM32C = . if (FM32C >= -7 & FM32C <= -1)
+{txt}(13,029 real changes made, 13,029 to missing)
+
+{com}. replace FM32D = . if (FM32D >= -7 & FM32D <= -1)
+{txt}(12,249 real changes made, 12,249 to missing)
+
+{com}. replace FM32E = . if (FM32E >= -7 & FM32E <= -1)
+{txt}(13,718 real changes made, 13,718 to missing)
+
+{com}. replace FM32F = . if (FM32F >= -7 & FM32F <= -1)
+{txt}(13,787 real changes made, 13,787 to missing)
+
+{com}. replace FM32G = . if (FM32G >= -7 & FM32G <= -1)
+{txt}(14,126 real changes made, 14,126 to missing)
+
+{com}. replace FM32H = . if (FM32H >= -7 & FM32H <= -1)
+{txt}(0 real changes made)
+
+{com}. replace FM32I = . if (FM32I >= -7 & FM32I <= -1)
+{txt}(0 real changes made)
+
+{com}. replace AN1A = . if (AN1A >= -7 & AN1A <= -1)
+{txt}(16,101 real changes made, 16,101 to missing)
+
+{com}. replace AN1B = . if (AN1B >= -7 & AN1B <= -1)
+{txt}(16,942 real changes made, 16,942 to missing)
+
+{com}. replace AN1C = . if (AN1C >= -7 & AN1C <= -1)
+{txt}(17,278 real changes made, 17,278 to missing)
+
+{com}. replace AN1D = . if (AN1D >= -7 & AN1D <= -1)
+{txt}(17,398 real changes made, 17,398 to missing)
+
+{com}. replace AN1E = . if (AN1E >= -7 & AN1E <= -1)
+{txt}(0 real changes made)
+
+{com}. replace AN1F = . if (AN1F >= -7 & AN1F <= -1)
+{txt}(17,670 real changes made, 17,670 to missing)
+
+{com}. replace AN1G = . if (AN1G >= -7 & AN1G <= -1)
+{txt}(17,431 real changes made, 17,431 to missing)
+
+{com}. replace AN2A = . if (AN2A >= -7 & AN2A <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace AN2B = . if (AN2B >= -7 & AN2B <= -1)
+{txt}(21,431 real changes made, 21,431 to missing)
+
+{com}. replace AN3 = . if (AN3 >= -7 & AN3 <= -1)
+{txt}(21,705 real changes made, 21,705 to missing)
+
+{com}. replace AN4A = . if (AN4A >= -7 & AN4A <= -1)
+{txt}(0 real changes made)
+
+{com}. replace AN4B = . if (AN4B >= -7 & AN4B <= -1)
+{txt}(0 real changes made)
+
+{com}. replace AN4C = . if (AN4C >= -7 & AN4C <= -1)
+{txt}(0 real changes made)
+
+{com}. replace AN7 = . if (AN7 >= -7 & AN7 <= -1)
+{txt}(25,470 real changes made, 25,470 to missing)
+
+{com}. replace NF1A = . if (NF1A >= -7 & NF1A <= -1)
+{txt}(32,809 real changes made, 32,809 to missing)
+
+{com}. replace NF1B = . if (NF1B >= -7 & NF1B <= -1)
+{txt}(32,905 real changes made, 32,905 to missing)
+
+{com}. replace NF2 = . if (NF2 >= -7 & NF2 <= -1)
+{txt}(132 real changes made, 132 to missing)
+
+{com}. replace NF3 = . if (NF3 >= -7 & NF3 <= -1)
+{txt}(0 real changes made)
+
+{com}. replace NF4 = . if (NF4 >= -7 & NF4 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace NF5 = . if (NF5 >= -7 & NF5 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace NF6 = . if (NF6 >= -7 & NF6 <= -1)
+{txt}(0 real changes made)
+
+{com}. replace NF10A = . if (NF10A >= -7 & NF10A <= -1)
+{txt}(40,505 real changes made, 40,505 to missing)
+
+{com}. replace NF10B = . if (NF10B >= -7 & NF10B <= -1)
+{txt}(40,612 real changes made, 40,612 to missing)
+
+{com}. replace NF11 = . if (NF11 >= -7 & NF11 <= -1)
+{txt}(40,775 real changes made, 40,775 to missing)
+
+{com}. replace NF12 = . if (NF12 >= -7 & NF12 <= -1)
+{txt}(40,515 real changes made, 40,515 to missing)
+
+{com}. replace NF13 = . if (NF13 >= -7 & NF13 <= -1)
+{txt}(40,575 real changes made, 40,575 to missing)
+
+{com}. replace NF14 = . if (NF14 >= -7 & NF14 <= -1)
+{txt}(40,545 real changes made, 40,545 to missing)
+
+{com}. replace NF15 = . if (NF15 >= -7 & NF15 <= -1)
+{txt}(40,475 real changes made, 40,475 to missing)
+
+{com}. replace NF19A = . if (NF19A >= -7 & NF19A <= -1)
+{txt}(41,231 real changes made, 41,231 to missing)
+
+{com}. replace NF19B = . if (NF19B >= -7 & NF19B <= -1)
+{txt}(41,322 real changes made, 41,322 to missing)
+
+{com}. replace NF20 = . if (NF20 >= -7 & NF20 <= -1)
+{txt}(41,482 real changes made, 41,482 to missing)
+
+{com}. replace NF21 = . if (NF21 >= -7 & NF21 <= -1)
+{txt}(41,183 real changes made, 41,183 to missing)
+
+{com}. replace NF22 = . if (NF22 >= -7 & NF22 <= -1)
+{txt}(41,175 real changes made, 41,175 to missing)
+
+{com}. replace NF23 = . if (NF23 >= -7 & NF23 <= -1)
+{txt}(41,183 real changes made, 41,183 to missing)
+
+{com}. replace NF24 = . if (NF24 >= -7 & NF24 <= -1)
+{txt}(41,175 real changes made, 41,175 to missing)
+
+{com}. replace IN1 = . if (IN1 >= -7 & IN1 <= -1)
+{txt}(7,295 real changes made, 7,295 to missing)
+
+{com}. replace IN2 = . if (IN2 >= -7 & IN2 <= -1)
+{txt}(7,530 real changes made, 7,530 to missing)
+
+{com}. replace IN3A = . if (IN3A >= -7 & IN3A <= -1)
+{txt}(7,480 real changes made, 7,480 to missing)
+
+{com}. replace IN3B = . if (IN3B >= -7 & IN3B <= -1)
+{txt}(7,876 real changes made, 7,876 to missing)
+
+{com}. replace IN4A = . if (IN4A >= -7 & IN4A <= -1)
+{txt}(7,742 real changes made, 7,742 to missing)
+
+{com}. replace IN4B = . if (IN4B >= -7 & IN4B <= -1)
+{txt}(7,871 real changes made, 7,871 to missing)
+
+{com}. replace IN5 = . if (IN5 >= -7 & IN5 <= -1)
+{txt}(7,593 real changes made, 7,593 to missing)
+
+{com}. replace IN6 = . if (IN6 >= -7 & IN6 <= -1)
+{txt}(8,019 real changes made, 8,019 to missing)
+
+{com}. replace IN14A = . if (IN14A >= -7 & IN14A <= -1)
+{txt}(10,027 real changes made, 10,027 to missing)
+
+{com}. replace IN14B = . if (IN14B >= -7 & IN14B <= -1)
+{txt}(16,467 real changes made, 16,467 to missing)
+
+{com}. replace IN15 = . if (IN15 >= -7 & IN15 <= -1)
+{txt}(609 real changes made, 609 to missing)
+
+{com}. replace IN15A = . if (IN15A >= -7 & IN15A <= -1)
+{txt}(13,010 real changes made, 13,010 to missing)
+
+{com}. replace IN15B = . if (IN15B >= -7 & IN15B <= -1)
+{txt}(12,948 real changes made, 12,948 to missing)
+
+{com}. replace IN15C = . if (IN15C >= -7 & IN15C <= -1)
+{txt}(13,128 real changes made, 13,128 to missing)
+
+{com}. replace IN15D = . if (IN15D >= -7 & IN15D <= -1)
+{txt}(13,048 real changes made, 13,048 to missing)
+
+{com}. replace IN15E = . if (IN15E >= -7 & IN15E <= -1)
+{txt}(13,034 real changes made, 13,034 to missing)
+
+{com}. replace IN16 = . if (IN16 >= -7 & IN16 <= -1)
+{txt}(6,601 real changes made, 6,601 to missing)
+
+{com}. replace IN17 = . if (IN17 >= -7 & IN17 <= -1)
+{txt}(32 real changes made, 32 to missing)
+
+{com}. replace RC1 = . if (RC1 >= -7 & RC1 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace RC1A = . if (RC1A >= -7 & RC1A <= -1)
+{txt}(7,148 real changes made, 7,148 to missing)
+
+{com}. replace RC1B = . if (RC1B >= -7 & RC1B <= -1)
+{txt}(7,149 real changes made, 7,149 to missing)
+
+{com}. replace RC1C = . if (RC1C >= -7 & RC1C <= -1)
+{txt}(7,159 real changes made, 7,159 to missing)
+
+{com}. replace RC1D = . if (RC1D >= -7 & RC1D <= -1)
+{txt}(36,374 real changes made, 36,374 to missing)
+
+{com}. replace RC2 = . if (RC2 >= -7 & RC2 <= -1)
+{txt}(34,408 real changes made, 34,408 to missing)
+
+{com}. replace RC3 = . if (RC3 >= -7 & RC3 <= -1)
+{txt}(101 real changes made, 101 to missing)
+
+{com}. replace RC4 = . if (RC4 >= -7 & RC4 <= -1)
+{txt}(76 real changes made, 76 to missing)
+
+{com}. replace RC5 = . if (RC5 >= -7 & RC5 <= -1)
+{txt}(87 real changes made, 87 to missing)
+
+{com}. replace MM1A = . if (MM1A >= -7 & MM1A <= -1)
+{txt}(1,455 real changes made, 1,455 to missing)
+
+{com}. replace MM2A = . if (MM2A >= -7 & MM2A <= -1)
+{txt}(1,571 real changes made, 1,571 to missing)
+
+{com}. replace MM3A = . if (MM3A >= -7 & MM3A <= -1)
+{txt}(1,601 real changes made, 1,601 to missing)
+
+{com}. replace MM4A = . if (MM4A >= -7 & MM4A <= -1)
+{txt}(5,937 real changes made, 5,937 to missing)
+
+{com}. replace MM5A = . if (MM5A >= -7 & MM5A <= -1)
+{txt}(6,435 real changes made, 6,435 to missing)
+
+{com}. replace MM1B = . if (MM1B >= -7 & MM1B <= -1)
+{txt}(1,093 real changes made, 1,093 to missing)
+
+{com}. replace MM2B = . if (MM2B >= -7 & MM2B <= -1)
+{txt}(1,239 real changes made, 1,239 to missing)
+
+{com}. replace MM3B = . if (MM3B >= -7 & MM3B <= -1)
+{txt}(1,145 real changes made, 1,145 to missing)
+
+{com}. replace MM4B = . if (MM4B >= -7 & MM4B <= -1)
+{txt}(5,976 real changes made, 5,976 to missing)
+
+{com}. replace MM5B = . if (MM5B >= -7 & MM5B <= -1)
+{txt}(6,425 real changes made, 6,425 to missing)
+
+{com}. replace MM1C = . if (MM1C >= -7 & MM1C <= -1)
+{txt}(9,056 real changes made, 9,056 to missing)
+
+{com}. replace MM2C = . if (MM2C >= -7 & MM2C <= -1)
+{txt}(9,610 real changes made, 9,610 to missing)
+
+{com}. replace MM3C = . if (MM3C >= -7 & MM3C <= -1)
+{txt}(9,768 real changes made, 9,768 to missing)
+
+{com}. replace MM4C = . if (MM4C >= -7 & MM4C <= -1)
+{txt}(13,915 real changes made, 13,915 to missing)
+
+{com}. replace MM5C = . if (MM5C >= -7 & MM5C <= -1)
+{txt}(14,137 real changes made, 14,137 to missing)
+
+{com}. replace CO1X = . if (CO1X >= -7 & CO1X <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO1A = . if (CO1A >= -7 & CO1A <= -1)
+{txt}(1,957 real changes made, 1,957 to missing)
+
+{com}. replace CO1B = . if (CO1B == -1)
+{txt}(1,957 real changes made, 1,957 to missing)
+
+{com}. replace CO1C = . if (CO1C >= -7 & CO1C <= -1)
+{txt}(0 real changes made)
+
+{com}. replace CO1D = . if (CO1D >= -7 & CO1D <= -1)
+{txt}(31,592 real changes made, 31,592 to missing)
+
+{com}. replace CO1E = . if (CO1E >= -7 & CO1E <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CO2X = . if (CO2X >= -7 & CO2X <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO2A = . if (CO2A >= -7 & CO2A <= -1)
+{txt}(8,843 real changes made, 8,843 to missing)
+
+{com}. replace CO2B = . if (CO2B == -1)
+{txt}(8,843 real changes made, 8,843 to missing)
+
+{com}. replace CO2C = . if (CO2C >= -7 & CO2C <= -1)
+{txt}(0 real changes made)
+
+{com}. replace CO2D = . if (CO2D >= -7 & CO2D <= -1)
+{txt}(34,929 real changes made, 34,929 to missing)
+
+{com}. replace CO2E = . if (CO2E >= -7 & CO2E <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CO3X = . if (CO3X >= -7 & CO3X <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO3A = . if (CO3A >= -7 & CO3A <= -1)
+{txt}(2,286 real changes made, 2,286 to missing)
+
+{com}. replace CO3B = . if (CO3B == -1)
+{txt}(2,285 real changes made, 2,285 to missing)
+
+{com}. replace CO3C = . if (CO3C >= -7 & CO3C <= -1)
+{txt}(0 real changes made)
+
+{com}. replace CO3D = . if (CO3D >= -7 & CO3D <= -1)
+{txt}(34,204 real changes made, 34,204 to missing)
+
+{com}. replace CO3E = . if (CO3E >= -7.00 & CO3E <= -1.00)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace CO4X = . if (CO4X >= -7 & CO4X <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO4A = . if (CO4A >= -7 & CO4A <= -1)
+{txt}(9,989 real changes made, 9,989 to missing)
+
+{com}. replace CO4B = . if (CO4B == -1)
+{txt}(9,989 real changes made, 9,989 to missing)
+
+{com}. replace CO4C = . if (CO4C >= -7.00 & CO4C <= -1.00)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CO4D = . if (CO4D >= -7 & CO4D <= -1)
+{txt}(16,643 real changes made, 16,643 to missing)
+
+{com}. replace CO4E = . if (CO4E >= -7 & CO4E <= -1)
+{txt}(0 real changes made)
+
+{com}. replace CO5X = . if (CO5X >= -7 & CO5X <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO5A = . if (CO5A >= -7 & CO5A <= -1)
+{txt}(26,538 real changes made, 26,538 to missing)
+
+{com}. replace CO5B = . if (CO5B == -1)
+{txt}(26,538 real changes made, 26,538 to missing)
+
+{com}. replace CO5C = . if (CO5C >= -7.00 & CO5C <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace CO5D = . if (CO5D >= -7 & CO5D <= -1)
+{txt}(41,550 real changes made, 41,550 to missing)
+
+{com}. replace CO5E = . if (CO5E >= -7 & CO5E <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CO6X = . if (CO6X >= -7 & CO6X <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO6A = . if (CO6A >= -7 & CO6A <= -1)
+{txt}(31,007 real changes made, 31,007 to missing)
+
+{com}. replace CO6B = . if (CO6B == -1)
+{txt}(14,866 real changes made, 14,866 to missing)
+
+{com}. replace CO6C = . if (CO6C >= -7.00 & CO6C <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace CO6T = . if (CO6T >= -7 & CO6T <= -1)
+{txt}(18,941 real changes made, 18,941 to missing)
+
+{com}. replace CO7X = . if (CO7X >= -7 & CO7X <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO7A = . if (CO7A >= -7 & CO7A <= -1)
+{txt}(14,209 real changes made, 14,209 to missing)
+
+{com}. replace CO7B = . if (CO7B == -1)
+{txt}(2,489 real changes made, 2,489 to missing)
+
+{com}. replace CO7C = . if (CO7C >= -7.00 & CO7C <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace CO7T = . if (CO7T >= -7 & CO7T <= -1)
+{txt}(16,393 real changes made, 16,393 to missing)
+
+{com}. replace CO8X = . if (CO8X >= -7 & CO8X <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO8A = . if (CO8A >= -7 & CO8A <= -1)
+{txt}(28,304 real changes made, 28,304 to missing)
+
+{com}. replace CO8B = . if (CO8B == -1)
+{txt}(17,015 real changes made, 17,015 to missing)
+
+{com}. replace CO8C = . if (CO8C >= -7.00 & CO8C <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace CO8T = . if (CO8T >= -7 & CO8T <= -1)
+{txt}(22,888 real changes made, 22,888 to missing)
+
+{com}. replace CO9X = . if (CO9X >= -7 & CO9X <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO9A = . if (CO9A >= -7 & CO9A <= -1)
+{txt}(26,651 real changes made, 26,651 to missing)
+
+{com}. replace CO9B = . if (CO9B == -1)
+{txt}(17,692 real changes made, 17,692 to missing)
+
+{com}. replace CO9C = . if (CO9C >= -7.00 & CO9C <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace CO9T = . if (CO9T >= -7 & CO9T <= -1)
+{txt}(24,965 real changes made, 24,965 to missing)
+
+{com}. replace CO10X = . if (CO10X >= -7 & CO10X <= -1)
+{txt}(64 real changes made, 64 to missing)
+
+{com}. replace CO10A = . if (CO10A >= -7 & CO10A <= -1)
+{txt}(9,028 real changes made, 9,028 to missing)
+
+{com}. replace CO10B = . if (CO10B == -1)
+{txt}(1,080 real changes made, 1,080 to missing)
+
+{com}. replace CO10C = . if (CO10C >= -7.00 & CO10C <= -1.00)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CO10T = . if (CO10T >= -7 & CO10T <= -1)
+{txt}(18,443 real changes made, 18,443 to missing)
+
+{com}. replace CO11X = . if (CO11X >= -7 & CO11X <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO11A = . if (CO11A >= -7 & CO11A <= -1)
+{txt}(31,891 real changes made, 31,891 to missing)
+
+{com}. replace CO11B = . if (CO11B >= -7 & CO11B <= -1)
+{txt}(24,547 real changes made, 24,547 to missing)
+
+{com}. replace CO11C = . if (CO11C >= -7.00 & CO11C <= -1.00)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CO11T = . if (CO11T >= -7 & CO11T <= -1)
+{txt}(29,363 real changes made, 29,363 to missing)
+
+{com}. replace CO12X = . if (CO12X >= -7 & CO12X <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO12A = . if (CO12A >= -7 & CO12A <= -1)
+{txt}(15,373 real changes made, 15,373 to missing)
+
+{com}. replace CO12B = . if (CO12B >= -7 & CO12B <= -1)
+{txt}(9,436 real changes made, 9,436 to missing)
+
+{com}. replace CO12C = . if (CO12C >= -7.00 & CO12C <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace CO12T = . if (CO12T >= -7 & CO12T <= -1)
+{txt}(24,861 real changes made, 24,861 to missing)
+
+{com}. replace CO13X = . if (CO13X >= -7 & CO13X <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO13A = . if (CO13A >= -7 & CO13A <= -1)
+{txt}(31,869 real changes made, 31,869 to missing)
+
+{com}. replace CO13B = . if (CO13B >= -7 & CO13B <= -1)
+{txt}(22,871 real changes made, 22,871 to missing)
+
+{com}. replace CO13C = . if (CO13C >= -7.00 & CO13C <= -1.00)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CO13T = . if (CO13T >= -7 & CO13T <= -1)
+{txt}(27,452 real changes made, 27,452 to missing)
+
+{com}. replace CO14X = . if (CO14X >= -7 & CO14X <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO14A = . if (CO14A >= -7 & CO14A <= -1)
+{txt}(25,521 real changes made, 25,521 to missing)
+
+{com}. replace CO14B = . if (CO14B >= -7 & CO14B <= -1)
+{txt}(1,639 real changes made, 1,639 to missing)
+
+{com}. replace CO14C = . if (CO14C >= -7.00 & CO14C <= -1.00)
+{txt}(0 real changes made)
+
+{com}. replace CO14T = . if (CO14T >= -7 & CO14T <= -1)
+{txt}(5,578 real changes made, 5,578 to missing)
+
+{com}. replace CO15 = . if (CO15 >= -7 & CO15 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO16 = . if (CO16 >= -7 & CO16 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO17 = . if (CO17 >= -7 & CO17 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO18 = . if (CO18 >= -7 & CO18 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO19 = . if (CO19 >= -7 & CO19 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO20 = . if (CO20 >= -7 & CO20 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO21 = . if (CO21 >= -7 & CO21 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO22 = . if (CO22 >= -7 & CO22 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO23 = . if (CO23 >= -7 & CO23 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO24 = . if (CO24 >= -7 & CO24 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO25 = . if (CO25 >= -7 & CO25 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO26 = . if (CO26 >= -7 & CO26 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO27 = . if (CO27 >= -7 & CO27 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace CO28 = . if (CO28 >= -7 & CO28 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO29 = . if (CO29 >= -7 & CO29 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO30 = . if (CO30 >= -7 & CO30 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO31 = . if (CO31 >= -7 & CO31 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO32 = . if (CO32 >= -7 & CO32 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO33 = . if (CO33 >= -7 & CO33 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO34 = . if (CO34 >= -7 & CO34 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO35 = . if (CO35 >= -7 & CO35 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO36 = . if (CO36 >= -7 & CO36 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO37 = . if (CO37 >= -7 & CO37 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO38 = . if (CO38 >= -7 & CO38 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO39 = . if (CO39 >= -7 & CO39 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO40 = . if (CO40 >= -7 & CO40 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO41 = . if (CO41 >= -7 & CO41 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO42 = . if (CO42 >= -7 & CO42 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO43 = . if (CO43 >= -7 & CO43 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO44 = . if (CO44 >= -7 & CO44 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO45 = . if (CO45 >= -7 & CO45 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO46 = . if (CO46 >= -7 & CO46 <= -1)
+{txt}(63 real changes made, 63 to missing)
+
+{com}. replace CO47 = . if (CO47 >= -7 & CO47 <= -1)
+{txt}(64 real changes made, 64 to missing)
+
+{com}. replace CG1 = . if (CG1 >= -7 & CG1 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG2 = . if (CG2 >= -7 & CG2 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG3 = . if (CG3 >= -7 & CG3 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG4 = . if (CG4 >= -7 & CG4 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG5 = . if (CG5 >= -7 & CG5 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG6 = . if (CG6 >= -7 & CG6 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG7 = . if (CG7 >= -7 & CG7 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG8 = . if (CG8 >= -7 & CG8 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG9 = . if (CG9 >= -7 & CG9 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG10 = . if (CG10 >= -7 & CG10 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG11 = . if (CG11 >= -7 & CG11 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG12 = . if (CG12 >= -7 & CG12 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG13 = . if (CG13 >= -7 & CG13 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG14 = . if (CG14 >= -7 & CG14 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG15 = . if (CG15 >= -7 & CG15 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG16 = . if (CG16 >= -7 & CG16 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG17 = . if (CG17 >= -7 & CG17 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG18 = . if (CG18 >= -7 & CG18 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG19 = . if (CG19 >= -7 & CG19 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG20 = . if (CG20 >= -7 & CG20 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG21 = . if (CG21 >= -7 & CG21 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG22 = . if (CG22 >= -7 & CG22 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG23 = . if (CG23 >= -7 & CG23 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CG24 = . if (CG24 >= -7 & CG24 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace DB1 = . if (DB1 >= -7 & DB1 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace DB2 = . if (DB2 >= -7 & DB2 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace DB2B = . if (DB2B >= -7 & DB2B <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace DB2C = . if (DB2C >= -7 & DB2C <= -1)
+{txt}(6 real changes made, 6 to missing)
+
+{com}. replace DB2D = . if (DB2D >= -7 & DB2D <= -1)
+{txt}(4 real changes made, 4 to missing)
+
+{com}. replace DB2E = . if (DB2E >= -7.00 & DB2E <= -1.00)
+{txt}(24,646 real changes made, 24,646 to missing)
+
+{com}. replace DB2F = . if (DB2F >= -7 & DB2F <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace DB3A = . if (DB3A >= -7 & DB3A <= -1)
+{txt}(3 real changes made, 3 to missing)
+
+{com}. replace DB3B = . if (DB3B >= -7 & DB3B <= -1)
+{txt}(6 real changes made, 6 to missing)
+
+{com}. replace DB4 = . if (DB4 >= -7 & DB4 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace DB5A = . if (DB5A >= -7 & DB5A <= -1)
+{txt}(5 real changes made, 5 to missing)
+
+{com}. replace DB5B = . if (DB5B >= -7 & DB5B <= -1)
+{txt}(15,321 real changes made, 15,321 to missing)
+
+{com}. replace DB6 = . if (DB6 >= -7 & DB6 <= -1)
+{txt}(7,765 real changes made, 7,765 to missing)
+
+{com}. replace SN1A = . if (SN1A >= -7 & SN1A <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN1B = . if (SN1B >= -7 & SN1B <= -1)
+{txt}(1,120 real changes made, 1,120 to missing)
+
+{com}. replace SN1C = . if (SN1C >= -7 & SN1C <= -1)
+{txt}(946 real changes made, 946 to missing)
+
+{com}. replace SN1D = . if (SN1D >= -7 & SN1D <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN1E = . if (SN1E >= -7 & SN1E <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN1F = . if (SN1F >= -7 & SN1F <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN2A = . if (SN2A >= -7 & SN2A <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN2B = . if (SN2B >= -7 & SN2B <= -1)
+{txt}(1,158 real changes made, 1,158 to missing)
+
+{com}. replace SN2C = . if (SN2C >= -7 & SN2C <= -1)
+{txt}(944 real changes made, 944 to missing)
+
+{com}. replace SN2D = . if (SN2D >= -7 & SN2D <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN2E = . if (SN2E >= -7 & SN2E <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN2F = . if (SN2F >= -7 & SN2F <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN3A = . if (SN3A >= -7 & SN3A <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN3B = . if (SN3B >= -7 & SN3B <= -1)
+{txt}(1,300 real changes made, 1,300 to missing)
+
+{com}. replace SN3C = . if (SN3C >= -7 & SN3C <= -1)
+{txt}(1,036 real changes made, 1,036 to missing)
+
+{com}. replace SN3D = . if (SN3D >= -7 & SN3D <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN3E = . if (SN3E >= -7 & SN3E <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace SN3F = . if (SN3F >= -7 & SN3F <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace ME1 = . if (ME1 >= -7 & ME1 <= -1)
+{txt}(3 real changes made, 3 to missing)
+
+{com}. replace ME2 = . if (ME2 >= -7 & ME2 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace ME3 = . if (ME3 >= -7 & ME3 <= -1)
+{txt}(3 real changes made, 3 to missing)
+
+{com}. replace ME4 = . if (ME4 >= -7 & ME4 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace ME5 = . if (ME5 >= -7 & ME5 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace ME6 = . if (ME6 >= -7 & ME6 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace ME7 = . if (ME7 >= -7 & ME7 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace ME8 = . if (ME8 >= -7 & ME8 <= -1)
+{txt}(4 real changes made, 4 to missing)
+
+{com}. replace ME9 = . if (ME9 >= -7 & ME9 <= -1)
+{txt}(6 real changes made, 6 to missing)
+
+{com}. replace ME10 = . if (ME10 >= -7 & ME10 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace ME11 = . if (ME11 >= -7 & ME11 <= -1)
+{txt}(6 real changes made, 6 to missing)
+
+{com}. replace ME12 = . if (ME12 >= -7 & ME12 <= -1)
+{txt}(6 real changes made, 6 to missing)
+
+{com}. replace TR1 = . if (TR1 >= -7 & TR1 <= -1)
+{txt}(179 real changes made, 179 to missing)
+
+{com}. replace TR2 = . if (TR2 >= -7 & TR2 <= -1)
+{txt}(100 real changes made, 100 to missing)
+
+{com}. replace TR3 = . if (TR3 >= -7 & TR3 <= -1)
+{txt}(167 real changes made, 167 to missing)
+
+{com}. replace LC1 = . if (LC1 >= -7 & LC1 <= -1)
+{txt}(3 real changes made, 3 to missing)
+
+{com}. replace LC2 = . if (LC2 >= -7 & LC2 <= -1)
+{txt}(4 real changes made, 4 to missing)
+
+{com}. replace LC3 = . if (LC3 >= -7 & LC3 <= -1)
+{txt}(7 real changes made, 7 to missing)
+
+{com}. replace LC4 = . if (LC4 >= -7 & LC4 <= -1)
+{txt}(25 real changes made, 25 to missing)
+
+{com}. replace CI1 = . if (CI1 >= -7 & CI1 <= -1)
+{txt}(224 real changes made, 224 to missing)
+
+{com}. replace CI2 = . if (CI2 >= -7 & CI2 <= -1)
+{txt}(430 real changes made, 430 to missing)
+
+{com}. replace CI3 = . if (CI3 >= -7 & CI3 <= -1)
+{txt}(273 real changes made, 273 to missing)
+
+{com}. replace CI4 = . if (CI4 >= -7 & CI4 <= -1)
+{txt}(486 real changes made, 486 to missing)
+
+{com}. replace CI5 = . if (CI5 >= -7 & CI5 <= -1)
+{txt}(2,861 real changes made, 2,861 to missing)
+
+{com}. replace CI6 = . if (CI6 >= -7 & CI6 <= -1)
+{txt}(625 real changes made, 625 to missing)
+
+{com}. replace CI7 = . if (CI7 >= -7 & CI7 <= -1)
+{txt}(390 real changes made, 390 to missing)
+
+{com}. replace CI8 = . if (CI8 >= -7 & CI8 <= -1)
+{txt}(207 real changes made, 207 to missing)
+
+{com}. replace CI9 = . if (CI9 >= -7 & CI9 <= -1)
+{txt}(1,867 real changes made, 1,867 to missing)
+
+{com}. replace CI10 = . if (CI10 >= -7 & CI10 <= -1)
+{txt}(540 real changes made, 540 to missing)
+
+{com}. replace DE1 = . if (DE1 >= -7 & DE1 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace DE2A = . if (DE2A >= -7 & DE2A <= -1)
+{txt}(129 real changes made, 129 to missing)
+
+{com}. replace DE3A = . if (DE3A >= -7 & DE3A <= -1)
+{txt}(21 real changes made, 21 to missing)
+
+{com}. replace DE4A = . if (DE4A >= -7 & DE4A <= -1)
+{txt}(37 real changes made, 37 to missing)
+
+{com}. replace DE5A = . if (DE5A >= -7 & DE5A <= -1)
+{txt}(14 real changes made, 14 to missing)
+
+{com}. replace DE6A = . if (DE6A >= -7 & DE6A <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace DE2B = . if (DE2B >= -7 & DE2B <= -1)
+{txt}(8 real changes made, 8 to missing)
+
+{com}. replace DE3B = . if (DE3B >= -7 & DE3B <= -1)
+{txt}(7 real changes made, 7 to missing)
+
+{com}. replace DE4B = . if (DE4B >= -7 & DE4B <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace DE5B = . if (DE5B >= -7 & DE5B <= -1)
+{txt}(6 real changes made, 6 to missing)
+
+{com}. replace DE6B = . if (DE6B >= -7 & DE6B <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace DE2C = . if (DE2C >= -7 & DE2C <= -1)
+{txt}(7 real changes made, 7 to missing)
+
+{com}. replace DE3C = . if (DE3C >= -7 & DE3C <= -1)
+{txt}(4 real changes made, 4 to missing)
+
+{com}. replace DE4C = . if (DE4C >= -7 & DE4C <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace DE5C = . if (DE5C >= -7 & DE5C <= -1)
+{txt}(6 real changes made, 6 to missing)
+
+{com}. replace DE6C = . if (DE6C >= -7 & DE6C <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace OH1A = . if (OH1A >= -7 & OH1A <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace OH2A = . if (OH2A >= -7 & OH2A <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace OH2B = . if (OH2B >= -7 & OH2B <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace OH2C = . if (OH2C >= -7 & OH2C <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace OH2D = . if (OH2D >= -7 & OH2D <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace OH3 = . if (OH3 >= -7 & OH3 <= -1)
+{txt}(6 real changes made, 6 to missing)
+
+{com}. replace OH4 = . if (OH4 >= -7 & OH4 <= -1)
+{txt}(3 real changes made, 3 to missing)
+
+{com}. replace OH5 = . if (OH5 >= -7 & OH5 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace OH6 = . if (OH6 >= -7 & OH6 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace OH7 = . if (OH7 >= -7 & OH7 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace OH8 = . if (OH8 >= -7 & OH8 <= -1)
+{txt}(6 real changes made, 6 to missing)
+
+{com}. replace OH9 = . if (OH9 >= -7 & OH9 <= -1)
+{txt}(455 real changes made, 455 to missing)
+
+{com}. replace OH9B = . if (OH9B >= -7 & OH9B <= -1)
+{txt}(68 real changes made, 68 to missing)
+
+{com}. replace GE1 = . if (GE1 >= -7 & GE1 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace GE3 = . if (GE3 >= -7 & GE3 <= -1)
+{txt}(867 real changes made, 867 to missing)
+
+{com}. replace GE6 = . if (GE6 >= -7 & GE6 <= -1)
+{txt}(1,420 real changes made, 1,420 to missing)
+
+{com}. replace GE9 = . if (GE9 >= -7 & GE9 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace GE10A = . if (GE10A >= -7 & GE10A <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace GE10B = . if (GE10B >= -7 & GE10B <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace GE11 = . if (GE11 >= -7 & GE11 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace GE12 = . if (GE12 >= -7 & GE12 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace GE13 = . if (GE13 >= -7 & GE13 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace GE14 = . if (GE14 >= -7 & GE14 <= -1)
+{txt}(4,826 real changes made, 4,826 to missing)
+
+{com}. replace CD1 = . if (CD1 >= -7 & CD1 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CD3 = . if (CD3 >= -7 & CD3 <= -1)
+{txt}(219 real changes made, 219 to missing)
+
+{com}. replace CD3B = . if (CD3B >= -7 & CD3B <= -1)
+{txt}(258 real changes made, 258 to missing)
+
+{com}. replace HI1 = . if (HI1 >= -7 & HI1 <= -1)
+{txt}(5,292 real changes made, 5,292 to missing)
+
+{com}. replace HI2 = . if (HI2 >= -7 & HI2 <= -1)
+{txt}(2,614 real changes made, 2,614 to missing)
+
+{com}. replace HI3 = . if (HI3 >= -7 & HI3 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace HI4 = . if (HI4 >= -7 & HI4 <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace HI5 = . if (HI5 >= -7 & HI5 <= -1)
+{txt}(13,545 real changes made, 13,545 to missing)
+
+{com}. replace HI6 = . if (HI6 >= -7 & HI6 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace HI7A = . if (HI7A >= -7 & HI7A <= -1)
+{txt}(41,553 real changes made, 41,553 to missing)
+
+{com}. replace HI8A = . if (HI8A >= -7 & HI8A <= -1)
+{txt}(41,554 real changes made, 41,554 to missing)
+
+{com}. replace HI9 = . if (HI9 >= -7 & HI9 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace HI10 = . if (HI10 >= -7 & HI10 <= -1)
+{txt}(22,191 real changes made, 22,191 to missing)
+
+{com}. replace HI12 = . if (HI12 >= -7 & HI12 <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace CH1 = . if (CH1 >= -7 & CH1 <= -1)
+{txt}(29,821 real changes made, 29,821 to missing)
+
+{com}. replace CH2 = . if (CH2 >= -7 & CH2 <= -1)
+{txt}(29,838 real changes made, 29,838 to missing)
+
+{com}. replace CH3 = . if (CH3 >= -7 & CH3 <= -1)
+{txt}(30,000 real changes made, 30,000 to missing)
+
+{com}. replace CH4 = . if (CH4 >= -7 & CH4 <= -1)
+{txt}(30,043 real changes made, 30,043 to missing)
+
+{com}. replace CH5 = . if (CH5 >= -7 & CH5 <= -1)
+{txt}(30,047 real changes made, 30,047 to missing)
+
+{com}. replace CH6 = . if (CH6 >= -7 & CH6 <= -1)
+{txt}(30,058 real changes made, 30,058 to missing)
+
+{com}. replace CH7 = . if (CH7 >= -7 & CH7 <= -1)
+{txt}(30,056 real changes made, 30,056 to missing)
+
+{com}. replace CH8 = . if (CH8 >= -7 & CH8 <= -1)
+{txt}(30,065 real changes made, 30,065 to missing)
+
+{com}. replace CH9 = . if (CH9 >= -7 & CH9 <= -1)
+{txt}(30,059 real changes made, 30,059 to missing)
+
+{com}. replace CH10 = . if (CH10 >= -7 & CH10 <= -1)
+{txt}(30,053 real changes made, 30,053 to missing)
+
+{com}. replace CH12 = . if (CH12 >= -7 & CH12 <= -1)
+{txt}(30,082 real changes made, 30,082 to missing)
+
+{com}. replace CH13 = . if (CH13 >= -7 & CH13 <= -1)
+{txt}(30,064 real changes made, 30,064 to missing)
+
+{com}. replace CH14 = . if (CH14 >= -7 & CH14 <= -1)
+{txt}(30,156 real changes made, 30,156 to missing)
+
+{com}. replace CH15A = . if (CH15A >= -7 & CH15A <= -1)
+{txt}(30,235 real changes made, 30,235 to missing)
+
+{com}. replace CH15B = . if (CH15B >= -7 & CH15B <= -1)
+{txt}(30,304 real changes made, 30,304 to missing)
+
+{com}. replace CH1SS = . if (CH1SS >= -7 & CH1SS <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CH1SD = . if (CH1SD >= -7 & CH1SD <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CH1SP = . if (CH1SP >= -7 & CH1SP <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CH1S = . if (CH1S >= -7 & CH1S <= -1)
+{txt}(30,215 real changes made, 30,215 to missing)
+
+{com}. replace CH18 = . if (CH18 >= -7 & CH18 <= -1)
+{txt}(38,530 real changes made, 38,530 to missing)
+
+{com}. replace CH19 = . if (CH19 >= -7 & CH19 <= -1)
+{txt}(38,556 real changes made, 38,556 to missing)
+
+{com}. replace CH20 = . if (CH20 >= -7 & CH20 <= -1)
+{txt}(38,624 real changes made, 38,624 to missing)
+
+{com}. replace CH21 = . if (CH21 >= -7 & CH21 <= -1)
+{txt}(38,637 real changes made, 38,637 to missing)
+
+{com}. replace CH22 = . if (CH22 >= -7 & CH22 <= -1)
+{txt}(38,636 real changes made, 38,636 to missing)
+
+{com}. replace CH23 = . if (CH23 >= -7 & CH23 <= -1)
+{txt}(38,639 real changes made, 38,639 to missing)
+
+{com}. replace CH24 = . if (CH24 >= -7 & CH24 <= -1)
+{txt}(38,634 real changes made, 38,634 to missing)
+
+{com}. replace CH25 = . if (CH25 >= -7 & CH25 <= -1)
+{txt}(38,635 real changes made, 38,635 to missing)
+
+{com}. replace CH26 = . if (CH26 >= -7 & CH26 <= -1)
+{txt}(38,635 real changes made, 38,635 to missing)
+
+{com}. replace CH27 = . if (CH27 >= -7 & CH27 <= -1)
+{txt}(38,639 real changes made, 38,639 to missing)
+
+{com}. replace CH28 = . if (CH28 >= -7 & CH28 <= -1)
+{txt}(38,762 real changes made, 38,762 to missing)
+
+{com}. replace CH29 = . if (CH29 >= -7 & CH29 <= -1)
+{txt}(38,648 real changes made, 38,648 to missing)
+
+{com}. replace CH30 = . if (CH30 >= -7 & CH30 <= -1)
+{txt}(38,639 real changes made, 38,639 to missing)
+
+{com}. replace CH31 = . if (CH31 >= -7 & CH31 <= -1)
+{txt}(38,662 real changes made, 38,662 to missing)
+
+{com}. replace CH32A = . if (CH32A >= -7 & CH32A <= -1)
+{txt}(38,675 real changes made, 38,675 to missing)
+
+{com}. replace CH32B = . if (CH32B >= -7 & CH32B <= -1)
+{txt}(38,695 real changes made, 38,695 to missing)
+
+{com}. replace CH2SS = . if (CH2SS >= -7 & CH2SS <= -1)
+{txt}(2 real changes made, 2 to missing)
+
+{com}. replace CH2SD = . if (CH2SD >= -7 & CH2SD <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CH2SP = . if (CH2SP >= -7 & CH2SP <= -1)
+{txt}(1 real change made, 1 to missing)
+
+{com}. replace CH2S = . if (CH2S >= -7 & CH2S <= -1)
+{txt}(38,658 real changes made, 38,658 to missing)
+
+{com}. replace MP1 = . if (MP1 >= -7 & MP1 <= -1)
+{txt}(202 real changes made, 202 to missing)
+
+{com}. replace MP2 = . if (MP2 >= -7 & MP2 <= -1)
+{txt}(207 real changes made, 207 to missing)
+
+{com}. replace MP3A = . if (MP3A >= -7 & MP3A <= -1)
+{txt}(295 real changes made, 295 to missing)
+
+{com}. replace MP3B = . if (MP3B >= -7 & MP3B <= -1)
+{txt}(272 real changes made, 272 to missing)
+
+{com}. replace MP4A = . if (MP4A >= -7 & MP4A <= -1)
+{txt}(301 real changes made, 301 to missing)
+
+{com}. replace MP4B = . if (MP4B >= -7 & MP4B <= -1)
+{txt}(268 real changes made, 268 to missing)
+
+{com}. replace MP5A = . if (MP5A >= -7 & MP5A <= -1)
+{txt}(221 real changes made, 221 to missing)
+
+{com}. replace MP5B = . if (MP5B >= -7 & MP5B <= -1)
+{txt}(211 real changes made, 211 to missing)
+
+{com}. replace MP5C = . if (MP5C >= -7 & MP5C <= -1)
+{txt}(217 real changes made, 217 to missing)
+
+{com}. replace MP5D = . if (MP5D >= -7 & MP5D <= -1)
+{txt}(225 real changes made, 225 to missing)
+
+{com}. replace MP5E = . if (MP5E >= -7 & MP5E <= -1)
+{txt}(222 real changes made, 222 to missing)
+
+{com}. replace MP5F = . if (MP5F >= -7 & MP5F <= -1)
+{txt}(244 real changes made, 244 to missing)
+
+{com}. replace MP5G = . if (MP5G >= -7 & MP5G <= -1)
+{txt}(251 real changes made, 251 to missing)
+
+{com}. replace MP5H = . if (MP5H >= -7 & MP5H <= -1)
+{txt}(247 real changes made, 247 to missing)
+
+{com}. replace MP5I = . if (MP5I >= -7 & MP5I <= -1)
+{txt}(243 real changes made, 243 to missing)
+
+{com}. replace MP5J = . if (MP5J >= -7 & MP5J <= -1)
+{txt}(256 real changes made, 256 to missing)
+
+{com}. replace MP5K = . if (MP5K >= -7 & MP5K <= -1)
+{txt}(293 real changes made, 293 to missing)
+
+{com}. replace MP5L = . if (MP5L >= -7 & MP5L <= -1)
+{txt}(253 real changes made, 253 to missing)
+
+{com}. replace MP5M = . if (MP5M >= -7 & MP5M <= -1)
+{txt}(255 real changes made, 255 to missing)
+
+{com}. replace MP5N = . if (MP5N >= -7 & MP5N <= -1)
+{txt}(264 real changes made, 264 to missing)
+
+{com}. replace MP5O = . if (MP5O >= -7 & MP5O <= -1)
+{txt}(276 real changes made, 276 to missing)
+
+{com}. replace MP5P = . if (MP5P >= -7 & MP5P <= -1)
+{txt}(282 real changes made, 282 to missing)
+
+{com}. replace MP5Q = . if (MP5Q >= -7 & MP5Q <= -1)
+{txt}(334 real changes made, 334 to missing)
+
+{com}. replace MP5R = . if (MP5R >= -7 & MP5R <= -1)
+{txt}(503 real changes made, 503 to missing)
+
+{com}. replace WA1 = . if (WA1 >= -7 & WA1 <= -1)
+{txt}(61 real changes made, 61 to missing)
+
+{com}. replace WA2 = . if (WA2 >= -7 & WA2 <= -1)
+{txt}(61 real changes made, 61 to missing)
+
+{com}. replace WA2A = . if (WA2A >= -7 & WA2A <= -1)
+{txt}(21,857 real changes made, 21,857 to missing)
+
+{com}. replace WA3 = . if (WA3 >= -7 & WA3 <= -1)
+{txt}(22,443 real changes made, 22,443 to missing)
+
+{com}. replace WA4 = . if (WA4 >= -7 & WA4 <= -1)
+{txt}(62 real changes made, 62 to missing)
+
+{com}. replace WA5 = . if (WA5 >= -7 & WA5 <= -1)
+{txt}(39,095 real changes made, 39,095 to missing)
+
+{com}. replace WA6 = . if (WA6 >= -7 & WA6 <= -1)
+{txt}(39,096 real changes made, 39,096 to missing)
+
+{com}. replace WA6A = . if (WA6A >= -7 & WA6A <= -1)
+{txt}(39,370 real changes made, 39,370 to missing)
+
+{com}. replace WA7 = . if (WA7 >= -7 & WA7 <= -1)
+{txt}(1,238 real changes made, 1,238 to missing)
+
+{com}. replace WA8 = . if (WA8 >= -7 & WA8 <= -1)
+{txt}(632 real changes made, 632 to missing)
+
+{com}. replace WA9A = . if (WA9A >= -7 & WA9A <= -1)
+{txt}(16,515 real changes made, 16,515 to missing)
+
+{com}. replace WA9B = . if (WA9B >= -7 & WA9B <= -1)
+{txt}(19,718 real changes made, 19,718 to missing)
+
+{com}. replace WA9C = . if (WA9C >= -7 & WA9C <= -1)
+{txt}(22,000 real changes made, 22,000 to missing)
+
+{com}. replace WA9D = . if (WA9D >= -7 & WA9D <= -1)
+{txt}(21,981 real changes made, 21,981 to missing)
+
+{com}. replace WA10 = . if (WA10 >= -7 & WA10 <= -1)
+{txt}(397 real changes made, 397 to missing)
+
+{com}. replace WA11A = . if (WA11A >= -7 & WA11A <= -1)
+{txt}(313 real changes made, 313 to missing)
+
+{com}. replace WA11B = . if (WA11B >= -7 & WA11B <= -1)
+{txt}(3,965 real changes made, 3,965 to missing)
+
+{com}. replace SA1 = . if (SA1 >= -7 & SA1 <= -1)
+{txt}(955 real changes made, 955 to missing)
+
+{com}. replace SA2 = . if (SA2 >= -7 & SA2 <= -1)
+{txt}(149 real changes made, 149 to missing)
+
+{com}. replace SA2A = . if (SA2A >= -7 & SA2A <= -1)
+{txt}(4,010 real changes made, 4,010 to missing)
+
+{com}. replace SA3 = . if (SA3 >= -7 & SA3 <= -1)
+{txt}(508 real changes made, 508 to missing)
+
+{com}. replace SA4 = . if (SA4 >= -7 & SA4 <= -1)
+{txt}(306 real changes made, 306 to missing)
+
+{com}. replace SA5 = . if (SA5 >= -7 & SA5 <= -1)
+{txt}(12,386 real changes made, 12,386 to missing)
+
+{com}. replace SA6 = . if (SA6 >= -7 & SA6 <= -1)
+{txt}(159 real changes made, 159 to missing)
+
+{com}. replace SA6A = . if (SA6A >= -7 & SA6A <= -1)
+{txt}(468 real changes made, 468 to missing)
+
+{com}. replace FU1 = . if (FU1 >= -7 & FU1 <= -1)
+{txt}(306 real changes made, 306 to missing)
+
+{com}. replace FU1A = . if (FU1A >= -7 & FU1A <= -1)
+{txt}(7,939 real changes made, 7,939 to missing)
+
+{com}. replace FU1B = . if (FU1B >= -7 & FU1B <= -1)
+{txt}(8,096 real changes made, 8,096 to missing)
+
+{com}. replace FU1C = . if (FU1C >= -7 & FU1C <= -1)
+{txt}(10,588 real changes made, 10,588 to missing)
+
+{com}. replace FU2 = . if (FU2 >= -7 & FU2 <= -1)
+{txt}(337 real changes made, 337 to missing)
+
+{com}. replace FU3 = . if (FU3 >= -7 & FU3 <= -1)
+{txt}(256 real changes made, 256 to missing)
+
+{com}. replace FU4 = . if (FU4 >= -7 & FU4 <= -1)
+{txt}(858 real changes made, 858 to missing)
+
+{com}. replace FU5 = . if (FU5 >= -7 & FU5 <= -1)
+{txt}(439 real changes made, 439 to missing)
+
+{com}. replace FU5A = . if (FU5A >= -7 & FU5A <= -1)
+{txt}(12,091 real changes made, 12,091 to missing)
+
+{com}. replace FU5B = . if (FU5B >= -7 & FU5B <= -1)
+{txt}(17,932 real changes made, 17,932 to missing)
+
+{com}. replace FU6 = . if (FU6 >= -7 & FU6 <= -1)
+{txt}(993 real changes made, 993 to missing)
+
+{com}. replace FU6A = . if (FU6A >= -7 & FU6A <= -1)
+{txt}(26,381 real changes made, 26,381 to missing)
+
+{com}. replace FU6B = . if (FU6B >= -7 & FU6B <= -1)
+{txt}(24,362 real changes made, 24,362 to missing)
+
+{com}. replace FU7 = . if (FU7 >= -7 & FU7 <= -1)
+{txt}(1,988 real changes made, 1,988 to missing)
+
+{com}. replace FU7A = . if (FU7A >= -7 & FU7A <= -1)
+{txt}(36,205 real changes made, 36,205 to missing)
+
+{com}. replace FU7B = . if (FU7B >= -7 & FU7B <= -1)
+{txt}(27,170 real changes made, 27,170 to missing)
+
+{com}. replace FU8 = . if (FU8 >= -7 & FU8 <= -1)
+{txt}(505 real changes made, 505 to missing)
+
+{com}. replace FU8A = . if (FU8A >= -7 & FU8A <= -1)
+{txt}(10,912 real changes made, 10,912 to missing)
+
+{com}. replace FU8B = . if (FU8B >= -7 & FU8B <= -1)
+{txt}(7,410 real changes made, 7,410 to missing)
+
+{com}. replace FU9 = . if (FU9 >= -7 & FU9 <= -1)
+{txt}(1,785 real changes made, 1,785 to missing)
+
+{com}. replace FU9A = . if (FU9A >= -7 & FU9A <= -1)
+{txt}(25,540 real changes made, 25,540 to missing)
+
+{com}. replace FU9B = . if (FU9B >= -7 & FU9B <= -1)
+{txt}(16,552 real changes made, 16,552 to missing)
+
+{com}. replace FU10 = . if (FU10 >= -7 & FU10 <= -1)
+{txt}(3,019 real changes made, 3,019 to missing)
+
+{com}. replace FU10A = . if (FU10A >= -7 & FU10A <= -1)
+{txt}(39,757 real changes made, 39,757 to missing)
+
+{com}. replace FU10B = . if (FU10B >= -7 & FU10B <= -1)
+{txt}(26,585 real changes made, 26,585 to missing)
+
+{com}. replace QC1 = . if (QC1 >= -7 & QC1 <= -1)
+{txt}(4,235 real changes made, 4,235 to missing)
+
+{com}. replace QC2 = . if (QC2 >= -7 & QC2 <= -1)
+{txt}(4,300 real changes made, 4,300 to missing)
+
+{com}. replace QC3 = . if (QC3 >= -7 & QC3 <= -1)
+{txt}(4,517 real changes made, 4,517 to missing)
+
+{com}. replace QC4 = . if (QC4 >= -7 & QC4 <= -1)
+{txt}(5,602 real changes made, 5,602 to missing)
+
+{com}. replace QC4B = . if (QC4B >= -7 & QC4B <= -1)
+{txt}(4,418 real changes made, 4,418 to missing)
+
+{com}. replace QC5 = . if (QC5 >= -7 & QC5 <= -1)
+{txt}(4,555 real changes made, 4,555 to missing)
+
+{com}. replace QC6 = . if (QC6 >= -7 & QC6 <= -1)
+{txt}(4,434 real changes made, 4,434 to missing)
+
+{com}. replace QC7 = . if (QC7 >= -7 & QC7 <= -1)
+{txt}(4,732 real changes made, 4,732 to missing)
+
+{com}. replace QC8 = . if (QC8 >= -7 & QC8 <= -1)
+{txt}(4,390 real changes made, 4,390 to missing)
+
+{com}. replace QCSTATE = . if (QCSTATE >= -7 & QCSTATE <= -1)
+{txt}(1,869 real changes made, 1,869 to missing)
+
+{com}. replace QCDIST = . if (QCDIST >= -7 & QCDIST <= -1)
+{txt}(1,916 real changes made, 1,916 to missing)
+
+{com}. replace QCPSU = . if (QCPSU >= -7 & QCPSU <= -1)
+{txt}(1,893 real changes made, 1,893 to missing)
+
+{com}. replace QCCODE = . if (QCCODE >= -7 & QCCODE <= -1)
+{txt}(4,992 real changes made, 4,992 to missing)
+
+{com}. replace O5A = . if (O5A >= -7 & O5A <= -1)
+{txt}(26,574 real changes made, 26,574 to missing)
+
+{com}. replace O6 = . if (O6 >= -7 & O6 <= -1)
+{txt}(30,090 real changes made, 30,090 to missing)
+
+{com}. replace O6A = . if (O6A >= -7 & O6A <= -1)
+{txt}(34,620 real changes made, 34,620 to missing)
+
+{com}. replace O6B = . if (O6B >= -7 & O6B <= -1)
+{txt}(35,329 real changes made, 35,329 to missing)
+
+{com}. replace O6C = . if (O6C >= -7 & O6C <= -1)
+{txt}(35,443 real changes made, 35,443 to missing)
+
+{com}. replace O7 = . if (O7 >= -7 & O7 <= -1)
+{txt}(26,463 real changes made, 26,463 to missing)
+
+{com}. replace EW3 = . if (EW3 >= -7 & EW3 <= -1)
+{txt}(8,057 real changes made, 8,057 to missing)
+
+{com}. replace EW4 = . if (EW4 >= -7 & EW4 <= -1)
+{txt}(8,064 real changes made, 8,064 to missing)
+
+{com}. replace EW5 = . if (EW5 >= -7 & EW5 <= -1)
+{txt}(8,071 real changes made, 8,071 to missing)
+
+{com}. replace EW7 = . if (EW7 >= -7 & EW7 <= -1)
+{txt}(8,497 real changes made, 8,497 to missing)
+
+{com}. replace EW8 = . if (EW8 >= -7 & EW8 <= -1)
+{txt}(8,154 real changes made, 8,154 to missing)
+
+{com}. replace EW9 = . if (EW9 >= -7 & EW9 <= -1)
+{txt}(8,046 real changes made, 8,046 to missing)
+
+{com}. replace HB1 = . if (HB1 >= -7 & HB1 <= -1)
+{txt}(9,798 real changes made, 9,798 to missing)
+
+{com}. replace HB2 = . if (HB2 >= -7 & HB2 <= -1)
+{txt}(17,557 real changes made, 17,557 to missing)
+
+{com}. replace HB5 = . if (HB5 == 8)
+{txt}(0 real changes made)
+
+{com}. replace HB5 = . if (HB5 >= -7 & HB5 <= -1)
+{txt}(10,746 real changes made, 10,746 to missing)
+
+{com}. replace HB6 = . if (HB6 == 8)
+{txt}(0 real changes made)
+
+{com}. replace HB6 = . if (HB6 >= -7 & HB6 <= -1)
+{txt}(19,380 real changes made, 19,380 to missing)
+
+{com}. replace AI1 = . if (AI1 >= -7 & AI1 <= -1)
+{txt}(8,328 real changes made, 8,328 to missing)
+
+{com}. replace AI1A = . if (AI1A >= -7 & AI1A <= -1)
+{txt}(22,754 real changes made, 22,754 to missing)
+
+{com}. replace AI1B = . if (AI1B >= -7 & AI1B <= -1)
+{txt}(23,194 real changes made, 23,194 to missing)
+
+{com}. replace AI1C = . if (AI1C >= -7 & AI1C <= -1)
+{txt}(25,092 real changes made, 25,092 to missing)
+
+{com}. replace AI1D = . if (AI1D >= -7 & AI1D <= -1)
+{txt}(23,285 real changes made, 23,285 to missing)
+
+{com}. replace AI1E = . if (AI1E >= -7 & AI1E <= -1)
+{txt}(24,331 real changes made, 24,331 to missing)
+
+{com}. replace AI2 = . if (AI2 >= -7 & AI2 <= -1)
+{txt}(20,995 real changes made, 20,995 to missing)
+
+{com}. replace GR1A = . if (GR1A >= -7 & GR1A <= -1)
+{txt}(8,023 real changes made, 8,023 to missing)
+
+{com}. replace GR1B = . if (GR1B >= -7 & GR1B <= -1)
+{txt}(8,029 real changes made, 8,029 to missing)
+
+{com}. replace GR1C = . if (GR1C >= -7 & GR1C <= -1)
+{txt}(8,028 real changes made, 8,028 to missing)
+
+{com}. replace GR1D = . if (GR1D >= -7 & GR1D <= -1)
+{txt}(8,029 real changes made, 8,029 to missing)
+
+{com}. replace GR1E = . if (GR1E >= -7 & GR1E <= -1)
+{txt}(8,026 real changes made, 8,026 to missing)
+
+{com}. replace GR1F = . if (GR1F >= -7 & GR1F <= -1)
+{txt}(8,027 real changes made, 8,027 to missing)
+
+{com}. replace GR1G = . if (GR1G >= -7 & GR1G <= -1)
+{txt}(8,531 real changes made, 8,531 to missing)
+
+{com}. replace GR2A = . if (GR2A >= -7 & GR2A <= -1)
+{txt}(8,028 real changes made, 8,028 to missing)
+
+{com}. replace GR2B = . if (GR2B >= -7 & GR2B <= -1)
+{txt}(8,026 real changes made, 8,026 to missing)
+
+{com}. replace GR2C = . if (GR2C >= -7 & GR2C <= -1)
+{txt}(8,026 real changes made, 8,026 to missing)
+
+{com}. replace GR2D = . if (GR2D >= -7 & GR2D <= -1)
+{txt}(8,027 real changes made, 8,027 to missing)
+
+{com}. replace GR2E = . if (GR2E >= -7 & GR2E <= -1)
+{txt}(8,028 real changes made, 8,028 to missing)
+
+{com}. replace GR2F = . if (GR2F >= -7 & GR2F <= -1)
+{txt}(8,030 real changes made, 8,030 to missing)
+
+{com}. replace GR2G = . if (GR2G >= -7 & GR2G <= -1)
+{txt}(8,480 real changes made, 8,480 to missing)
+
+{com}. replace GR3A = . if (GR3A >= -7 & GR3A <= -1)
+{txt}(8,031 real changes made, 8,031 to missing)
+
+{com}. replace GR3B = . if (GR3B >= -7 & GR3B <= -1)
+{txt}(8,029 real changes made, 8,029 to missing)
+
+{com}. replace GR3C = . if (GR3C >= -7 & GR3C <= -1)
+{txt}(8,027 real changes made, 8,027 to missing)
+
+{com}. replace GR3D = . if (GR3D >= -7 & GR3D <= -1)
+{txt}(8,026 real changes made, 8,026 to missing)
+
+{com}. replace GR3E = . if (GR3E >= -7 & GR3E <= -1)
+{txt}(8,028 real changes made, 8,028 to missing)
+
+{com}. replace GR3F = . if (GR3F >= -7 & GR3F <= -1)
+{txt}(8,032 real changes made, 8,032 to missing)
+
+{com}. replace GR3G = . if (GR3G >= -7 & GR3G <= -1)
+{txt}(9,063 real changes made, 9,063 to missing)
+
+{com}. replace GR4A = . if (GR4A >= -7 & GR4A <= -1)
+{txt}(9,528 real changes made, 9,528 to missing)
+
+{com}. replace GR4B = . if (GR4B >= -7 & GR4B <= -1)
+{txt}(9,958 real changes made, 9,958 to missing)
+
+{com}. replace GR4C = . if (GR4C >= -7 & GR4C <= -1)
+{txt}(13,896 real changes made, 13,896 to missing)
+
+{com}. replace GR4D = . if (GR4D >= -7 & GR4D <= -1)
+{txt}(13,942 real changes made, 13,942 to missing)
+
+{com}. replace GR4E = . if (GR4E >= -7 & GR4E <= -1)
+{txt}(14,614 real changes made, 14,614 to missing)
+
+{com}. replace GR4F = . if (GR4F >= -7 & GR4F <= -1)
+{txt}(16,349 real changes made, 16,349 to missing)
+
+{com}. replace GR4G = . if (GR4G >= -7 & GR4G <= -1)
+{txt}(9,479 real changes made, 9,479 to missing)
+
+{com}. replace GR5A = . if (GR5A >= -7 & GR5A <= -1)
+{txt}(10,100 real changes made, 10,100 to missing)
+
+{com}. replace GR5B = . if (GR5B >= -7 & GR5B <= -1)
+{txt}(9,608 real changes made, 9,608 to missing)
+
+{com}. replace GR5C = . if (GR5C >= -7 & GR5C <= -1)
+{txt}(13,676 real changes made, 13,676 to missing)
+
+{com}. replace GR5D = . if (GR5D >= -7 & GR5D <= -1)
+{txt}(13,879 real changes made, 13,879 to missing)
+
+{com}. replace GR5E = . if (GR5E >= -7 & GR5E <= -1)
+{txt}(14,565 real changes made, 14,565 to missing)
+
+{com}. replace GR5F = . if (GR5F >= -7 & GR5F <= -1)
+{txt}(16,275 real changes made, 16,275 to missing)
+
+{com}. replace GR5G = . if (GR5G >= -7 & GR5G <= -1)
+{txt}(9,703 real changes made, 9,703 to missing)
+
+{com}. replace GR6A = . if (GR6A >= -7 & GR6A <= -1)
+{txt}(8,045 real changes made, 8,045 to missing)
+
+{com}. replace GR6B = . if (GR6B >= -7 & GR6B <= -1)
+{txt}(13,612 real changes made, 13,612 to missing)
+
+{com}. replace GR6C = . if (GR6C >= -7 & GR6C <= -1)
+{txt}(17,797 real changes made, 17,797 to missing)
+
+{com}. replace GR6D = . if (GR6D >= -7 & GR6D <= -1)
+{txt}(17,649 real changes made, 17,649 to missing)
+
+{com}. replace GR6E = . if (GR6E >= -7 & GR6E <= -1)
+{txt}(18,433 real changes made, 18,433 to missing)
+
+{com}. replace GR6F = . if (GR6F >= -7 & GR6F <= -1)
+{txt}(9,368 real changes made, 9,368 to missing)
+
+{com}. replace GR7A = . if (GR7A >= -7 & GR7A <= -1)
+{txt}(8,505 real changes made, 8,505 to missing)
+
+{com}. replace GR7B = . if (GR7B >= -7 & GR7B <= -1)
+{txt}(13,661 real changes made, 13,661 to missing)
+
+{com}. replace GR7C = . if (GR7C >= -7 & GR7C <= -1)
+{txt}(18,090 real changes made, 18,090 to missing)
+
+{com}. replace GR7D = . if (GR7D >= -7 & GR7D <= -1)
+{txt}(17,963 real changes made, 17,963 to missing)
+
+{com}. replace GR7E = . if (GR7E >= -7 & GR7E <= -1)
+{txt}(18,754 real changes made, 18,754 to missing)
+
+{com}. replace GR7F = . if (GR7F >= -7 & GR7F <= -1)
+{txt}(9,898 real changes made, 9,898 to missing)
+
+{com}. replace GR8A = . if (GR8A >= -7 & GR8A <= -1)
+{txt}(13,785 real changes made, 13,785 to missing)
+
+{com}. replace GR8B = . if (GR8B >= -7 & GR8B <= -1)
+{txt}(19,715 real changes made, 19,715 to missing)
+
+{com}. replace GR8C = . if (GR8C >= -7 & GR8C <= -1)
+{txt}(23,215 real changes made, 23,215 to missing)
+
+{com}. replace GR8D = . if (GR8D >= -7 & GR8D <= -1)
+{txt}(23,177 real changes made, 23,177 to missing)
+
+{com}. replace GR8E = . if (GR8E >= -7 & GR8E <= -1)
+{txt}(23,630 real changes made, 23,630 to missing)
+
+{com}. replace GR8F = . if (GR8F >= -7 & GR8F <= -1)
+{txt}(13,623 real changes made, 13,623 to missing)
+
+{com}. replace GR9 = . if (GR9 >= -7 & GR9 <= -1)
+{txt}(8,170 real changes made, 8,170 to missing)
+
+{com}. replace GR10 = . if (GR10 >= -7 & GR10 <= -1)
+{txt}(8,244 real changes made, 8,244 to missing)
+
+{com}. replace GR11A = . if (GR11A >= -7 & GR11A <= -1)
+{txt}(8,255 real changes made, 8,255 to missing)
+
+{com}. replace GR11B = . if (GR11B >= -7 & GR11B <= -1)
+{txt}(8,231 real changes made, 8,231 to missing)
+
+{com}. replace GR11C = . if (GR11C >= -7 & GR11C <= -1)
+{txt}(8,441 real changes made, 8,441 to missing)
+
+{com}. replace GR11D = . if (GR11D >= -7 & GR11D <= -1)
+{txt}(9,002 real changes made, 9,002 to missing)
+
+{com}. replace GR12A = . if (GR12A >= -7 & GR12A <= -1)
+{txt}(9,734 real changes made, 9,734 to missing)
+
+{com}. replace GR12B = . if (GR12B >= -7 & GR12B <= -1)
+{txt}(9,780 real changes made, 9,780 to missing)
+
+{com}. replace GR12C = . if (GR12C >= -7 & GR12C <= -1)
+{txt}(9,884 real changes made, 9,884 to missing)
+
+{com}. replace GR12D = . if (GR12D >= -7 & GR12D <= -1)
+{txt}(10,327 real changes made, 10,327 to missing)
+
+{com}. replace GR13 = . if (GR13 >= -7 & GR13 <= -1)
+{txt}(8,172 real changes made, 8,172 to missing)
+
+{com}. replace GR14 = . if (GR14 >= -7 & GR14 <= -1)
+{txt}(8,160 real changes made, 8,160 to missing)
+
+{com}. replace GR15A = . if (GR15A >= -7 & GR15A <= -1)
+{txt}(8,255 real changes made, 8,255 to missing)
+
+{com}. replace GR15B = . if (GR15B >= -7 & GR15B <= -1)
+{txt}(11,412 real changes made, 11,412 to missing)
+
+{com}. replace GR16 = . if (GR16 == 8)
+{txt}(1,336 real changes made, 1,336 to missing)
+
+{com}. replace GR16 = . if (GR16 >= -7 & GR16 <= -1)
+{txt}(8,248 real changes made, 8,248 to missing)
+
+{com}. replace GR17 = . if (GR17 == 8)
+{txt}(0 real changes made)
+
+{com}. replace GR17 = . if (GR17 >= -7 & GR17 <= -1)
+{txt}(8,310 real changes made, 8,310 to missing)
+
+{com}. replace GR18A = . if (GR18A == 8)
+{txt}(0 real changes made)
+
+{com}. replace GR18A = . if (GR18A >= -7 & GR18A <= -1)
+{txt}(8,840 real changes made, 8,840 to missing)
+
+{com}. replace GR18B = . if (GR18B == 8)
+{txt}(0 real changes made)
+
+{com}. replace GR18B = . if (GR18B >= -7 & GR18B <= -1)
+{txt}(8,719 real changes made, 8,719 to missing)
+
+{com}. replace GR18C = . if (GR18C == 8)
+{txt}(0 real changes made)
+
+{com}. replace GR18C = . if (GR18C >= -7 & GR18C <= -1)
+{txt}(8,742 real changes made, 8,742 to missing)
+
+{com}. replace GR19 = . if (GR19 == 9)
+{txt}(0 real changes made)
+
+{com}. replace GR19 = . if (GR19 >= -7 & GR19 <= -1)
+{txt}(9,216 real changes made, 9,216 to missing)
+
+{com}. replace GR20 = . if (GR20 == 9)
+{txt}(0 real changes made)
+
+{com}. replace GR20 = . if (GR20 >= -7 & GR20 <= -1)
+{txt}(9,379 real changes made, 9,379 to missing)
+
+{com}. replace GR21 = . if (GR21 >= -7 & GR21 <= -1)
+{txt}(8,198 real changes made, 8,198 to missing)
+
+{com}. replace GR22 = . if (GR22 >= -7 & GR22 <= -1)
+{txt}(8,196 real changes made, 8,196 to missing)
+
+{com}. replace GR23 = . if (GR23 >= -7 & GR23 <= -1)
+{txt}(8,178 real changes made, 8,178 to missing)
+
+{com}. replace GR24 = . if (GR24 >= -7 & GR24 <= -1)
+{txt}(8,172 real changes made, 8,172 to missing)
+
+{com}. replace GR25 = . if (GR25 >= -7 & GR25 <= -1)
+{txt}(8,258 real changes made, 8,258 to missing)
+
+{com}. replace GR26 = . if (GR26 == 9)
+{txt}(0 real changes made)
+
+{com}. replace GR27 = . if (GR27 == 9)
+{txt}(0 real changes made)
+
+{com}. replace GR28 = . if (GR28 == 9)
+{txt}(0 real changes made)
+
+{com}. replace GR29 = . if (GR29 == 9)
+{txt}(0 real changes made)
+
+{com}. replace GR30 = . if (GR30 == 9)
+{txt}(0 real changes made)
+
+{com}. replace GR31 = . if (GR31 == 9)
+{txt}(0 real changes made)
+
+{com}. replace GRWHO = . if (GRWHO == 9)
+{txt}(0 real changes made)
+
+{com}. replace MH1A = . if (MH1A >= -7 & MH1A <= -1)
+{txt}(8,100 real changes made, 8,100 to missing)
+
+{com}. replace MH2A = . if (MH2A >= -7 & MH2A <= -1)
+{txt}(8,093 real changes made, 8,093 to missing)
+
+{com}. replace MH2C = . if (MH2C >= -7 & MH2C <= -1)
+{txt}(8,138 real changes made, 8,138 to missing)
+
+{com}. replace MH2D = . if (MH2D >= -7 & MH2D <= -1)
+{txt}(8,181 real changes made, 8,181 to missing)
+
+{com}. replace MH3 = . if (MH3 >= -7 & MH3 <= -1)
+{txt}(8,025 real changes made, 8,025 to missing)
+
+{com}. replace MH4 = . if (MH4 >= -7 & MH4 <= -1)
+{txt}(8,178 real changes made, 8,178 to missing)
+
+{com}. replace MH5A = . if (MH5A >= -7 & MH5A <= -1)
+{txt}(8,130 real changes made, 8,130 to missing)
+
+{com}. replace MH5B = . if (MH5B >= -7 & MH5B <= -1)
+{txt}(18,557 real changes made, 18,557 to missing)
+
+{com}. replace MH6 = . if (MH6 >= -7 & MH6 <= -1)
+{txt}(8,190 real changes made, 8,190 to missing)
+
+{com}. replace MH7 = . if (MH7 >= -7 & MH7 <= -1)
+{txt}(8,179 real changes made, 8,179 to missing)
+
+{com}. replace MH8 = . if (MH8 >= -7 & MH8 <= -1)
+{txt}(8,222 real changes made, 8,222 to missing)
+
+{com}. replace MH10 = . if (MH10 == 9)
+{txt}(1,153 real changes made, 1,153 to missing)
+
+{com}. replace MH10 = . if (MH10 >= -7 & MH10 <= -1)
+{txt}(16,943 real changes made, 16,943 to missing)
+
+{com}. replace MH11 = . if (MH11 >= -7 & MH11 <= -1)
+{txt}(11,351 real changes made, 11,351 to missing)
+
+{com}. replace MH12 = . if (MH12 >= -7 & MH12 <= -1)
+{txt}(11,156 real changes made, 11,156 to missing)
+
+{com}. replace MH13 = . if (MH13 >= -7 & MH13 <= -1)
+{txt}(9,665 real changes made, 9,665 to missing)
+
+{com}. replace MH14 = . if (MH14 >= -7 & MH14 <= -1)
+{txt}(8,603 real changes made, 8,603 to missing)
+
+{com}. replace MH14A = . if (MH14A >= -7 & MH14A <= -1)
+{txt}(11,093 real changes made, 11,093 to missing)
+
+{com}. replace MH15A = . if (MH15A >= -7 & MH15A <= -1)
+{txt}(8,333 real changes made, 8,333 to missing)
+
+{com}. replace MH15B = . if (MH15B >= -7 & MH15B <= -1)
+{txt}(10,302 real changes made, 10,302 to missing)
+
+{com}. replace MH16 = . if (MH16 >= -7 & MH16 <= -1)
+{txt}(8,255 real changes made, 8,255 to missing)
+
+{com}. replace MH17A = . if (MH17A >= -7 & MH17A <= -1)
+{txt}(8,390 real changes made, 8,390 to missing)
+
+{com}. replace MH17B = . if (MH17B >= -7 & MH17B <= -1)
+{txt}(36,485 real changes made, 36,485 to missing)
+
+{com}. replace MH18A = . if (MH18A >= -7 & MH18A <= -1)
+{txt}(40,751 real changes made, 40,751 to missing)
+
+{com}. replace MH19A = . if (MH19A >= -7 & MH19A <= -1)
+{txt}(40,838 real changes made, 40,838 to missing)
+
+{com}. replace MH20 = . if (MH20 >= -7 & MH20 <= -1)
+{txt}(41,191 real changes made, 41,191 to missing)
+
+{com}. replace FH1 = . if (FH1 >= -7 & FH1 <= -1)
+{txt}(8,650 real changes made, 8,650 to missing)
+
+{com}. replace FH2 = . if (FH2 >= -7 & FH2 <= -1)
+{txt}(8,729 real changes made, 8,729 to missing)
+
+{com}. replace FH3 = . if (FH3 >= -7 & FH3 <= -1)
+{txt}(9,048 real changes made, 9,048 to missing)
+
+{com}. replace FH4 = . if (FH4 >= -7 & FH4 <= -1)
+{txt}(9,034 real changes made, 9,034 to missing)
+
+{com}. replace FH5A = . if (FH5A >= -7 & FH5A <= -1)
+{txt}(9,100 real changes made, 9,100 to missing)
+
+{com}. replace FH5B = . if (FH5B >= -7 & FH5B <= -1)
+{txt}(9,127 real changes made, 9,127 to missing)
+
+{com}. replace FH6 = . if (FH6 >= -7 & FH6 <= -1)
+{txt}(8,602 real changes made, 8,602 to missing)
+
+{com}. replace FH7A = . if (FH7A >= -7 & FH7A <= -1)
+{txt}(9,770 real changes made, 9,770 to missing)
+
+{com}. replace FH7B = . if (FH7B >= -7 & FH7B <= -1)
+{txt}(9,932 real changes made, 9,932 to missing)
+
+{com}. replace FH7C = . if (FH7C >= -7 & FH7C <= -1)
+{txt}(10,422 real changes made, 10,422 to missing)
+
+{com}. replace FH7D = . if (FH7D >= -7 & FH7D <= -1)
+{txt}(10,567 real changes made, 10,567 to missing)
+
+{com}. replace FHCHK = . if (FHCHK >= -7 & FHCHK <= -1)
+{txt}(9,519 real changes made, 9,519 to missing)
+
+{com}. replace FP1 = . if (FP1 >= -7 & FP1 <= -1)
+{txt}(9,202 real changes made, 9,202 to missing)
+
+{com}. replace FP2A = . if (FP2A >= -7 & FP2A <= -1)
+{txt}(11,246 real changes made, 11,246 to missing)
+
+{com}. replace FP2B = . if (FP2B >= -7 & FP2B <= -1)
+{txt}(22,938 real changes made, 22,938 to missing)
+
+{com}. replace FP2C = . if (FP2C >= -7 & FP2C <= -1)
+{txt}(35,062 real changes made, 35,062 to missing)
+
+{com}. replace FP3A = . if (FP3A >= -7 & FP3A <= -1)
+{txt}(13,674 real changes made, 13,674 to missing)
+
+{com}. replace FP3B = . if (FP3B >= -7 & FP3B <= -1)
+{txt}(33,020 real changes made, 33,020 to missing)
+
+{com}. replace FP3C = . if (FP3C >= -7 & FP3C <= -1)
+{txt}(35,953 real changes made, 35,953 to missing)
+
+{com}. replace FP4A = . if (FP4A >= -7 & FP4A <= -1)
+{txt}(18,235 real changes made, 18,235 to missing)
+
+{com}. replace FP4B = . if (FP4B >= -7 & FP4B <= -1)
+{txt}(33,054 real changes made, 33,054 to missing)
+
+{com}. replace FP4C = . if (FP4C >= -7 & FP4C <= -1)
+{txt}(34,975 real changes made, 34,975 to missing)
+
+{com}. replace FP5 = . if (FP5 >= -7 & FP5 <= -1)
+{txt}(9,965 real changes made, 9,965 to missing)
+
+{com}. replace FP5A = . if (FP5A >= -7 & FP5A <= -1)
+{txt}(10,192 real changes made, 10,192 to missing)
+
+{com}. replace FP5B = . if (FP5B >= -7 & FP5B <= -1)
+{txt}(10,382 real changes made, 10,382 to missing)
+
+{com}. replace FPWHO = . if (FPWHO >= -7 & FPWHO <= -1)
+{txt}(10,123 real changes made, 10,123 to missing)
+
+{com}. replace LB0 = . if (LB0 >= -7 & LB0 <= -1)
+{txt}(27,835 real changes made, 27,835 to missing)
+
+{com}. replace LB1A = . if (LB1A >= -7 & LB1A <= -1)
+{txt}(29,568 real changes made, 29,568 to missing)
+
+{com}. replace LB1B = . if (LB1B >= -7 & LB1B <= -1)
+{txt}(29,544 real changes made, 29,544 to missing)
+
+{com}. replace LB2A = . if (LB2A >= -7 & LB2A <= -1)
+{txt}(37,189 real changes made, 37,189 to missing)
+
+{com}. replace LB2B = . if (LB2B >= -7 & LB2B <= -1)
+{txt}(36,766 real changes made, 36,766 to missing)
+
+{com}. replace LB3A = . if (LB3A >= -7 & LB3A <= -1)
+{txt}(29,725 real changes made, 29,725 to missing)
+
+{com}. replace LB3B = . if (LB3B >= -7 & LB3B <= -1)
+{txt}(30,602 real changes made, 30,602 to missing)
+
+{com}. replace LB3C = . if (LB3C >= -7 & LB3C <= -1)
+{txt}(30,698 real changes made, 30,698 to missing)
+
+{com}. replace LB3D = . if (LB3D >= -7 & LB3D <= -1)
+{txt}(30,763 real changes made, 30,763 to missing)
+
+{com}. replace LB3E = . if (LB3E >= -7 & LB3E <= -1)
+{txt}(30,768 real changes made, 30,768 to missing)
+
+{com}. replace LB3F = . if (LB3F >= -7 & LB3F <= -1)
+{txt}(30,537 real changes made, 30,537 to missing)
+
+{com}. replace LB3G = . if (LB3G >= -7 & LB3G <= -1)
+{txt}(30,625 real changes made, 30,625 to missing)
+
+{com}. replace LB3H = . if (LB3H >= -7 & LB3H <= -1)
+{txt}(30,689 real changes made, 30,689 to missing)
+
+{com}. replace LB3I = . if (LB3I >= -7 & LB3I <= -1)
+{txt}(30,692 real changes made, 30,692 to missing)
+
+{com}. replace LB4 = . if (LB4 >= -7 & LB4 <= -1)
+{txt}(29,852 real changes made, 29,852 to missing)
+
+{com}. replace LB5 = . if (LB5 >= -7 & LB5 <= -1)
+{txt}(30,667 real changes made, 30,667 to missing)
+
+{com}. replace LB6 = . if (LB6 >= -7 & LB6 <= -1)
+{txt}(30,692 real changes made, 30,692 to missing)
+
+{com}. replace LB7A = . if (LB7A >= -7 & LB7A <= -1)
+{txt}(30,018 real changes made, 30,018 to missing)
+
+{com}. replace LB7B = . if (LB7B >= -7 & LB7B <= -1)
+{txt}(30,012 real changes made, 30,012 to missing)
+
+{com}. replace LB7C = . if (LB7C >= -7 & LB7C <= -1)
+{txt}(30,007 real changes made, 30,007 to missing)
+
+{com}. replace LB7D = . if (LB7D >= -7 & LB7D <= -1)
+{txt}(30,010 real changes made, 30,010 to missing)
+
+{com}. replace LB7E = . if (LB7E >= -7 & LB7E <= -1)
+{txt}(29,992 real changes made, 29,992 to missing)
+
+{com}. replace LB7F = . if (LB7F >= -7 & LB7F <= -1)
+{txt}(30,004 real changes made, 30,004 to missing)
+
+{com}. replace LB7G = . if (LB7G >= -7 & LB7G <= -1)
+{txt}(30,128 real changes made, 30,128 to missing)
+
+{com}. replace LB7H = . if (LB7H >= -7 & LB7H <= -1)
+{txt}(30,161 real changes made, 30,161 to missing)
+
+{com}. replace LB8 = . if (LB8 >= -7 & LB8 <= -1)
+{txt}(38,392 real changes made, 38,392 to missing)
+
+{com}. replace LB9A = . if (LB9A >= -7 & LB9A <= -1)
+{txt}(29,705 real changes made, 29,705 to missing)
+
+{com}. replace LB9B = . if (LB9B >= -7 & LB9B <= -1)
+{txt}(29,706 real changes made, 29,706 to missing)
+
+{com}. replace LB9C = . if (LB9C >= -7 & LB9C <= -1)
+{txt}(29,708 real changes made, 29,708 to missing)
+
+{com}. replace LB9D = . if (LB9D >= -7 & LB9D <= -1)
+{txt}(29,707 real changes made, 29,707 to missing)
+
+{com}. replace LB9E = . if (LB9E >= -7 & LB9E <= -1)
+{txt}(29,714 real changes made, 29,714 to missing)
+
+{com}. replace LB9F = . if (LB9F >= -7 & LB9F <= -1)
+{txt}(29,737 real changes made, 29,737 to missing)
+
+{com}. replace LB10 = . if (LB10 >= -7 & LB10 <= -1)
+{txt}(30,094 real changes made, 30,094 to missing)
+
+{com}. replace LB12 = . if (LB12 >= -7 & LB12 <= -1)
+{txt}(29,440 real changes made, 29,440 to missing)
+
+{com}. replace LB13 = . if (LB13 >= -7 & LB13 <= -1)
+{txt}(29,623 real changes made, 29,623 to missing)
+
+{com}. replace LB14 = . if (LB14 >= -7 & LB14 <= -1)
+{txt}(29,622 real changes made, 29,622 to missing)
+
+{com}. replace LB15A = . if (LB15A >= -7 & LB15A <= -1)
+{txt}(29,654 real changes made, 29,654 to missing)
+
+{com}. replace LB15B = . if (LB15B >= -7 & LB15B <= -1)
+{txt}(29,678 real changes made, 29,678 to missing)
+
+{com}. replace LB15C = . if (LB15C >= -7 & LB15C <= -1)
+{txt}(29,719 real changes made, 29,719 to missing)
+
+{com}. replace LB15D = . if (LB15D >= -7 & LB15D <= -1)
+{txt}(29,739 real changes made, 29,739 to missing)
+
+{com}. replace LB15E = . if (LB15E >= -7 & LB15E <= -1)
+{txt}(29,780 real changes made, 29,780 to missing)
+
+{com}. replace LB16 = . if (LB16 >= -7 & LB16 <= -1)
+{txt}(29,678 real changes made, 29,678 to missing)
+
+{com}. replace LB17 = . if (LB17 >= -7 & LB17 <= -1)
+{txt}(29,664 real changes made, 29,664 to missing)
+
+{com}. replace LB18 = . if (LB18 >= -7 & LB18 <= -1)
+{txt}(29,669 real changes made, 29,669 to missing)
+
+{com}. replace LB18A = . if (LB18A >= -7 & LB18A <= -1)
+{txt}(33,958 real changes made, 33,958 to missing)
+
+{com}. replace LB19A = . if (LB19A >= -7 & LB19A <= -1)
+{txt}(29,887 real changes made, 29,887 to missing)
+
+{com}. replace LB19B = . if (LB19B >= -7 & LB19B <= -1)
+{txt}(29,932 real changes made, 29,932 to missing)
+
+{com}. replace LB20 = . if (LB20 >= -7 & LB20 <= -1)
+{txt}(29,772 real changes made, 29,772 to missing)
+
+{com}. replace LB22 = . if (LB22 >= -7 & LB22 <= -1)
+{txt}(35,356 real changes made, 35,356 to missing)
+
+{com}. replace LB23 = . if (LB23 >= -7 & LB23 <= -1)
+{txt}(32,458 real changes made, 32,458 to missing)
+
+{com}. replace LB24 = . if (LB24 >= -7 & LB24 <= -1)
+{txt}(32,781 real changes made, 32,781 to missing)
+
+{com}. replace LB25 = . if (LB25 >= -7 & LB25 <= -1)
+{txt}(32,870 real changes made, 32,870 to missing)
+
+{com}. replace LB26A = . if (LB26A >= -7 & LB26A <= -1)
+{txt}(32,830 real changes made, 32,830 to missing)
+
+{com}. replace LB26B = . if (LB26B >= -7 & LB26B <= -1)
+{txt}(33,669 real changes made, 33,669 to missing)
+
+{com}. replace LB27 = . if (LB27 >= -7 & LB27 <= -1)
+{txt}(32,779 real changes made, 32,779 to missing)
+
+{com}. replace LB28 = . if (LB28 >= -7 & LB28 <= -1)
+{txt}(31,223 real changes made, 31,223 to missing)
+
+{com}. replace LB29 = . if (LB29 >= -7 & LB29 <= -1)
+{txt}(37,863 real changes made, 37,863 to missing)
+
+{com}. replace LB30 = . if (LB30 >= -7 & LB30 <= -1)
+{txt}(29,540 real changes made, 29,540 to missing)
+
+{com}. replace LB31 = . if (LB31 >= -7 & LB31 <= -1)
+{txt}(29,972 real changes made, 29,972 to missing)
+
+{com}. replace LB32 = . if (LB32 >= -7 & LB32 <= -1)
+{txt}(29,906 real changes made, 29,906 to missing)
+
+{com}. replace LB33 = . if (LB33 >= -7 & LB33 <= -1)
+{txt}(36,299 real changes made, 36,299 to missing)
+
+{com}. replace LB34A = . if (LB34A >= -7 & LB34A <= -1)
+{txt}(32,309 real changes made, 32,309 to missing)
+
+{com}. replace LB34B = . if (LB34B >= -7 & LB34B <= -1)
+{txt}(32,096 real changes made, 32,096 to missing)
+
+{com}. replace LB35 = . if (LB35 >= -7 & LB35 <= -1)
+{txt}(30,538 real changes made, 30,538 to missing)
+
+{com}. replace LB36A = . if (LB36A >= -7 & LB36A <= -1)
+{txt}(30,674 real changes made, 30,674 to missing)
+
+{com}. replace LB36A1 = . if (LB36A1 >= -7 & LB36A1 <= -1)
+{txt}(35,010 real changes made, 35,010 to missing)
+
+{com}. replace LB36B = . if (LB36B >= -7 & LB36B <= -1)
+{txt}(30,768 real changes made, 30,768 to missing)
+
+{com}. replace LB36B1 = . if (LB36B1 >= -7 & LB36B1 <= -1)
+{txt}(35,509 real changes made, 35,509 to missing)
+
+{com}. replace LB36C = . if (LB36C >= -7 & LB36C <= -1)
+{txt}(30,791 real changes made, 30,791 to missing)
+
+{com}. replace LB36C1 = . if (LB36C1 >= -7 & LB36C1 <= -1)
+{txt}(35,299 real changes made, 35,299 to missing)
+
+{com}. replace LB36D = . if (LB36D >= -7 & LB36D <= -1)
+{txt}(30,805 real changes made, 30,805 to missing)
+
+{com}. replace LB36D1 = . if (LB36D1 >= -7 & LB36D1 <= -1)
+{txt}(35,298 real changes made, 35,298 to missing)
+
+{com}. replace LB36E = . if (LB36E >= -7 & LB36E <= -1)
+{txt}(30,847 real changes made, 30,847 to missing)
+
+{com}. replace LB36E1 = . if (LB36E1 >= -7 & LB36E1 <= -1)
+{txt}(35,790 real changes made, 35,790 to missing)
+
+{com}. replace NL1A = . if (NL1A >= -7 & NL1A <= -1)
+{txt}(37,213 real changes made, 37,213 to missing)
+
+{com}. replace NL1B = . if (NL1B >= -7 & NL1B <= -1)
+{txt}(37,213 real changes made, 37,213 to missing)
+
+{com}. replace NL2A = . if (NL2A >= -7 & NL2A <= -1)
+{txt}(37,296 real changes made, 37,296 to missing)
+
+{com}. replace NL2B = . if (NL2B >= -7 & NL2B <= -1)
+{txt}(37,878 real changes made, 37,878 to missing)
+
+{com}. replace NL2C = . if (NL2C >= -7 & NL2C <= -1)
+{txt}(37,910 real changes made, 37,910 to missing)
+
+{com}. replace NL2D = . if (NL2D >= -7 & NL2D <= -1)
+{txt}(38,432 real changes made, 38,432 to missing)
+
+{com}. replace NL2E = . if (NL2E >= -7 & NL2E <= -1)
+{txt}(38,431 real changes made, 38,431 to missing)
+
+{com}. replace NL2F = . if (NL2F >= -7 & NL2F <= -1)
+{txt}(38,150 real changes made, 38,150 to missing)
+
+{com}. replace NL2G = . if (NL2G >= -7 & NL2G <= -1)
+{txt}(38,232 real changes made, 38,232 to missing)
+
+{com}. replace NL2H = . if (NL2H >= -7 & NL2H <= -1)
+{txt}(38,396 real changes made, 38,396 to missing)
+
+{com}. replace NL2I = . if (NL2I >= -7 & NL2I <= -1)
+{txt}(38,416 real changes made, 38,416 to missing)
+
+{com}. replace NL3 = . if (NL3 >= -7 & NL3 <= -1)
+{txt}(37,476 real changes made, 37,476 to missing)
+
+{com}. replace NL4 = . if (NL4 >= -7 & NL4 <= -1)
+{txt}(37,882 real changes made, 37,882 to missing)
+
+{com}. replace NL5 = . if (NL5 >= -7 & NL5 <= -1)
+{txt}(37,836 real changes made, 37,836 to missing)
+
+{com}. replace NL6A = . if (NL6A >= -7 & NL6A <= -1)
+{txt}(37,541 real changes made, 37,541 to missing)
+
+{com}. replace NL6B = . if (NL6B >= -7 & NL6B <= -1)
+{txt}(37,548 real changes made, 37,548 to missing)
+
+{com}. replace NL6C = . if (NL6C >= -7 & NL6C <= -1)
+{txt}(37,545 real changes made, 37,545 to missing)
+
+{com}. replace NL6D = . if (NL6D >= -7 & NL6D <= -1)
+{txt}(37,545 real changes made, 37,545 to missing)
+
+{com}. replace NL6E = . if (NL6E >= -7 & NL6E <= -1)
+{txt}(37,550 real changes made, 37,550 to missing)
+
+{com}. replace NL6F = . if (NL6F >= -7 & NL6F <= -1)
+{txt}(37,551 real changes made, 37,551 to missing)
+
+{com}. replace NL6G = . if (NL6G >= -7 & NL6G <= -1)
+{txt}(37,549 real changes made, 37,549 to missing)
+
+{com}. replace NL6H = . if (NL6H >= -7 & NL6H <= -1)
+{txt}(37,599 real changes made, 37,599 to missing)
+
+{com}. replace NL7 = . if (NL7 >= -7 & NL7 <= -1)
+{txt}(40,701 real changes made, 40,701 to missing)
+
+{com}. replace NL8A = . if (NL8A >= -7 & NL8A <= -1)
+{txt}(37,386 real changes made, 37,386 to missing)
+
+{com}. replace NL8B = . if (NL8B >= -7 & NL8B <= -1)
+{txt}(37,384 real changes made, 37,384 to missing)
+
+{com}. replace NL8C = . if (NL8C >= -7 & NL8C <= -1)
+{txt}(37,381 real changes made, 37,381 to missing)
+
+{com}. replace NL8D = . if (NL8D >= -7 & NL8D <= -1)
+{txt}(37,381 real changes made, 37,381 to missing)
+
+{com}. replace NL8E = . if (NL8E >= -7 & NL8E <= -1)
+{txt}(37,380 real changes made, 37,380 to missing)
+
+{com}. replace NL8F = . if (NL8F >= -7 & NL8F <= -1)
+{txt}(37,387 real changes made, 37,387 to missing)
+
+{com}. replace NL9 = . if (NL9 >= -7 & NL9 <= -1)
+{txt}(37,541 real changes made, 37,541 to missing)
+
+{com}. replace NL12 = . if (NL12 >= -7 & NL12 <= -1)
+{txt}(37,137 real changes made, 37,137 to missing)
+
+{com}. replace NL13 = . if (NL13 >= -7 & NL13 <= -1)
+{txt}(37,352 real changes made, 37,352 to missing)
+
+{com}. replace NL14 = . if (NL14 >= -7 & NL14 <= -1)
+{txt}(37,357 real changes made, 37,357 to missing)
+
+{com}. replace NL15A = . if (NL15A >= -7 & NL15A <= -1)
+{txt}(37,350 real changes made, 37,350 to missing)
+
+{com}. replace NL15B = . if (NL15B >= -7 & NL15B <= -1)
+{txt}(37,357 real changes made, 37,357 to missing)
+
+{com}. replace NL15C = . if (NL15C >= -7 & NL15C <= -1)
+{txt}(37,368 real changes made, 37,368 to missing)
+
+{com}. replace NL15D = . if (NL15D >= -7 & NL15D <= -1)
+{txt}(37,373 real changes made, 37,373 to missing)
+
+{com}. replace NL15E = . if (NL15E >= -7 & NL15E <= -1)
+{txt}(37,390 real changes made, 37,390 to missing)
+
+{com}. replace NL16 = . if (NL16 >= -7 & NL16 <= -1)
+{txt}(37,370 real changes made, 37,370 to missing)
+
+{com}. replace NL17 = . if (NL17 >= -7 & NL17 <= -1)
+{txt}(37,370 real changes made, 37,370 to missing)
+
+{com}. replace NL18 = . if (NL18 >= -7 & NL18 <= -1)
+{txt}(37,377 real changes made, 37,377 to missing)
+
+{com}. replace NL18A = . if (NL18A >= -7 & NL18A <= -1)
+{txt}(39,072 real changes made, 39,072 to missing)
+
+{com}. replace NL19A = . if (NL19A >= -7 & NL19A <= -1)
+{txt}(37,451 real changes made, 37,451 to missing)
+
+{com}. replace NL19B = . if (NL19B >= -7 & NL19B <= -1)
+{txt}(37,471 real changes made, 37,471 to missing)
+
+{com}. replace NL20 = . if (NL20 >= -7 & NL20 <= -1)
+{txt}(37,236 real changes made, 37,236 to missing)
+
+{com}. replace NL22 = . if (NL22 >= -7 & NL22 <= -1)
+{txt}(39,554 real changes made, 39,554 to missing)
+
+{com}. replace NL23 = . if (NL23 >= -7 & NL23 <= -1)
+{txt}(38,035 real changes made, 38,035 to missing)
+
+{com}. replace NL24 = . if (NL24 >= -7 & NL24 <= -1)
+{txt}(38,178 real changes made, 38,178 to missing)
+
+{com}. replace NL25 = . if (NL25 >= -7 & NL25 <= -1)
+{txt}(38,225 real changes made, 38,225 to missing)
+
+{com}. replace NL26A = . if (NL26A >= -7 & NL26A <= -1)
+{txt}(38,210 real changes made, 38,210 to missing)
+
+{com}. replace NL26B = . if (NL26B >= -7 & NL26B <= -1)
+{txt}(38,246 real changes made, 38,246 to missing)
+
+{com}. replace NL27 = . if (NL27 >= -7 & NL27 <= -1)
+{txt}(38,195 real changes made, 38,195 to missing)
+
+{com}. replace NL28 = . if (NL28 >= -7 & NL28 <= -1)
+{txt}(37,956 real changes made, 37,956 to missing)
+
+{com}. replace NL29 = . if (NL29 >= -7 & NL29 <= -1)
+{txt}(40,241 real changes made, 40,241 to missing)
+
+{com}. replace NL30 = . if (NL30 >= -7 & NL30 <= -1)
+{txt}(37,203 real changes made, 37,203 to missing)
+
+{com}. replace NL31 = . if (NL31 >= -7 & NL31 <= -1)
+{txt}(37,539 real changes made, 37,539 to missing)
+
+{com}. replace NL32 = . if (NL32 >= -7 & NL32 <= -1)
+{txt}(37,515 real changes made, 37,515 to missing)
+
+{com}. replace NL33 = . if (NL33 >= -7 & NL33 <= -1)
+{txt}(37,880 real changes made, 37,880 to missing)
+
+{com}. replace NL34A = . if (NL34A >= -7 & NL34A <= -1)
+{txt}(37,935 real changes made, 37,935 to missing)
+
+{com}. replace NL34B = . if (NL34B >= -7 & NL34B <= -1)
+{txt}(37,735 real changes made, 37,735 to missing)
+
+{com}. replace NL35 = . if (NL35 >= -7 & NL35 <= -1)
+{txt}(37,470 real changes made, 37,470 to missing)
+
+{com}. replace NL36A = . if (NL36A >= -7 & NL36A <= -1)
+{txt}(37,746 real changes made, 37,746 to missing)
+
+{com}. replace NL36A1 = . if (NL36A1 >= -7 & NL36A1 <= -1)
+{txt}(39,230 real changes made, 39,230 to missing)
+
+{com}. replace NL36B = . if (NL36B >= -7 & NL36B <= -1)
+{txt}(37,791 real changes made, 37,791 to missing)
+
+{com}. replace NL36B1 = . if (NL36B1 >= -7 & NL36B1 <= -1)
+{txt}(39,397 real changes made, 39,397 to missing)
+
+{com}. replace NL36C = . if (NL36C >= -7 & NL36C <= -1)
+{txt}(37,791 real changes made, 37,791 to missing)
+
+{com}. replace NL36C1 = . if (NL36C1 >= -7 & NL36C1 <= -1)
+{txt}(39,286 real changes made, 39,286 to missing)
+
+{com}. replace NL36D = . if (NL36D >= -7 & NL36D <= -1)
+{txt}(37,799 real changes made, 37,799 to missing)
+
+{com}. replace NL36D1 = . if (NL36D1 >= -7 & NL36D1 <= -1)
+{txt}(39,292 real changes made, 39,292 to missing)
+
+{com}. replace NL36E = . if (NL36E >= -7 & NL36E <= -1)
+{txt}(37,811 real changes made, 37,811 to missing)
+
+{com}. replace NL36E1 = . if (NL36E1 >= -7 & NL36E1 <= -1)
+{txt}(39,417 real changes made, 39,417 to missing)
+
+{com}. replace HQ1 = . if (HQ1 >= -7 & HQ1 <= -1)
+{txt}(506 real changes made, 506 to missing)
+
+{com}. replace HQ2A = . if (HQ2A >= -7 & HQ2A <= -1)
+{txt}(407 real changes made, 407 to missing)
+
+{com}. replace HQ2B = . if (HQ2B >= -7 & HQ2B <= -1)
+{txt}(439 real changes made, 439 to missing)
+
+{com}. replace HQ3 = . if (HQ3 >= -7 & HQ3 <= -1)
+{txt}(531 real changes made, 531 to missing)
+
+{com}. replace HQ4 = . if (HQ4 >= -7 & HQ4 <= -1)
+{txt}(389 real changes made, 389 to missing)
+
+{com}. replace HQ5 = . if (HQ5 >= -7 & HQ5 <= -1)
+{txt}(377 real changes made, 377 to missing)
+
+{com}. replace HQ6 = . if (HQ6 >= -7 & HQ6 <= -1)
+{txt}(384 real changes made, 384 to missing)
+
+{com}. replace OG1 = . if (OG1 >= -7 & OG1 <= -1)
+{txt}(2,483 real changes made, 2,483 to missing)
+
+{com}. replace OG2 = . if (OG2 >= -7 & OG2 <= -1)
+{txt}(2,702 real changes made, 2,702 to missing)
+
+{com}. replace OG3 = . if (OG3 >= -7 & OG3 <= -1)
+{txt}(7,812 real changes made, 7,812 to missing)
+
+{com}. replace OG4 = . if (OG4 >= -7 & OG4 <= -1)
+{txt}(7,512 real changes made, 7,512 to missing)
+
+{com}. replace OG5 = . if (OG5 >= -7 & OG5 <= -1)
+{txt}(7,903 real changes made, 7,903 to missing)
+
+{com}. replace OG6 = . if (OG6 >= -7 & OG6 <= -1)
+{txt}(41,193 real changes made, 41,193 to missing)
+
+{com}. replace OG7 = . if (OG7 >= -7 & OG7 <= -1)
+{txt}(304 real changes made, 304 to missing)
+
+{com}. 
+. 
+. 
+{txt}end of do-file
+
+{com}. 
+. rename (HHID HHSPLITID FU1) (HHID05 HHSPLITID05 FU12005)
+{res}{txt}
+{com}. 
+. keep STATEID DISTID PSUID HHID05 HHSPLITID05 FU12005 
+{txt}
+{com}. 
+. save el2005 , replace 
+{txt}{p 0 4 2}
+(file {bf}
+el2005.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+el2005.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // merge with linkedfile ... 
+. //------------------------------------------------------------------------------
+. 
+. use "`giturl'/stata-codes/IHDS_HH_linkfile.dta", clear
+{txt}(India Human Development Survey Panel (IHDS, IHDS-II), 2005, 2011-2012, Household)
+
+{com}. 
+. sort STATEID DISTID PSUID HHID05 HHSPLITID05
+{txt}
+{com}. 
+. merge m:1 STATEID DISTID PSUID HHID05 HHSPLITID05 using el2005 
+{res}{txt}(label {bf:{txt}STATEID} already defined)
+
+{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}           8,942
+{txt}{col 9}from master{col 30}{res}           1,052{txt}  (_merge==1)
+{col 9}from using{col 30}{res}           7,890{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}          38,966{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop if _merge == 2 | missing( FU12005 ) // left join 
+{txt}(9,235 observations deleted)
+
+{com}.         drop _merge HHID05 HHSPLITID05 
+{txt}
+{com}.         mi erase el2005
+{res}{txt}{p}(file
+el2005.dta
+erased)
+{p_end}
+
+{com}. 
+. 
+. // rename all variables ... 
+. rename *, lower 
+{res}{txt}
+{com}. 
+. // order variables alphabetically ... 
+. order _all, alphabetic
+{txt}
+{com}. 
+. 
+. local outfile "`dirpath'\electricity2005.dta" 
+{txt}
+{com}. save `outfile', replace
+{txt}{p 0 4 2}
+(file {bf}
+C:\ihds\electricity2005.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+C:\ihds\electricity2005.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // describe variables ... 
+. //------------------------------------------------------------------------------
+. 
+. describe `r(varlist)'
+
+{txt}Contains data from {res}C:\ihds\electricity2005.dta
+{txt} Observations:{res}        38,673                  India Human Development Survey Panel (IHDS, IHDS-II),
+                                                2005, 2011-2012, Household
+{txt}    Variables:{res}             6                  21 May 2023 01:19
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:distid         }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ0 District code{p_end}
+{p 0 48}{bind:fu12005        }{txt}{bind: int     }{bind:{txt}%12.0g    }{space 1}{bind:FU1      }{bind:  }{res}{res}EH10 7.1 HH electricity{p_end}
+{p 0 48}{bind:hhid12         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}HHID (2012){p_end}
+{p 0 48}{bind:hhsplitid12    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}HHSPLITID (2012){p_end}
+{p 0 48}{bind:psuid          }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ0 PSU: village/neighborhood code{p_end}
+{p 0 48}{bind:stateid        }{txt}{bind: int     }{bind:{txt}%21.0f    }{space 1}{bind:STATEID  }{bind:  }{res}{res}HQ0 State code{p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. 
+. ********** CLOSE OUTPUT
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\electricity2005.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}21 May 2023, 01:19:13
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
