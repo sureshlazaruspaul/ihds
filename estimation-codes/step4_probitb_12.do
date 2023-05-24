@@ -104,7 +104,7 @@ timer on 1
 
 foreach m of local depvars { 
 
-	pe use 36151 , clear 
+	pe use "$indat" , clear 
 
         //--------------------------------------------------------------------------
         // 1. data restrictions .. 
