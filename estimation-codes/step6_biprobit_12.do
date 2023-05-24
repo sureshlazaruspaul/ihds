@@ -18,15 +18,12 @@ set more off
 //------------------------------------------------------------------------------
 // open logfile ... 
 //------------------------------------------------------------------------------
-
 log using "C:\ihds\step6_biprobit_12", replace
 
 //------------------------------------------------------------------------------
 // set dir for data
 //------------------------------------------------------------------------------
-
 local dirpath "C:\ihds"
-
 cd `dirpath'
 
 
@@ -110,12 +107,11 @@ foreach m of local depvars {
         //--------------------------------------------------------------------------
         // 1. data restrictions .. 
         //--------------------------------------------------------------------------
+	pe gen sample = inlist(adolescents, 1)     & /// age between 8 and 11 
+			inlist(rural      , 1)     & /// urban = 0
+			inlist(ed4x       , 1)       //  currently enrolled in school
 
-		pe gen sample = inlist(adolescents, 1)     & /// age between 8 and 11 
-						inlist(rural      , 1)     & /// urban = 0
-						inlist(ed4x       , 1)       //  currently enrolled in school
-
-			pe tab sample, missing 
+	pe tab sample, missing 
         //--------------------------------------------------------------------------
 
 
@@ -124,24 +120,23 @@ foreach m of local depvars {
         //--------------------------------------------------------------------------
         // 2. drop missing obervations of all study variables ..
         //--------------------------------------------------------------------------
-		local n_instr : word count `instr'
-
+	local n_instr : word count `instr'
         local inst // instruments array 
-		forval i = 1 / `n_instr' {
-			local inst `inst' `: word `i' of `instr''
-		} 
+	forval i = 1 / `n_instr' {
+		local inst `inst' `: word `i' of `instr''
+	} 
 
-		gen missing = 0
+	gen missing = 0
 
         local x
         local x  `m' `cvars1' fu1 `inst' stateid groups8x 
         foreach l of local x {
-			pe replace missing = 1 if mi( `l' )
-		} 
+		pe replace missing = 1 if mi( `l' )
+	} 
 
-		pe replace sample = 0 if inlist(sample, 1) & inlist(missing, 1) 
-			pe drop missing 
-			pe tab sample, missing 
+	pe replace sample = 0 if inlist(sample, 1) & inlist(missing, 1) 
+		pe drop missing 
+	pe tab sample, missing 
         //--------------------------------------------------------------------------
 
 
@@ -155,10 +150,10 @@ foreach m of local depvars {
         pe bys stateid: egen meanfu1 = mean( fu1 ) if inlist( sample, 1 )
         pe tabulate stateid if meanfu1 == 1 // which states will be dropped?
 
-		pe replace sample = 0 if inlist(sample, 1) & inlist(meanfu1, 1) 
-			pe drop meanfu1 
-			pe tab sample, missing 
-        //--------------------------------------------------------------------------
+	pe replace sample = 0 if inlist(sample, 1) & inlist(meanfu1, 1) 
+		pe drop meanfu1 
+	pe tab sample, missing 
+       //--------------------------------------------------------------------------
 
 
 
@@ -168,14 +163,14 @@ foreach m of local depvars {
         //--------------------------------------------------------------------------
         // 4. calculate no. of PSUs in each STRATA 
         //--------------------------------------------------------------------------
-		pe bys stateid distid psuid : gen uniqpsu = _n == 1 
-			pe bys stateid distid : replace uniqpsu = sum(uniqpsu) 
-			pe bys stateid distid : replace uniqpsu = uniqpsu[_N] 
+	pe bys stateid distid psuid : gen uniqpsu = _n == 1 
+		pe bys stateid distid : replace uniqpsu = sum(uniqpsu) 
+		pe bys stateid distid : replace uniqpsu = uniqpsu[_N] 
 
-		// must be more than one PSU in each STRATA 
-		pe replace sample = 0 if inlist(sample, 1) & uniqpsu <= 1
-			pe drop uniqpsu 
-			pe tab sample, missing 
+	// must be more than one PSU in each STRATA 
+	pe replace sample = 0 if inlist(sample, 1) & uniqpsu <= 1
+		pe drop uniqpsu 
+	pe tab sample, missing 
         //--------------------------------------------------------------------------
 
 
@@ -183,10 +178,8 @@ foreach m of local depvars {
 
 
 
-
-
-		pe keep if inlist( sample, 1 ) // reg sample 
-			pe tab sample, missing 
+	pe keep if inlist( sample, 1 ) // reg sample 
+		pe tab sample, missing 
 
         //--------------------------------------------------------------------------
         // 5. describe variables ... 
@@ -203,37 +196,37 @@ foreach m of local depvars {
         di    "Education variable: `m'" 
         di    "-----------------------------------------------------------------"
 
-		pe biprobit (`m' = i.fu1 `cvars' `ovars' ) ( fu1 = `cvars' `ovars' `inst') , vce(robust) 
+	pe biprobit (`m' = i.fu1 `cvars' `ovars' ) ( fu1 = `cvars' `ovars' `inst') , vce(robust) 
 
-		// AME Margins (check) 
-		di _n "{p}margins, at(fu1 = (0 1)) predict(pmarg1) force contrast(atcontrast(rb1._at)).{p_end}" 
-		margins, at(fu1 = (0 1)) predict(pmarg1) force contrast(atcontrast(rb1._at)) 
+	// AME Margins (check) 
+	di _n "{p}margins, at(fu1 = (0 1)) predict(pmarg1) force contrast(atcontrast(rb1._at)).{p_end}" 
+	margins, at(fu1 = (0 1)) predict(pmarg1) force contrast(atcontrast(rb1._at)) 
 
-		// AME by Hand # 1 
-		di _n "{p}Margins: AME by Hand #1.{p_end}"
-		predict double xb2, xb2 // linear index for equation 2
-		ren fu1 Tfu1
+	// AME by Hand # 1 
+	di _n "{p}Margins: AME by Hand #1.{p_end}"
+	predict double xb2, xb2 // linear index for equation 2
+	ren fu1 Tfu1
 
-		gen fu1 = 0
+	gen fu1 = 0
 
-		predict double p0, pmarg1  // success for equation 1 with fu1 == 0
-		predict double xb0, xb1    // index for equation 1 with fu1 == 0
-		replace fu1 = 1
+	predict double p0, pmarg1  // success for equation 1 with fu1 == 0
+	predict double xb0, xb1    // index for equation 1 with fu1 == 0
+	replace fu1 = 1
 
-		predict double p1, pmarg1 // success for equation 1 with fu1 == 1
-		predict double xb1, xb1   // index for equation 1 with fu1 == 1
-		gen double dp=p1-p0       // calculate diff in
-		sum dp
+	predict double p1, pmarg1 // success for equation 1 with fu1 == 1
+	predict double xb1, xb1   // index for equation 1 with fu1 == 1
+	gen double dp=p1-p0       // calculate diff in
+	sum dp
 
-		// AME by Hand # 2
-		di _n "{p}Margins: AME by Hand #2.{p_end}"
-		gen double pdx=(binormal(xb1,xb2,e(rho))-binormal(xb0,xb2,e(rho)))/normal(xb2) if Tfu1 == 1
-		qui replace pdx=normal(xb1)-normal(xb0)
-		su pdx
+	// AME by Hand # 2
+	di _n "{p}Margins: AME by Hand #2.{p_end}"
+	gen double pdx=(binormal(xb1,xb2,e(rho))-binormal(xb0,xb2,e(rho)))/normal(xb2) if Tfu1 == 1
+	qui replace pdx=normal(xb1)-normal(xb0)
+	su pdx
 
-		// AME Margins (all variables) 
-		di _n "{p}margins, dydx(fu1) predict(pmarg1) force.{p_end}"
-		eststo: margins, dydx(fu1) predict(pmarg1) force post 
+	// AME Margins (all variables) 
+	di _n "{p}margins, dydx(fu1) predict(pmarg1) force.{p_end}"
+	eststo: margins, dydx(fu1) predict(pmarg1) force post 
 
 } 
 
