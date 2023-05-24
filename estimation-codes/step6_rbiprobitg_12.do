@@ -18,15 +18,12 @@ set more off
 //------------------------------------------------------------------------------
 // open logfile ... 
 //------------------------------------------------------------------------------
-
 log using "C:\ihds\step6_rbiprobitg_12", replace
 
 //------------------------------------------------------------------------------
 // set dir for data
 //------------------------------------------------------------------------------
-
 local dirpath "C:\ihds"
-
 cd `dirpath'
 
 
@@ -110,13 +107,12 @@ foreach m of local depvars {
         //--------------------------------------------------------------------------
         // 1. data restrictions .. 
         //--------------------------------------------------------------------------
+	pe gen sample = inlist(adolescents, 1)     & /// age between 8 and 11 
+			inlist(rural      , 1)     & /// urban = 0
+			inlist(ed4x       , 1)     & /// currently enrolled in school
+			inlist(female     , $sex)     // male or female
 
-		pe gen sample = inlist(adolescents, 1)     & /// age between 8 and 11 
-						inlist(rural      , 1)     & /// urban = 0
-						inlist(ed4x       , 1)     & /// currently enrolled in school
-						inlist(female     , $sex)     // male or female
-
-			pe tab sample, missing 
+	pe tab sample, missing 
         //--------------------------------------------------------------------------
 
 
@@ -125,24 +121,23 @@ foreach m of local depvars {
         //--------------------------------------------------------------------------
         // 2. drop missing obervations of all study variables ..
         //--------------------------------------------------------------------------
-		local n_instr : word count `instr'
-
+	local n_instr : word count `instr'
         local inst // instruments array 
-		forval i = 1 / `n_instr' {
-			local inst `inst' `: word `i' of `instr''
-		} 
+	forval i = 1 / `n_instr' {
+		local inst `inst' `: word `i' of `instr''
+	} 
 
-		gen missing = 0
+	gen missing = 0
 
         local x
         local x  `m' `cvars1' fu1 `inst' stateid groups8x 
         foreach l of local x {
-			pe replace missing = 1 if mi( `l' )
-		} 
+		pe replace missing = 1 if mi( `l' )
+	} 
 
-		pe replace sample = 0 if inlist(sample, 1) & inlist(missing, 1) 
-			pe drop missing 
-			pe tab sample, missing 
+	pe replace sample = 0 if inlist(sample, 1) & inlist(missing, 1) 
+		pe drop missing 
+	pe tab sample, missing 
         //--------------------------------------------------------------------------
 
 
@@ -156,9 +151,9 @@ foreach m of local depvars {
         pe bys stateid: egen meanfu1 = mean( fu1 ) if inlist( sample, 1 )
         pe tabulate stateid if meanfu1 == 1 // which states will be dropped?
 
-		pe replace sample = 0 if inlist(sample, 1) & inlist(meanfu1, 1) 
-			pe drop meanfu1 
-			pe tab sample, missing 
+	pe replace sample = 0 if inlist(sample, 1) & inlist(meanfu1, 1) 
+		pe drop meanfu1 
+	pe tab sample, missing 
         //--------------------------------------------------------------------------
 
 
@@ -169,14 +164,14 @@ foreach m of local depvars {
         //--------------------------------------------------------------------------
         // 4. calculate no. of PSUs in each STRATA 
         //--------------------------------------------------------------------------
-		pe bys stateid distid psuid : gen uniqpsu = _n == 1 
-			pe bys stateid distid : replace uniqpsu = sum(uniqpsu) 
-			pe bys stateid distid : replace uniqpsu = uniqpsu[_N] 
+	pe bys stateid distid psuid : gen uniqpsu = _n == 1 
+		pe bys stateid distid : replace uniqpsu = sum(uniqpsu) 
+		pe bys stateid distid : replace uniqpsu = uniqpsu[_N] 
 
-		// must be more than one PSU in each STRATA 
-		pe replace sample = 0 if inlist(sample, 1) & uniqpsu <= 1
-			pe drop uniqpsu 
-			pe tab sample, missing 
+	// must be more than one PSU in each STRATA 
+	pe replace sample = 0 if inlist(sample, 1) & uniqpsu <= 1
+		pe drop uniqpsu 
+	pe tab sample, missing 
         //--------------------------------------------------------------------------
 
 
@@ -186,8 +181,8 @@ foreach m of local depvars {
 
 
 
-		pe keep if inlist( sample, 1 ) // reg sample 
-			pe tab sample, missing 
+	pe keep if inlist( sample, 1 ) // reg sample 
+		pe tab sample, missing 
 
         //--------------------------------------------------------------------------
         // 5. describe variables ... 
@@ -208,7 +203,7 @@ foreach m of local depvars {
 
 		if _rc continue
 
-			pe rbiprobit tmeffects, tmeff(ate) // marginal effects
+		pe rbiprobit tmeffects, tmeff(ate) // marginal effects
 
 } 
 
