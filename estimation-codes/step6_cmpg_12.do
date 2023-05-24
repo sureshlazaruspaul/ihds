@@ -210,8 +210,7 @@ foreach m of local depvars {
 
 		pe replace `m' = 1 
 
-		// marginal effect on probability of (1) 
-		pe eststo: margins, dydx(fu1) force post 
+		pe eststo: margins, predict(pr eq(#1)) dydx(*) force // marginal effect
 
 } 
 
