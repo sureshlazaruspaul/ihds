@@ -231,7 +231,7 @@ foreach m of local depvars {
 		pe eststo: margins, predict(pr eq(#1)) dydx(*) force subpop(if sample==1) // marginal effect
 
 		// marginal effect on probability of (1) 
-*		pe eststo: margins, dydx(fu1) force subpop(if sample==1) // marginal effects
+*		pe eststo: margins, dydx(fu1) force subpop(if sample==1) vce(unconditional) // marginal effects
 
 } 
 
