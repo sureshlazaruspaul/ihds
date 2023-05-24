@@ -207,7 +207,7 @@ foreach m of local depvars {
 
 		pe ivreg2 `m' `cvars' `ovars' (fu1 = `inst') , first endog( fu1 ) robust
 
-		pe eststo: margins , dydx(fu1) post	// marginal effects
+		pe eststo: margins , dydx(fu1) // marginal effects
 
 
 } 
