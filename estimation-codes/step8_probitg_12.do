@@ -226,7 +226,7 @@ foreach m of local depvars {
 
         pe svy, subpop(sample) : probit `m' i.fu1 `cvars' `ovars' 
 
-			pe eststo: margins , dydx(fu1) subpop(if sample==1) // marginal effects 
+			pe eststo: margins , dydx(fu1) subpop(if sample==1) vce(unconditional) // marginal effects 
 
 } 
 
