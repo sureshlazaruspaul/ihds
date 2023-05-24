@@ -104,11 +104,11 @@ foreach m of local depvars {
         //--------------------------------------------------------------------------
         // 1. data restrictions .. 
         //--------------------------------------------------------------------------
-		pe gen sample = inlist(adolescents, 1)     & /// age between 8 and 11 
-				inlist(rural      , 1)     & /// urban = 0
-				inlist(ed4x       , 1)       //  currently enrolled in school
+	pe gen sample = inlist(adolescents, 1)     & /// age between 8 and 11 
+			inlist(rural      , 1)     & /// urban = 0
+			inlist(ed4x       , 1)       //  currently enrolled in school
 
-		pe tab sample, missing 
+	pe tab sample, missing 
         //--------------------------------------------------------------------------
 
 
