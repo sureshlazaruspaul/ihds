@@ -240,7 +240,7 @@ foreach m of local depvars {
 
 	
 // output coefficients to Latex
-esttab using step6_biprobitb_12.tex , b(a6) se(6) starlevels("\sym{*}" 0.100 "\sym{**}" 0.050 "\sym{***}" 0.010) replace 
+esttab using step6_biprobitb_12.tex , b(a6) se(6) wide starlevels("\sym{*}" 0.100 "\sym{**}" 0.050 "\sym{***}" 0.010) replace 
 
 esttab, cells(_sigsign) nogap starlevels("+/-" 0.10 "++/--" 0.05 "+++/---" 0.01)
 	eststo clear
@@ -262,8 +262,3 @@ timer clear
 	
 // CLOSE OUTPUT
 log close
-
-
-
-
-
