@@ -1,0 +1,1717 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\36151.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}24 May 2023, 23:22:50
+{txt}
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // calc Father's Education ... 
+. //------------------------------------------------------------------------------
+. 
+. use "`dirpath'\36151-0001-Data_out.dta" , clear 
+{txt}(India Human Development Survey-II (IHDS-II), 2011-12, Individual)
+
+{com}. 
+. keep idhh personid ed5x
+{txt}
+{com}. drop if missing( personid ) | missing( ed5x )
+{txt}(233 observations deleted)
+
+{com}. 
+. rename (personid ed5x) (fatherid feduc) 
+{res}{txt}
+{com}. 
+. sort idhh fatherid feduc // remove duplicates by all 
+{txt}
+{com}.         qui by idhh fatherid feduc: gen dup = cond(_n==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 0
+{txt}(0 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. sort idhh fatherid feduc // remove duplicates by idhh fatherid 
+{txt}
+{com}.         quietly by idhh fatherid: gen dup = cond(_n==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 0
+{txt}(0 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. sort idhh fatherid feduc
+{txt}
+{com}. 
+. save feduc, replace
+{txt}{p 0 4 2}
+(file {bf}
+feduc.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+feduc.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // calc Mother's Education ... 
+. //------------------------------------------------------------------------------
+. 
+. use "`dirpath'\36151-0001-Data_out.dta" , clear 
+{txt}(India Human Development Survey-II (IHDS-II), 2011-12, Individual)
+
+{com}. 
+. keep idhh personid ed5x
+{txt}
+{com}. drop if missing( personid ) | missing( ed5x )
+{txt}(233 observations deleted)
+
+{com}. 
+. rename (personid ed5x) (motherid meduc) 
+{res}{txt}
+{com}. 
+. sort idhh motherid meduc // remove duplicates by all 
+{txt}
+{com}.         qui by idhh motherid meduc: gen dup = cond(_n==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 0
+{txt}(0 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. sort idhh motherid meduc // remove duplicates by idhh motherid  
+{txt}
+{com}.         quietly by idhh motherid: gen dup = cond(_n==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 0
+{txt}(0 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. sort idhh motherid meduc
+{txt}
+{com}. 
+. save meduc, replace
+{txt}{p 0 4 2}
+(file {bf}
+meduc.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+meduc.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // Open INDIVIDUAL FILE
+. //------------------------------------------------------------------------------
+. 
+. use "`dirpath'\36151-0001-Data_out.dta" , clear 
+{txt}(India Human Development Survey-II (IHDS-II), 2011-12, Individual)
+
+{com}. 
+. sort idhh fatherid
+{txt}
+{com}. 
+. merge m:1 idhh fatherid using feduc
+{res}{txt}(label {bf:{txt}ED6} already defined)
+
+{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}         276,838
+{txt}{col 9}from master{col 30}{res}         114,486{txt}  (_merge==1)
+{col 9}from using{col 30}{res}         162,352{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}          90,083{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. drop if _merge == 2 // left join 
+{txt}(162,352 observations deleted)
+
+{com}. drop _merge 
+{txt}
+{com}. 
+. 
+. capture confirm file feduc.dta
+{txt}
+{com}. 
+. ** .. if it does, delete program
+. if _rc == 0 {c -(}
+.     di "file exists, deleting ..."
+{res}file exists, deleting ...
+{com}.     erase feduc.dta
+. {c )-}
+{txt}
+{com}. 
+. ** .. else, show error code (but continue)
+. else {c -(}
+.     capture noisily error _rc
+.     di "file keeps running though..."
+. {c )-}
+{txt}
+{com}. 
+. sort idhh motherid
+{txt}
+{com}. 
+. merge m:1 idhh motherid using meduc
+{res}{txt}(label {bf:{txt}ED6} already defined)
+
+{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}         253,642
+{txt}{col 9}from master{col 30}{res}          99,979{txt}  (_merge==1)
+{col 9}from using{col 30}{res}         153,663{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}         104,590{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}. drop if _merge == 2 // left join 
+{txt}(153,663 observations deleted)
+
+{com}. drop _merge 
+{txt}
+{com}. 
+. capture confirm file meduc.dta
+{txt}
+{com}. 
+. ** .. if it does, delete program
+. if _rc == 0 {c -(}
+.     di "file exists, deleting ..."
+{res}file exists, deleting ...
+{com}.     erase meduc.dta
+. {c )-}
+{txt}
+{com}. 
+. ** .. else, show error code (but continue)
+. else {c -(}
+.     capture noisily error _rc
+.     di "file keeps running though..."
+. {c )-}
+{txt}
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. 
+. sort idhh
+{txt}
+{com}. 
+. merge m:1 idhh using "`dirpath'/36151-0002-data_out.dta" 
+{res}
+{txt}{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}               0
+{txt}{col 5}Matched{col 30}{res}         204,569{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop if _merge == 2 // left join household file
+{txt}(0 observations deleted)
+
+{com}.         rename _merge _merge_ih 
+{res}{txt}
+{com}. 
+. sort idpsu 
+{txt}
+{com}. 
+. merge m:1 idpsu using "`dirpath'/36151-0009-data_out.dta" 
+{res}{txt}{p 0 7 2}
+(variable
+{bf:idpsu} was {bf:long}, now {bf:double} to accommodate using data's values)
+{p_end}
+
+{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}          15,692
+{txt}{col 9}from master{col 30}{res}          15,633{txt}  (_merge==1)
+{col 9}from using{col 30}{res}              59{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}         188,936{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop if _merge == 2 // left join school facilities file
+{txt}(59 observations deleted)
+
+{com}.         rename _merge _merge_ihs 
+{res}{txt}
+{com}. 
+. sort idvillage 
+{txt}
+{com}. 
+. merge m:1 idvillage using "`dirpath'/36151-0012-data_out.dta" 
+{res}
+{txt}{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}          70,107
+{txt}{col 9}from master{col 30}{res}          70,107{txt}  (_merge==1)
+{col 9}from using{col 30}{res}               0{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}         134,462{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop if _merge == 2 // left join village file
+{txt}(0 observations deleted)
+
+{com}.         rename _merge _merge_ihsv
+{res}{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. 
+. g hhid12 = hhid 
+{txt}
+{com}. g hhsplitid12 = hhsplitid
+{txt}
+{com}. 
+. sort stateid distid psuid hhid12 hhsplitid12 
+{txt}
+{com}. 
+. merge m:1 stateid distid psuid hhid12 hhsplitid12 using "`giturl'/stata-codes/electricity2005.dta?raw=true"
+{res}{txt}(label {bf:{txt}STATEID} already defined)
+(label {bf:{txt}FU1} already defined)
+
+{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}          16,018
+{txt}{col 9}from master{col 30}{res}          16,018{txt}  (_merge==1)
+{col 9}from using{col 30}{res}               0{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}         188,551{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop if _merge == 2 // left join 2005 electricity file
+{txt}(0 observations deleted)
+
+{com}.         drop _merge hhid12 hhsplitid12
+{txt}
+{com}. 
+. 
+. g baseyear = 2012
+{txt}
+{com}. 
+. rename *, lower
+{res}{txt}  (all {it:newnames}=={it:oldnames})
+
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. 
+. sort stateid distid
+{txt}
+{com}. 
+. merge m:1 stateid distid using "https://github.com/sureshlazaruspaul/ihds/blob/main/stata-codes/census_elec.dta?raw=true"
+{res}
+{txt}{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}           6,511
+{txt}{col 9}from master{col 30}{res}           6,511{txt}  (_merge==1)
+{col 9}from using{col 30}{res}               0{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}         198,058{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop if _merge == 2 // left join census and electricity data
+{txt}(0 observations deleted)
+
+{com}.         rename _merge _merge_census 
+{res}{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. 
+. tab fu1 fu12005 , missing // diagnostics 
+
+  {txt}EQ10 7.1 {c |}
+ Household {c |}
+       has {c |}
+electricit {c |}     EH10 7.1 HH electricity
+         y {c |}      No 0      Yes 1          . {c |}     Total
+{hline 11}{c +}{hline 33}{c +}{hline 10}
+      No 0 {c |}{res}    18,701      5,243      1,020 {txt}{c |}{res}    24,964 
+{txt}     Yes 1 {c |}{res}    26,842    137,100     14,951 {txt}{c |}{res}   178,893 
+{txt}         . {c |}{res}       114        551         47 {txt}{c |}{res}       712 
+{txt}{hline 11}{c +}{hline 33}{c +}{hline 10}
+     Total {c |}{res}    45,657    142,894     16,018 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. // transform/calculate variables ... 
+. //------------------------------------------------------------------------------
+. /*
+> replace ed3x = 1 - ed3x // Attend School
+> */
+. 
+. g perfectat = inlist( cs11x, 0 ) 
+{txt}
+{com}.         replace perfectat = . if missing( cs11x )
+{txt}(158,003 real changes made, 158,003 to missing)
+
+{com}.         tab perfectat , missing 
+
+  {txt}perfectat {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}     31,103       15.20       15.20
+{txt}          1 {c |}{res}     15,463        7.56       22.76
+{txt}          . {c |}{res}    158,003       77.24      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}    204,569      100.00
+{txt}
+{com}. 
+. g goodat = inrange( cs11x, 0, 2 ) 
+{txt}
+{com}.         replace goodat = . if missing( cs11x )
+{txt}(158,003 real changes made, 158,003 to missing)
+
+{com}.         tab goodat , missing 
+
+     {txt}goodat {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}     21,790       10.65       10.65
+{txt}          1 {c |}{res}     24,776       12.11       22.76
+{txt}          . {c |}{res}    158,003       77.24      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}    204,569      100.00
+{txt}
+{com}. 
+. g hhassets1 = ln(hhassets) 
+{txt}(157 missing values generated)
+
+{com}. g income1 = ln(income) 
+{txt}(2,712 missing values generated)
+
+{com}. g incomepc1 = ln(incomepc) 
+{txt}(2,712 missing values generated)
+
+{com}. g copc1 = ln(copc) 
+{txt}(91 missing values generated)
+
+{com}. 
+. 
+. g wkany1 = 0 
+{txt}
+{com}. replace wkany1 = 1 if inlist( wkany , 3, 4 )  
+{txt}(78,407 real changes made)
+
+{com}. replace wkany1 = . if inlist( wkany , 1 ) | missing( wkany )
+{txt}(2,090 real changes made, 2,090 to missing)
+
+{com}. 
+. tab wkany1 wkany , missing // diagnostics 
+
+           {txt}{c |}        HQ work participation (farm, business, wage|salary)
+    wkany1 {c |}    none 0  missing h  <240hrs 2  parttime     ft yr 4          . {c |}     Total
+{hline 11}{c +}{hline 66}{c +}{hline 10}
+         0 {c |}{res}   111,820          0     12,252          0          0          0 {txt}{c |}{res}   124,072 
+{txt}         1 {c |}{res}         0          0          0     47,056     31,351          0 {txt}{c |}{res}    78,407 
+{txt}         . {c |}{res}         0      2,089          0          0          0          1 {txt}{c |}{res}     2,090 
+{txt}{hline 11}{c +}{hline 66}{c +}{hline 10}
+     Total {c |}{res}   111,820      2,089     12,252     47,056     31,351          1 {txt}{c |}{res}   204,569 
+{txt}
+{com}.  
+. 
+. g female = inlist( ro3x , 2 )
+{txt}
+{com}. replace female = . if missing( ro3x )
+{txt}(1 real change made, 1 to missing)
+
+{com}. 
+. tab female ro3x , missing // diagnostics 
+
+           {txt}{c |}           HQ4 2.3 Sex
+    female {c |}    Male 1   Female 2          . {c |}     Total
+{hline 11}{c +}{hline 33}{c +}{hline 10}
+         0 {c |}{res}   102,062          0          0 {txt}{c |}{res}   102,062 
+{txt}         1 {c |}{res}         0    102,506          0 {txt}{c |}{res}   102,506 
+{txt}         . {c |}{res}         0          0          1 {txt}{c |}{res}         1 
+{txt}{hline 11}{c +}{hline 33}{c +}{hline 10}
+     Total {c |}{res}   102,062    102,506          1 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. 
+. g hhhead = inlist( ro4x , 1 )
+{txt}
+{com}. replace hhhead = . if missing( ro4x )
+{txt}(1 real change made, 1 to missing)
+
+{com}. 
+. tab hhhead ro4x , missing // diagnostics 
+
+           {txt}{c |}                                         HQ4 2.4 Relationship to head
+    hhhead {c |}    Head 1  Wife/Husb  Son/Daugh  Child-in-  Grandchil  Father/Mo  Brother/S  Parent-in  Nephew/Ni  Sib-in-La {c |}     Total
+{hline 11}{c +}{hline 110}{c +}{hline 10}
+         0 {c |}{res}         0     34,264     79,533     12,746     21,013      6,449      2,674        641      2,326      1,167 {txt}{c |}{res}   162,413 
+{txt}         1 {c |}{res}    42,155          0          0          0          0          0          0          0          0          0 {txt}{c |}{res}    42,155 
+{txt}         . {c |}{res}         0          0          0          0          0          0          0          0          0          0 {txt}{c |}{res}         1 
+{txt}{hline 11}{c +}{hline 110}{c +}{hline 10}
+     Total {c |}{res}    42,155     34,264     79,533     12,746     21,013      6,449      2,674        641      2,326      1,167 {txt}{c |}{res}   204,569 
+
+
+           {txt}{c |}   HQ4 2.4 Relationship to head
+    hhhead {c |} Other rel  Servant/O          . {c |}     Total
+{hline 11}{c +}{hline 33}{c +}{hline 10}
+         0 {c |}{res}     1,397        203          0 {txt}{c |}{res}   162,413 
+{txt}         1 {c |}{res}         0          0          0 {txt}{c |}{res}    42,155 
+{txt}         . {c |}{res}         0          0          1 {txt}{c |}{res}         1 
+{txt}{hline 11}{c +}{hline 33}{c +}{hline 10}
+     Total {c |}{res}     1,397        203          1 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. 
+. g married = inlist( ro6x , 1 )
+{txt}
+{com}. replace married = . if missing( ro6x )
+{txt}(4 real changes made, 4 to missing)
+
+{com}. 
+. tab married ro6x , missing // diagnostics 
+
+           {txt}{c |}                            HQ4 2.6 Marital Status
+   married {c |} Married,   Married 1  Unmarried  Widowed 3  Separated  Married n          . {c |}     Total
+{hline 11}{c +}{hline 77}{c +}{hline 10}
+         0 {c |}{res}     3,784          0     92,489     12,256        942        341          0 {txt}{c |}{res}   109,812 
+{txt}         1 {c |}{res}         0     94,753          0          0          0          0          0 {txt}{c |}{res}    94,753 
+{txt}         . {c |}{res}         0          0          0          0          0          0          4 {txt}{c |}{res}         4 
+{txt}{hline 11}{c +}{hline 77}{c +}{hline 10}
+     Total {c |}{res}     3,784     94,753     92,489     12,256        942        341          4 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. ********** caste and religion definitions
+. //------------------------------------------------------------------------------
+. 
+. g brahmin = 0 
+{txt}
+{com}. replace brahmin = 1 if groups8x == 1 
+{txt}(10,179 real changes made)
+
+{com}. replace brahmin = . if missing( groups8x )
+{txt}(82 real changes made, 82 to missing)
+
+{com}. 
+. g forward = 0 
+{txt}
+{com}. replace forward = 1 if groups8x == 2 
+{txt}(32,787 real changes made)
+
+{com}. replace forward = . if missing( groups8x )
+{txt}(82 real changes made, 82 to missing)
+
+{com}. 
+. g othback = 0 
+{txt}
+{com}. replace othback = 1 if groups8x == 3 
+{txt}(68,275 real changes made)
+
+{com}. replace othback = . if missing( groups8x )
+{txt}(82 real changes made, 82 to missing)
+
+{com}. 
+. g dalit = 0 
+{txt}
+{com}. replace dalit = 1 if groups8x == 4 
+{txt}(43,137 real changes made)
+
+{com}. replace dalit = . if missing( groups8x )
+{txt}(82 real changes made, 82 to missing)
+
+{com}. 
+. g adivasi = 0 
+{txt}
+{com}. replace adivasi = 1 if groups8x == 5 
+{txt}(17,380 real changes made)
+
+{com}. replace adivasi = . if missing( groups8x )
+{txt}(82 real changes made, 82 to missing)
+
+{com}. 
+. g muslim = 0 
+{txt}
+{com}. replace muslim = 1 if groups8x == 6 
+{txt}(27,341 real changes made)
+
+{com}. replace muslim = . if missing( groups8x )
+{txt}(82 real changes made, 82 to missing)
+
+{com}. 
+. g csj = 0 
+{txt}
+{com}. replace csj = 1 if groups8x == 7 
+{txt}(5,388 real changes made)
+
+{com}. replace csj = . if missing( groups8x )
+{txt}(82 real changes made, 82 to missing)
+
+{com}. 
+. //------------------------------------------------------------------------------
+. ********** electricity & electricity payment method 
+. //------------------------------------------------------------------------------
+. 
+. g elecfree = 0 
+{txt}
+{com}. replace elecfree = 1 if inlist( fu1b , 1 )
+{txt}(18,272 real changes made)
+
+{com}. replace elecfree = . if missing( fu1b )
+{txt}(26,547 real changes made, 26,547 to missing)
+
+{com}. 
+. tab fu1b elecfree , missing // diagnostics 
+
+{txt}EQ10 7.1b Electricity {c |}             elecfree
+              Payment {c |}         0          1          . {c |}     Total
+{hline 22}{c +}{hline 33}{c +}{hline 10}
+No Bill/Govt scheme 1 {c |}{res}         0     18,272          0 {txt}{c |}{res}    18,272 
+{txt}Bill from State Elec. {c |}{res}   132,170          0          0 {txt}{c |}{res}   132,170 
+{txt}     Fee to neighbour {c |}{res}     4,648          0          0 {txt}{c |}{res}     4,648 
+{txt}         Part of rent {c |}{res}     2,855          0          0 {txt}{c |}{res}     2,855 
+{txt}        Own generator {c |}{res}       493          0          0 {txt}{c |}{res}       493 
+{txt}Paid by Employer / Of {c |}{res}     5,411          0          0 {txt}{c |}{res}     5,411 
+{txt}   Illegal connection {c |}{res}    10,539          0          0 {txt}{c |}{res}    10,539 
+{txt}          Other means {c |}{res}     3,634          0          0 {txt}{c |}{res}     3,634 
+{txt}                    . {c |}{res}         0          0     26,547 {txt}{c |}{res}    26,547 
+{txt}{hline 22}{c +}{hline 33}{c +}{hline 10}
+                Total {c |}{res}   159,750     18,272     26,547 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. 
+. g elecpay = 0 
+{txt}
+{com}. replace elecpay = 1 if inlist( fu1b , 2, 3, 4 )  
+{txt}(139,673 real changes made)
+
+{com}. replace elecpay = . if missing( fu1b )
+{txt}(26,547 real changes made, 26,547 to missing)
+
+{com}. 
+. tab fu1b elecpay , missing // diagnostics 
+
+{txt}EQ10 7.1b Electricity {c |}             elecpay
+              Payment {c |}         0          1          . {c |}     Total
+{hline 22}{c +}{hline 33}{c +}{hline 10}
+No Bill/Govt scheme 1 {c |}{res}    18,272          0          0 {txt}{c |}{res}    18,272 
+{txt}Bill from State Elec. {c |}{res}         0    132,170          0 {txt}{c |}{res}   132,170 
+{txt}     Fee to neighbour {c |}{res}         0      4,648          0 {txt}{c |}{res}     4,648 
+{txt}         Part of rent {c |}{res}         0      2,855          0 {txt}{c |}{res}     2,855 
+{txt}        Own generator {c |}{res}       493          0          0 {txt}{c |}{res}       493 
+{txt}Paid by Employer / Of {c |}{res}     5,411          0          0 {txt}{c |}{res}     5,411 
+{txt}   Illegal connection {c |}{res}    10,539          0          0 {txt}{c |}{res}    10,539 
+{txt}          Other means {c |}{res}     3,634          0          0 {txt}{c |}{res}     3,634 
+{txt}                    . {c |}{res}         0          0     26,547 {txt}{c |}{res}    26,547 
+{txt}{hline 22}{c +}{hline 33}{c +}{hline 10}
+                Total {c |}{res}    38,349    139,673     26,547 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. 
+. g elecoth = 0 
+{txt}
+{com}. replace elecoth = 1 if inlist( fu1b , 5, 6, 7, 8 )  
+{txt}(20,077 real changes made)
+
+{com}. replace elecoth = . if missing( fu1b )
+{txt}(26,547 real changes made, 26,547 to missing)
+
+{com}. 
+. tab fu1b elecoth , missing // diagnostics 
+
+{txt}EQ10 7.1b Electricity {c |}             elecoth
+              Payment {c |}         0          1          . {c |}     Total
+{hline 22}{c +}{hline 33}{c +}{hline 10}
+No Bill/Govt scheme 1 {c |}{res}    18,272          0          0 {txt}{c |}{res}    18,272 
+{txt}Bill from State Elec. {c |}{res}   132,170          0          0 {txt}{c |}{res}   132,170 
+{txt}     Fee to neighbour {c |}{res}     4,648          0          0 {txt}{c |}{res}     4,648 
+{txt}         Part of rent {c |}{res}     2,855          0          0 {txt}{c |}{res}     2,855 
+{txt}        Own generator {c |}{res}         0        493          0 {txt}{c |}{res}       493 
+{txt}Paid by Employer / Of {c |}{res}         0      5,411          0 {txt}{c |}{res}     5,411 
+{txt}   Illegal connection {c |}{res}         0     10,539          0 {txt}{c |}{res}    10,539 
+{txt}          Other means {c |}{res}         0      3,634          0 {txt}{c |}{res}     3,634 
+{txt}                    . {c |}{res}         0          0     26,547 {txt}{c |}{res}    26,547 
+{txt}{hline 22}{c +}{hline 33}{c +}{hline 10}
+                Total {c |}{res}   157,945     20,077     26,547 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. 
+. egen median_fu1a = median(fu1a) 
+{txt}
+{com}. g elecqual1 = cond(missing(fu1a), ., (fu1a > median_fu1a)) 
+{txt}(26,123 missing values generated)
+
+{com}. g elecqual2 = cond(missing(fu1a), ., (fu1a > hourselec)) 
+{txt}(26,123 missing values generated)
+
+{com}.         drop median_fu1a
+{txt}
+{com}. 
+. tab elecqual1 , missing // diagnostics 
+
+  {txt}elecqual1 {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}     92,384       45.16       45.16
+{txt}          1 {c |}{res}     86,062       42.07       87.23
+{txt}          . {c |}{res}     26,123       12.77      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}    204,569      100.00
+{txt}
+{com}. tab elecqual2 , missing // diagnostics 
+
+  {txt}elecqual2 {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}    136,012       66.49       66.49
+{txt}          1 {c |}{res}     42,434       20.74       87.23
+{txt}          . {c |}{res}     26,123       12.77      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}    204,569      100.00
+{txt}
+{com}. tab elecqual1 elecqual2 , missing // diagnostics 
+
+           {txt}{c |}            elecqual2
+ elecqual1 {c |}         0          1          . {c |}     Total
+{hline 11}{c +}{hline 33}{c +}{hline 10}
+         0 {c |}{res}    69,215     23,169          0 {txt}{c |}{res}    92,384 
+{txt}         1 {c |}{res}    66,797     19,265          0 {txt}{c |}{res}    86,062 
+{txt}         . {c |}{res}         0          0     26,123 {txt}{c |}{res}    26,123 
+{txt}{hline 11}{c +}{hline 33}{c +}{hline 10}
+     Total {c |}{res}   136,012     42,434     26,123 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. g elecqual3 = inlist(fu1, 1) 
+{txt}
+{com}.         replace elecqual3 = 2 if inlist(fu1, 1) & inrange(fu1a, 19, 24) 
+{txt}(71,893 real changes made)
+
+{com}.         replace elecqual3 = . if missing(fu1) 
+{txt}(712 real changes made, 712 to missing)
+
+{com}.  
+. tab elecqual3 , missing // diagnostics 
+
+  {txt}elecqual3 {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}     24,964       12.20       12.20
+{txt}          1 {c |}{res}    107,000       52.31       64.51
+{txt}          2 {c |}{res}     71,893       35.14       99.65
+{txt}          . {c |}{res}        712        0.35      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}    204,569      100.00
+{txt}
+{com}. tab fu1  elecqual3 , missing // diagnostics 
+
+  {txt}EQ10 7.1 {c |}
+ Household {c |}
+       has {c |}
+electricit {c |}                  elecqual3
+         y {c |}         0          1          2          . {c |}     Total
+{hline 11}{c +}{hline 44}{c +}{hline 10}
+      No 0 {c |}{res}    24,964          0          0          0 {txt}{c |}{res}    24,964 
+{txt}     Yes 1 {c |}{res}         0    107,000     71,893          0 {txt}{c |}{res}   178,893 
+{txt}         . {c |}{res}         0          0          0        712 {txt}{c |}{res}       712 
+{txt}{hline 11}{c +}{hline 44}{c +}{hline 10}
+     Total {c |}{res}    24,964    107,000     71,893        712 {txt}{c |}{res}   204,569 
+{txt}
+{com}. tab fu1a elecqual3 , missing // diagnostics 
+
+ {txt}EQ10 7.1a {c |}
+Electricit {c |}
+  y access {c |}                  elecqual3
+ hours/day {c |}         0          1          2          . {c |}     Total
+{hline 11}{c +}{hline 44}{c +}{hline 10}
+         0 {c |}{res}         0         91          0          0 {txt}{c |}{res}        91 
+{txt}         1 {c |}{res}         0        372          0          0 {txt}{c |}{res}       372 
+{txt}         2 {c |}{res}         0      1,453          0          0 {txt}{c |}{res}     1,453 
+{txt}         3 {c |}{res}         0      2,925          0          3 {txt}{c |}{res}     2,928 
+{txt}         4 {c |}{res}         0      5,209          0          0 {txt}{c |}{res}     5,209 
+{txt}         5 {c |}{res}         0      6,920          0          0 {txt}{c |}{res}     6,920 
+{txt}         6 {c |}{res}         0     11,958          0         10 {txt}{c |}{res}    11,968 
+{txt}         7 {c |}{res}         0      4,462          0          0 {txt}{c |}{res}     4,462 
+{txt}         8 {c |}{res}         0     13,963          0          0 {txt}{c |}{res}    13,963 
+{txt}         9 {c |}{res}         0      3,842          0          0 {txt}{c |}{res}     3,842 
+{txt}        10 {c |}{res}         0     10,813          0          0 {txt}{c |}{res}    10,813 
+{txt}        11 {c |}{res}         0        762          0          0 {txt}{c |}{res}       762 
+{txt}        12 {c |}{res}         0     12,757          0          0 {txt}{c |}{res}    12,757 
+{txt}        13 {c |}{res}         0      1,262          0          0 {txt}{c |}{res}     1,262 
+{txt}        14 {c |}{res}         0      2,726          0          0 {txt}{c |}{res}     2,726 
+{txt}        15 {c |}{res}         0      6,200          0          0 {txt}{c |}{res}     6,200 
+{txt}        16 {c |}{res}         0      6,656          0          0 {txt}{c |}{res}     6,656 
+{txt}        17 {c |}{res}         0      1,626          0          0 {txt}{c |}{res}     1,626 
+{txt}        18 {c |}{res}         0     12,543          0          0 {txt}{c |}{res}    12,543 
+{txt}        19 {c |}{res}         0          0      1,617          0 {txt}{c |}{res}     1,617 
+{txt}        20 {c |}{res}         0          0     19,649          0 {txt}{c |}{res}    19,649 
+{txt}        21 {c |}{res}         0          0      3,062          0 {txt}{c |}{res}     3,062 
+{txt}        22 {c |}{res}         0          0     15,614          0 {txt}{c |}{res}    15,614 
+{txt}        23 {c |}{res}         0          0     10,638          0 {txt}{c |}{res}    10,638 
+{txt}        24 {c |}{res}         0          0     21,313          0 {txt}{c |}{res}    21,313 
+{txt}         . {c |}{res}    24,964        460          0        699 {txt}{c |}{res}    26,123 
+{txt}{hline 11}{c +}{hline 44}{c +}{hline 10}
+     Total {c |}{res}    24,964    107,000     71,893        712 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. g elecqual4 = inlist(fu1, 1) & (fu1a <= hourselec) 
+{txt}
+{com}.         replace elecqual4 = 2 if inlist(fu1, 1) & (fu1a > hourselec) 
+{txt}(42,788 real changes made)
+
+{com}.         replace elecqual4 = . if missing(fu1) 
+{txt}(712 real changes made, 712 to missing)
+
+{com}.  
+. tab elecqual4 , missing // diagnostics 
+
+  {txt}elecqual4 {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}     24,964       12.20       12.20
+{txt}          1 {c |}{res}    136,105       66.53       78.74
+{txt}          2 {c |}{res}     42,788       20.92       99.65
+{txt}          . {c |}{res}        712        0.35      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}    204,569      100.00
+{txt}
+{com}. tab fu1  elecqual4 , missing // diagnostics 
+
+  {txt}EQ10 7.1 {c |}
+ Household {c |}
+       has {c |}
+electricit {c |}                  elecqual4
+         y {c |}         0          1          2          . {c |}     Total
+{hline 11}{c +}{hline 44}{c +}{hline 10}
+      No 0 {c |}{res}    24,964          0          0          0 {txt}{c |}{res}    24,964 
+{txt}     Yes 1 {c |}{res}         0    136,105     42,788          0 {txt}{c |}{res}   178,893 
+{txt}         . {c |}{res}         0          0          0        712 {txt}{c |}{res}       712 
+{txt}{hline 11}{c +}{hline 44}{c +}{hline 10}
+     Total {c |}{res}    24,964    136,105     42,788        712 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. save temp , replace 
+{txt}{p 0 4 2}
+(file {bf}
+temp.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+temp.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // calc HHHead's Education ... 
+. //------------------------------------------------------------------------------
+. 
+. use temp, clear
+{txt}(India Human Development Survey-II (IHDS-II), 2011-12, Individual)
+
+{com}. 
+. keep if inlist( hhhead, 1 )
+{txt}(162,414 observations deleted)
+
+{com}. 
+. keep idhh ed5x female age
+{txt}
+{com}. 
+. sort idhh ed5x female age // remove duplicates by all 
+{txt}
+{com}.         quietly by idhh ed5x female age: gen dup = cond(_N==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 0
+{txt}(0 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. gsort idhh -age // remove duplicates by IDHH   
+{txt}
+{com}.         quietly by idhh : gen dup = cond(_N==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 1 // keep the older HHHead 
+{txt}(9 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. sort idhh // remove duplicates by IDHH   
+{txt}
+{com}.         quietly by idhh : gen dup = cond(_N==1, 0, _n) 
+{txt}
+{com}.         drop if dup > 0
+{txt}(0 observations deleted)
+
+{com}.         drop dup 
+{txt}
+{com}. 
+. rename (ed5x female age) (hheduc hhfemale hhage)
+{res}{txt}
+{com}. 
+. sort idhh 
+{txt}
+{com}. 
+. save hheduc , replace
+{txt}{p 0 4 2}
+(file {bf}
+hheduc.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+hheduc.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // merge back to temp data ... 
+. //------------------------------------------------------------------------------
+. 
+. use temp , clear
+{txt}(India Human Development Survey-II (IHDS-II), 2011-12, Individual)
+
+{com}. 
+. sort idhh 
+{txt}
+{com}. 
+. merge m:1 idhh using hheduc
+{res}{txt}(label {bf:{txt}ED6} already defined)
+
+{col 5}Result{col 33}Number of obs
+{col 5}{hline 41}
+{col 5}Not matched{col 30}{res}              15
+{txt}{col 9}from master{col 30}{res}              15{txt}  (_merge==1)
+{col 9}from using{col 30}{res}               0{txt}  (_merge==2)
+
+{col 5}Matched{col 30}{res}         204,554{txt}  (_merge==3)
+{col 5}{hline 41}
+
+{com}.         drop if _merge == 2 // left join 
+{txt}(0 observations deleted)
+
+{com}.         drop _merge 
+{txt}
+{com}. 
+. 
+. capture confirm file hheduc.dta
+{txt}
+{com}. 
+. ** .. if it does, delete program
+. if _rc == 0 {c -(}
+.     di "File exists, deleting ..."
+{res}File exists, deleting ...
+{com}.     erase hheduc.dta
+. {c )-}
+{txt}
+{com}. 
+. ** .. else, show error code (but continue)
+. else {c -(}
+.     capture noisily error _rc
+.     di "File keeps running though..."
+. {c )-}
+{txt}
+{com}. 
+. tab hhfemale , missing // diagnostics 
+
+   {txt}hhfemale {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}    181,108       88.53       88.53
+{txt}          1 {c |}{res}     23,446       11.46       99.99
+{txt}          . {c |}{res}         15        0.01      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}    204,569      100.00
+{txt}
+{com}. tab hhhead , missing // diagnostics 
+
+     {txt}hhhead {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}    162,413       79.39       79.39
+{txt}          1 {c |}{res}     42,155       20.61      100.00
+{txt}          . {c |}{res}          1        0.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}    204,569      100.00
+{txt}
+{com}. 
+. 
+. 
+. g privsch = inlist( cs3x, 4 )
+{txt}
+{com}. replace privsch = . if missing( cs3x )
+{txt}(149,961 real changes made, 149,961 to missing)
+
+{com}. 
+. tab cs3x privsch, missing // diagnostics 
+
+                      {txt}{c |}             privsch
+  EQ4 2.4 School type {c |}         0          1          . {c |}     Total
+{hline 22}{c +}{hline 33}{c +}{hline 10}
+                EGS 1 {c |}{res}       372          0          0 {txt}{c |}{res}       372 
+{txt}         Government 2 {c |}{res}    27,957          0          0 {txt}{c |}{res}    27,957 
+{txt}        Govt. Aided 3 {c |}{res}     2,306          0          0 {txt}{c |}{res}     2,306 
+{txt}            Private 4 {c |}{res}         0     17,306          0 {txt}{c |}{res}    17,306 
+{txt}            Convent 5 {c |}{res}       452          0          0 {txt}{c |}{res}       452 
+{txt}           Madrassa 6 {c |}{res}       297          0          0 {txt}{c |}{res}       297 
+{txt}  Other/Open school 7 {c |}{res}       145          0          0 {txt}{c |}{res}       145 
+{txt}     Junior college 8 {c |}{res}         2          0          0 {txt}{c |}{res}         2 
+{txt}            College 9 {c |}{res}     4,953          0          0 {txt}{c |}{res}     4,953 
+{txt}      Postgraduate 10 {c |}{res}       218          0          0 {txt}{c |}{res}       218 
+{txt}   Technical Inst. 11 {c |}{res}       175          0          0 {txt}{c |}{res}       175 
+{txt}Private vocational pr {c |}{res}       272          0          0 {txt}{c |}{res}       272 
+{txt}Govt. vocational prog {c |}{res}       153          0          0 {txt}{c |}{res}       153 
+{txt}                    . {c |}{res}         0          0    149,961 {txt}{c |}{res}   149,961 
+{txt}{hline 22}{c +}{hline 33}{c +}{hline 10}
+                Total {c |}{res}    37,302     17,306    149,961 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. 
+. 
+. g teacher_absence = inlist( ch6 , 2, 3 ) 
+{txt}
+{com}. replace teacher_absence = . if missing( ch6 )
+{txt}(191,226 real changes made, 191,226 to missing)
+
+{com}. 
+. tab ch6 teacher_absence , missing // diagnostics 
+
+    {txt}Is Teacher {c |}         teacher_absence
+       absent? {c |}         0          1          . {c |}     Total
+{hline 15}{c +}{hline 33}{c +}{hline 10}
+Rarely/Never 1 {c |}{res}     8,584          0          0 {txt}{c |}{res}     8,584 
+{txt}   Sometimes 2 {c |}{res}         0      4,204          0 {txt}{c |}{res}     4,204 
+{txt}       Often 3 {c |}{res}         0        555          0 {txt}{c |}{res}       555 
+{txt}             . {c |}{res}         0          0    191,226 {txt}{c |}{res}   191,226 
+{txt}{hline 15}{c +}{hline 33}{c +}{hline 10}
+         Total {c |}{res}     8,584      4,759    191,226 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. 
+. 
+. gen adolescents = inrange( age, 8, 11 ) // adolescents
+{txt}
+{com}.         replace adolescents = . if missing( age ) 
+{txt}(4 real changes made, 4 to missing)
+
+{com}.         tab adolescents , missing
+
+{txt}adolescents {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}    189,863       92.81       92.81
+{txt}          1 {c |}{res}     14,702        7.19      100.00
+{txt}          . {c |}{res}          4        0.00      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}    204,569      100.00
+{txt}
+{com}. 
+. gen read = inlist( ta7lvl, 3, 4 )
+{txt}
+{com}.         replace read = . if missing( ta7lvl ) 
+{txt}(192,712 real changes made, 192,712 to missing)
+
+{com}.         tab read ta7lvl , missing 
+
+           {txt}{c |}                   HQ34 26.8 Test: Reading level
+      read {c |} Cannot re  Letters 1    Words 2  Paragraph    Story 4          . {c |}     Total
+{hline 11}{c +}{hline 66}{c +}{hline 10}
+         0 {c |}{res}     1,306      1,650      2,412          0          0          0 {txt}{c |}{res}     5,368 
+{txt}         1 {c |}{res}         0          0          0      2,276      4,213          0 {txt}{c |}{res}     6,489 
+{txt}         . {c |}{res}         0          0          0          0          0    192,712 {txt}{c |}{res}   192,712 
+{txt}{hline 11}{c +}{hline 66}{c +}{hline 10}
+     Total {c |}{res}     1,306      1,650      2,412      2,276      4,213    192,712 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. gen write = inlist( ta9lvl, 1, 2 )
+{txt}
+{com}.         replace write = . if missing( ta9lvl ) 
+{txt}(192,832 real changes made, 192,832 to missing)
+
+{com}.         tab write ta9lvl , missing 
+
+           {txt}{c |}       HQ34 26.10 Test: Writing level
+     write {c |} Cannot wr  1-2 mista  No mistak          . {c |}     Total
+{hline 11}{c +}{hline 44}{c +}{hline 10}
+         0 {c |}{res}     2,936          0          0          0 {txt}{c |}{res}     2,936 
+{txt}         1 {c |}{res}         0      4,315      4,486          0 {txt}{c |}{res}     8,801 
+{txt}         . {c |}{res}         0          0          0    192,832 {txt}{c |}{res}   192,832 
+{txt}{hline 11}{c +}{hline 44}{c +}{hline 10}
+     Total {c |}{res}     2,936      4,315      4,486    192,832 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. gen math = inlist( ta8lvl, 2, 3 )
+{txt}
+{com}.         replace math = . if missing( ta8lvl ) 
+{txt}(192,763 real changes made, 192,763 to missing)
+
+{com}.         tab math ta8lvl , missing 
+
+           {txt}{c |}               HQ34 26.9 Test: Math level
+      math {c |} Cannot re  Numbers 1  Subtracti  Division           . {c |}     Total
+{hline 11}{c +}{hline 55}{c +}{hline 10}
+         0 {c |}{res}     1,848      4,252          0          0          0 {txt}{c |}{res}     6,100 
+{txt}         1 {c |}{res}         0          0      3,558      2,148          0 {txt}{c |}{res}     5,706 
+{txt}         . {c |}{res}         0          0          0          0    192,763 {txt}{c |}{res}   192,763 
+{txt}{hline 11}{c +}{hline 55}{c +}{hline 10}
+     Total {c |}{res}     1,848      4,252      3,558      2,148    192,763 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. 
+. gen agematch_ed5x = 1 // age-grade match using ed5x 
+{txt}
+{com}.         replace agematch_ed5x = 0 if !missing( ed5x ) & age - ed5x > 6
+{txt}(151,716 real changes made)
+
+{com}.         replace agematch_ed5x = . if  missing( ed5x ) | age - ed5x < 4 
+{txt}(14,403 real changes made, 14,403 to missing)
+
+{com}. 
+. gen agematch_cs5x = 1 // age-grade match using cs5x 
+{txt}
+{com}.         replace agematch_cs5x = 0 if !missing( cs5x ) & age - cs5x > 6
+{txt}(12,199 real changes made)
+
+{com}.         replace agematch_cs5x = . if  missing( cs5x ) | age - cs5x < 4 
+{txt}(153,350 real changes made, 153,350 to missing)
+
+{com}. 
+. recode urban (0 = 1) (1 = 0), gen( rural ) // rural dummy
+{txt}(204,568 differences between {bf:urban} and {bf:rural})
+
+{com}.         tab rural urban , missing
+
+ {txt}RECODE of {c |}
+     urban {c |}
+    (Urban {c |}
+ residence {c |}
+      from {c |}
+    census {c |} Urban residence from census 2011
+     2011) {c |}   rural 0    urban 1          . {c |}     Total
+{hline 11}{c +}{hline 33}{c +}{hline 10}
+         0 {c |}{res}         0     69,450          0 {txt}{c |}{res}    69,450 
+{txt}         1 {c |}{res}   135,118          0          0 {txt}{c |}{res}   135,118 
+{txt}         . {c |}{res}         0          0          1 {txt}{c |}{res}         1 
+{txt}{hline 11}{c +}{hline 33}{c +}{hline 10}
+     Total {c |}{res}   135,118     69,450          1 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. recode female (0 = 1) (1 = 0), gen( male ) // male dummy 
+{txt}(204,568 differences between {bf:female} and {bf:male})
+
+{com}.         tab male female , missing 
+
+ {txt}RECODE of {c |}              female
+    female {c |}         0          1          . {c |}     Total
+{hline 11}{c +}{hline 33}{c +}{hline 10}
+         0 {c |}{res}         0    102,506          0 {txt}{c |}{res}   102,506 
+{txt}         1 {c |}{res}   102,062          0          0 {txt}{c |}{res}   102,062 
+{txt}         . {c |}{res}         0          0          1 {txt}{c |}{res}         1 
+{txt}{hline 11}{c +}{hline 33}{c +}{hline 10}
+     Total {c |}{res}   102,062    102,506          1 {txt}{c |}{res}   204,569 
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. 
+. // transmission length density: length of transmission lines per square kilometer
+. gen tlinesdensity1 = lengthlines / area_sqkm 
+{txt}(6,511 missing values generated)
+
+{com}.         replace tlinesdensity1 = . if missing( lengthlines ) | missing( area_sqkm )
+{txt}(0 real changes made)
+
+{com}.         sum tlinesdensity1 , detail
+
+                       {txt}tlinesdensity1
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res}  121.379              0
+{txt}10%    {res} 195.8638              0       {txt}Obs         {res}    198,058
+{txt}25%    {res} 288.4549              0       {txt}Sum of wgt. {res}    198,058
+
+{txt}50%    {res} 373.1686                      {txt}Mean          {res} 379.7464
+                        {txt}Largest       Std. dev.     {res} 169.2415
+{txt}75%    {res} 472.6749        3568.08
+{txt}90%    {res} 557.2495        3568.08       {txt}Variance      {res} 28642.69
+{txt}95%    {res} 647.7496        3568.08       {txt}Skewness      {res} 4.422705
+{txt}99%    {res} 716.9448        3568.08       {txt}Kurtosis      {res} 85.51235
+{txt}
+{com}.         nmissing tlinesdensity1 
+
+{txt}tlinesdens~1{col 16}{res}  6511
+{txt}
+{com}. 
+. // transmission length density: length of transmission lines per capita
+. gen tlinesdensity2 = lengthlines / pop 
+{txt}(6,511 missing values generated)
+
+{com}.         replace tlinesdensity2 = . if missing( lengthlines ) | missing( pop )
+{txt}(0 real changes made)
+
+{com}.         sum tlinesdensity2 , detail
+
+                       {txt}tlinesdensity2
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}        0              0
+{txt} 5%    {res} .1210281              0
+{txt}10%    {res} .2565219              0       {txt}Obs         {res}    198,058
+{txt}25%    {res} .4912009              0       {txt}Sum of wgt. {res}    198,058
+
+{txt}50%    {res} .7547225                      {txt}Mean          {res} .8756189
+                        {txt}Largest       Std. dev.     {res} .5393319
+{txt}75%    {res} 1.233886       2.875237
+{txt}90%    {res} 1.646175       2.875237       {txt}Variance      {res} .2908789
+{txt}95%    {res} 1.865037       2.875237       {txt}Skewness      {res} .6468841
+{txt}99%    {res} 2.200399       2.875237       {txt}Kurtosis      {res} 3.127604
+{txt}
+{com}.         nmissing tlinesdensity2 
+
+{txt}tlinesdens~2{col 16}{res}  6511
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. // combining states ... 
+. //              - to few sample between
+. //------------------------------------------------------------------------------
+. 
+. clonevar stid = stateid // make orginal copy ... 
+{txt}
+{com}. 
+. tabulate stid // before combining states ... 
+
+           {txt}State code {c |}      Freq.     Percent        Cum.
+{hline 22}{c +}{hline 35}
+   Jammu & Kashmir 01 {c |}{res}      4,125        2.02        2.02
+{txt}  Himachal Pradesh 02 {c |}{res}      6,612        3.23        5.25
+{txt}            Punjab 03 {c |}{res}      8,447        4.13        9.38
+{txt}        Chandigarh 04 {c |}{res}        358        0.18        9.55
+{txt}       Uttarakhand 05 {c |}{res}      2,340        1.14       10.70
+{txt}           Haryana 06 {c |}{res}      9,568        4.68       15.37
+{txt}             Delhi 07 {c |}{res}      4,636        2.27       17.64
+{txt}         Rajasthan 08 {c |}{res}     14,340        7.01       24.65
+{txt}     Uttar Pradesh 09 {c |}{res}     21,546       10.53       35.18
+{txt}             Bihar 10 {c |}{res}      8,495        4.15       39.33
+{txt}            Sikkim 11 {c |}{res}        503        0.25       39.58
+{txt} Arunachal Pradesh 12 {c |}{res}        668        0.33       39.91
+{txt}          Nagaland 13 {c |}{res}        508        0.25       40.16
+{txt}           Manipur 14 {c |}{res}        481        0.24       40.39
+{txt}           Mizoram 15 {c |}{res}        347        0.17       40.56
+{txt}           Tripura 16 {c |}{res}        919        0.45       41.01
+{txt}         Meghalaya 17 {c |}{res}        686        0.34       41.34
+{txt}             Assam 18 {c |}{res}      4,651        2.27       43.62
+{txt}       West Bengal 19 {c |}{res}     10,571        5.17       48.79
+{txt}         Jharkhand 20 {c |}{res}      4,442        2.17       50.96
+{txt}            Orissa 21 {c |}{res}     10,023        4.90       55.86
+{txt}      Chhattisgarh 22 {c |}{res}      6,323        3.09       58.95
+{txt}    Madhya Pradesh 23 {c |}{res}     15,163        7.41       66.36
+{txt}           Gujarat 24 {c |}{res}      9,364        4.58       70.94
+{txt}       Daman & Diu 25 {c |}{res}        272        0.13       71.07
+{txt}Dadra+Nagar Haveli 26 {c |}{res}        314        0.15       71.22
+{txt}       Maharashtra 27 {c |}{res}     15,984        7.81       79.04
+{txt}    Andhra Pradesh 28 {c |}{res}      9,104        4.45       83.49
+{txt}         Karnataka 29 {c |}{res}     18,190        8.89       92.38
+{txt}               Goa 30 {c |}{res}        757        0.37       92.75
+{txt}            Kerala 32 {c |}{res}      6,780        3.31       96.06
+{txt}        Tamil Nadu 33 {c |}{res}      7,634        3.73       99.80
+{txt}       Pondicherry 34 {c |}{res}        418        0.20      100.00
+{txt}{hline 22}{c +}{hline 35}
+                Total {c |}{res}    204,569      100.00
+{txt}
+{com}. 
+. // 1. combine all northeast states 
+. // Arunachal, Meghalaya, Manipur, Nagaland, Tripura, Sikkim, & Mizoram ---> with Assam 
+. 
+. replace stid = 18 if inlist( stid, 12, 17, 14, 13, 16, 11, 15 ) 
+{txt}(4,112 real changes made)
+
+{com}. 
+. // 2. combine Dadra Nagar Haveli & Goa ---> with Maharastra
+. 
+. replace stid = 27 if inlist( stid, 26, 30 ) 
+{txt}(1,071 real changes made)
+
+{com}. 
+. // 3. combine Daman Diu ---> with Gujarat
+. 
+. replace stid = 24 if inlist( stid, 25 ) 
+{txt}(272 real changes made)
+
+{com}. 
+. // 4. combine Pondicherry ---> with Tamil Nadu
+. 
+. replace stid = 33 if inlist( stid, 34 ) 
+{txt}(418 real changes made)
+
+{com}. 
+. tabulate stid // after combining states ... 
+
+           {txt}State code {c |}      Freq.     Percent        Cum.
+{hline 22}{c +}{hline 35}
+   Jammu & Kashmir 01 {c |}{res}      4,125        2.02        2.02
+{txt}  Himachal Pradesh 02 {c |}{res}      6,612        3.23        5.25
+{txt}            Punjab 03 {c |}{res}      8,447        4.13        9.38
+{txt}        Chandigarh 04 {c |}{res}        358        0.18        9.55
+{txt}       Uttarakhand 05 {c |}{res}      2,340        1.14       10.70
+{txt}           Haryana 06 {c |}{res}      9,568        4.68       15.37
+{txt}             Delhi 07 {c |}{res}      4,636        2.27       17.64
+{txt}         Rajasthan 08 {c |}{res}     14,340        7.01       24.65
+{txt}     Uttar Pradesh 09 {c |}{res}     21,546       10.53       35.18
+{txt}             Bihar 10 {c |}{res}      8,495        4.15       39.33
+{txt}             Assam 18 {c |}{res}      8,763        4.28       43.62
+{txt}       West Bengal 19 {c |}{res}     10,571        5.17       48.79
+{txt}         Jharkhand 20 {c |}{res}      4,442        2.17       50.96
+{txt}            Orissa 21 {c |}{res}     10,023        4.90       55.86
+{txt}      Chhattisgarh 22 {c |}{res}      6,323        3.09       58.95
+{txt}    Madhya Pradesh 23 {c |}{res}     15,163        7.41       66.36
+{txt}           Gujarat 24 {c |}{res}      9,636        4.71       71.07
+{txt}       Maharashtra 27 {c |}{res}     17,055        8.34       79.41
+{txt}    Andhra Pradesh 28 {c |}{res}      9,104        4.45       83.86
+{txt}         Karnataka 29 {c |}{res}     18,190        8.89       92.75
+{txt}            Kerala 32 {c |}{res}      6,780        3.31       96.06
+{txt}        Tamil Nadu 33 {c |}{res}      8,052        3.94      100.00
+{txt}{hline 22}{c +}{hline 35}
+                Total {c |}{res}    204,569      100.00
+{txt}
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // label values ... 
+. //------------------------------------------------------------------------------
+. 
+. label define yesno 0 "NO" 1 "YES" , replace
+{txt}
+{com}. 
+. local yesnovars adivasi adolescents agematch_ed5x agematch_cs5x brahmin csj dalit elecfree elecoth elecpay elecqual1 elecqual2 female forward fu1 fu12005 goodat hhfemale hhhead male married math muslim othback perfectat read rural teacher_absence wkany1 write 
+{txt}
+{com}. 
+. foreach k of local yesnovars {c -(}
+{txt}  2{com}.         label values `k' yesno
+{txt}  3{com}. {c )-}
+{txt}
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // label variables ... 
+. //------------------------------------------------------------------------------
+. 
+. label variable adivasi             "Adivasi (Yes/No)" 
+{txt}
+{com}. label variable adolescents         "Adolescents (Yes/No)" 
+{txt}
+{com}. label variable age                 "Age" 
+{txt}
+{com}. label variable agematch_ed5x       "Age-grade match ED5X (Yes/No)" 
+{txt}
+{com}. label variable agematch_cs5x       "Age-grade match CS5X (Yes/No)" 
+{txt}
+{com}. label variable baseyear            "Baseyear" 
+{txt}
+{com}. label variable brahmin             "Brahmin (Yes/No)" 
+{txt}
+{com}. label variable copc                "Consumption per capita" 
+{txt}
+{com}. label variable copc1               "Log Consumption per capita" 
+{txt}
+{com}. label variable cs11x               "Days/month absent" 
+{txt}
+{com}. label variable cs5x                "Standard (yrs)" 
+{txt}
+{com}. label variable csj                 "Christian, Sikh, Jain (Yes/No)" 
+{txt}
+{com}. label variable dalit               "Dalit (Yes/No)" 
+{txt}
+{com}. label variable ed3x                "Attended school" 
+{txt}
+{com}. label variable ed4x                "Enrolled now" 
+{txt}
+{com}. label variable ed5x                "Completed Years" 
+{txt}
+{com}. label variable elecfree            "Electricity: Free (Yes/No)" 
+{txt}
+{com}. label variable elecoth             "Electricity: Other (Yes/No)" 
+{txt}
+{com}. label variable elecpay             "Electricity: Paid (Yes/No)" 
+{txt}
+{com}. label variable elecqual1           "Electricity: quality (fu1a > median)"
+{txt}
+{com}. label variable elecqual2           "Electricity: quality (fu1a > hourselec)"
+{txt}
+{com}. label variable elecqual3           "Electricity: quality (using fu1, fu1a > 18)"
+{txt}
+{com}. label variable elecqual4           "Electricity: quality (using fu1, fu1a > hourselec)"
+{txt}
+{com}. label variable feduc               "Father's education" 
+{txt}
+{com}. label variable female              "Female dummy (Yes/No)" 
+{txt}
+{com}. label variable forward             "Forward caste (Yes/No)" 
+{txt}
+{com}. label variable fu1                 "2012 Electricity (Yes/No)" 
+{txt}
+{com}. label variable fu12005             "2005 Electricity (Yes/No)" 
+{txt}
+{com}. label variable fu1a                "Electricity: N hours" 
+{txt}
+{com}. label variable fu1c                "Electricity: Rupees" 
+{txt}
+{com}. label variable goodat              "Good Attendance (Yes/No)" 
+{txt}
+{com}. label variable govtsch_mdm         "Prop of govt. schools w/ midday meals in village" 
+{txt}
+{com}. label variable hhage               "Age of HH head" 
+{txt}
+{com}. label variable hhassets            "HH goods and housing" 
+{txt}
+{com}. label variable hhassets1           "Log HH Assets" 
+{txt}
+{com}. label variable hhed5adu            "Highest educ adult" 
+{txt}
+{com}. label variable hhed5f              "Highest educ female" 
+{txt}
+{com}. label variable hhed5m              "Highest educ male" 
+{txt}
+{com}. label variable hheduc              "Education of HH head" 
+{txt}
+{com}. label variable hhfemale            "Female HH head (Yes/No)" 
+{txt}
+{com}. label variable hhhead              "HH head (Yes/No)" 
+{txt}
+{com}. label variable income              "Total income" 
+{txt}
+{com}. label variable income1             "Log Total income" 
+{txt}
+{com}. label variable incomepc            "Total income-per-capita" 
+{txt}
+{com}. label variable incomepc1           "Log Total income-per-capita" 
+{txt}
+{com}. label variable tlinesdensity1      "Trasmission line length density - per sqkm" 
+{txt}
+{com}. label variable tlinesdensity2      "Trasmission line length density - per capita" 
+{txt}
+{com}. label variable male                "Male dummy (Yes/No)" 
+{txt}
+{com}. label variable married             "Marital Status (Yes/No)" 
+{txt}
+{com}. label variable math                "Numeracy skill (Yes/No)" 
+{txt}
+{com}. label variable mdm                 "Prop of schools w/ midday meals in village" 
+{txt}
+{com}. label variable meduc               "Mother's education" 
+{txt}
+{com}. label variable muslim              "Muslim (Yes/No)" 
+{txt}
+{com}. label variable nadults             "N adults in HH" 
+{txt}
+{com}. label variable nchildren           "N children in HH" 
+{txt}
+{com}. label variable npersons            "N in HH" 
+{txt}
+{com}. label variable nteens              "N teens in HH" 
+{txt}
+{com}. label variable othback             "Oth background caste (Yes/No)" 
+{txt}
+{com}. label variable perfectat           "Perfect Attendance (Yes/No)" 
+{txt}
+{com}. label variable poor                "Poverty" 
+{txt}
+{com}. label variable privsch             "Private School dummy" 
+{txt}
+{com}. label variable privsch_mdm         "Prop of priv. schools w/ midday meals in village" 
+{txt}
+{com}. label variable read                "Reading skill (Yes/No)" 
+{txt}
+{com}. label variable rural               "RuraL dummy (Yes/No)" 
+{txt}
+{com}. label variable teacher_absence     "Teacher absence (Sometimes/Often = 1, else = 0) (Yes/No)" 
+{txt}
+{com}. label variable urban               "Urban dummy (Yes/No)" 
+{txt}
+{com}. label variable vi4a                "Proportion of households with electricity in the village" 
+{txt}
+{com}. label variable wkany               "Working status (any)" 
+{txt}
+{com}. label variable wkany1              "Working status (any), redefined (Yes/No)" 
+{txt}
+{com}. label variable write               "Writing skill (Yes/No)" 
+{txt}
+{com}. 
+. label variable _merge_ih           "merge summary: individual + household files" 
+{txt}
+{com}. label variable _merge_ihs          "merge summary: individual + household + school files" 
+{txt}
+{com}. label variable _merge_ihsv         "merge summary: individual + household + school + village files" 
+{txt}
+{com}. label variable _merge_census       "merge summary: with census + transmission line data files" 
+{txt}
+{com}. 
+. format mdm govtsch_mdm privsch_mdm %9.6f
+{txt}
+{com}. format idhh caseid %20.0f
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. // house cleaning ... 
+. //------------------------------------------------------------------------------
+. 
+. local dropvars ro3x ro4x ro6x fatherid motherid nadultm nadultf nchildm nchildf nteenm nteenf hhed5adult hhed5m hhed5f nteens nadults area_sqkm nlines lengthlines
+{txt}
+{com}. 
+. drop `dropvars'
+{txt}
+{com}. 
+. local outfile 36151
+{txt}
+{com}. save `outfile', replace
+{txt}{p 0 4 2}
+(file {bf}
+36151.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+36151.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. local list : dir . files "*Data_out.dta"
+{txt}
+{com}. foreach f of local list {c -(}
+{txt}  2{com}.     capture noisily erase "`f'"
+{txt}  3{com}. {c )-}
+{txt}
+{com}. 
+. mi erase temp // delete temp file 
+{res}{txt}{p}(file
+temp.dta
+erased)
+{p_end}
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // describe variables ... 
+. //------------------------------------------------------------------------------
+. 
+. describe `r(varlist)'
+
+{txt}Contains data from {res}36151.dta
+{txt} Observations:{res}       204,569                  India Human Development Survey-II (IHDS-II), 2011-12, Individual
+{txt}    Variables:{res}           151                  24 May 2023 23:22
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:age            }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}Age{p_end}
+{p 0 48}{bind:caseid         }{txt}{bind: double  }{bind:{txt}%20.0f    }{space 1}{bind:         }{bind:  }{res}{res}Person id, unique 12 byte{p_end}
+{p 0 48}{bind:ch22x          }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}School ID{p_end}
+{p 0 48}{bind:ch6x           }{txt}{bind: int     }{bind:{txt}%14.0f    }{space 1}{bind:CH6      }{bind:  }{res}{res}Is Teacher absent?{p_end}
+{p 0 48}{bind:copc           }{txt}{bind: double  }{bind:{txt}%15.7f    }{space 1}{bind:         }{bind:  }{res}{res}Consumption per capita{p_end}
+{p 0 48}{bind:cs10x          }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ4 2.12 private Tuition hours/week{p_end}
+{p 0 48}{bind:cs11x          }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}Days/month absent{p_end}
+{p 0 48}{bind:cs3x           }{txt}{bind: int     }{bind:{txt}%31.0f    }{space 1}{bind:CS4      }{bind:  }{res}{res}EQ4 2.4 School type{p_end}
+{p 0 48}{bind:cs4x           }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ4 2.5 School distance (Km){p_end}
+{p 0 48}{bind:cs5x           }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:CS6      }{bind:  }{res}{res}Standard (yrs){p_end}
+{p 0 48}{bind:cs8x           }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ4 2.10 School hours/week{p_end}
+{p 0 48}{bind:cs9x           }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ4 2.11 Homework hours/week{p_end}
+{p 0 48}{bind:deflator       }{txt}{bind: double  }{bind:{txt}%15.13f   }{space 1}{bind:         }{bind:  }{res}{res}Deflator for converting 2012 prices, CPI based, month adj.{p_end}
+{p 0 48}{bind:dist01         }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}H1sp: District ID Census 2001{p_end}
+{p 0 48}{bind:distid         }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}District code{p_end}
+{p 0 48}{bind:district       }{txt}{bind: int     }{bind:{txt}%27.0f    }{space 1}{bind:DISTRICT }{bind:  }{res}{res}2001 Census state id + district id, labeled{p_end}
+{p 0 48}{bind:ed3x           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:ED4      }{bind:  }{res}{res}Attended school{p_end}
+{p 0 48}{bind:ed4x           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:ED5      }{bind:  }{res}{res}Enrolled now{p_end}
+{p 0 48}{bind:ed5x           }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:ED6      }{bind:  }{res}{res}Completed Years{p_end}
+{p 0 48}{bind:groups8x       }{txt}{bind: int     }{bind:{txt}%23.0f    }{space 1}{bind:GROUPS   }{bind:  }{res}{res}HQ3 1.13-15 Caste & religion{p_end}
+{p 0 48}{bind:hhassets       }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HH goods and housing{p_end}
+{p 0 48}{bind:hhid           }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}Household ID (3-digit){p_end}
+{p 0 48}{bind:hhsplitid      }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}Split household ID{p_end}
+{p 0 48}{bind:idhh           }{txt}{bind: double  }{bind:{txt}%20.0f    }{space 1}{bind:         }{bind:  }{res}{res}Household id, unique 10 byte string{p_end}
+{p 0 48}{bind:idpsu          }{txt}{bind: double  }{bind:{txt}%6.0f     }{space 1}{bind:         }{bind:  }{res}{res}PSU id unique 6 digit long int =cluster{p_end}
+{p 0 48}{bind:idvillage      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Village ID{p_end}
+{p 0 48}{bind:income         }{txt}{bind: double  }{bind:{txt}%15.6f    }{space 1}{bind:         }{bind:  }{res}{res}Total income{p_end}
+{p 0 48}{bind:incomepc       }{txt}{bind: double  }{bind:{txt}%15.7f    }{space 1}{bind:         }{bind:  }{res}{res}Total income-per-capita{p_end}
+{p 0 48}{bind:nchildren      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}N children in HH{p_end}
+{p 0 48}{bind:npersons       }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}N in HH{p_end}
+{p 0 48}{bind:personid       }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ4 2.1 Roster ID within 2012 household{p_end}
+{p 0 48}{bind:psuid          }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}PSU: village/neighborhood code{p_end}
+{p 0 48}{bind:ro7x           }{txt}{bind: int     }{bind:{txt}%20.0f    }{space 1}{bind:RO7      }{bind:  }{res}{res}HQ4 2.7 Primary Activity Status{p_end}
+{p 0 48}{bind:sm2x           }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ12 8.3 Short Term Morbidity Days ill last 30 days{p_end}
+{p 0 48}{bind:smc            }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:SM5      }{bind:  }{res}{res}EQ12 8.5 Short Term Morbidity Cough last 30 days{p_end}
+{p 0 48}{bind:smcb           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:SM6      }{bind:  }{res}{res}EQ12 8.6 Short Term Morbidity Cough with short breaths{p_end}
+{p 0 48}{bind:smd            }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:SM7      }{bind:  }{res}{res}EQ12 8.7 Diarrhea{p_end}
+{p 0 48}{bind:smf            }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:SM4      }{bind:  }{res}{res}EQ12 8.4 Short Term Morbidity Fever last 30 days{p_end}
+{p 0 48}{bind:stateid        }{txt}{bind: int     }{bind:{txt}%21.0f    }{space 1}{bind:STATEID  }{bind:  }{res}{res}State code{p_end}
+{p 0 48}{bind:ta3x           }{txt}{bind: int     }{bind:{txt}%18.0f    }{space 1}{bind:TA3      }{bind:  }{res}{res}HQ34 26.3 Test child: Ever school{p_end}
+{p 0 48}{bind:ta4x           }{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ34 26.4 Test child: Class{p_end}
+{p 0 48}{bind:ta6x           }{txt}{bind: int     }{bind:{txt}%17.0f    }{space 1}{bind:TA6      }{bind:  }{res}{res}HQ34 26.6 Test child: Teacher nice{p_end}
+{p 0 48}{bind:ta7lang        }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:TA8A     }{bind:  }{res}{res}HQ34 26.8 Test: Reading language{p_end}
+{p 0 48}{bind:ta7lvl         }{txt}{bind: int     }{bind:{txt}%13.0f    }{space 1}{bind:TA8B     }{bind:  }{res}{res}HQ34 26.8 Test: Reading level{p_end}
+{p 0 48}{bind:ta8lang        }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:TA9A     }{bind:  }{res}{res}HQ34 26.9 Test: Math language{p_end}
+{p 0 48}{bind:ta8lvl         }{txt}{bind: int     }{bind:{txt}%18.0f    }{space 1}{bind:TA9B     }{bind:  }{res}{res}HQ34 26.9 Test: Math level{p_end}
+{p 0 48}{bind:ta9lang        }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:TA10A    }{bind:  }{res}{res}HQ34 26.10 Test: Writing language{p_end}
+{p 0 48}{bind:ta9lvl         }{txt}{bind: int     }{bind:{txt}%14.0f    }{space 1}{bind:TA10B    }{bind:  }{res}{res}HQ34 26.10 Test: Writing level{p_end}
+{p 0 48}{bind:urban          }{txt}{bind: int     }{bind:{txt}%7.0f     }{space 1}{txt}URBAN2011{p_end}
+{p 0 48}{space 44}{bind:  }{res}{res}Urban dummy (Yes/No){p_end}
+{p 0 48}{bind:weight         }{txt}{bind: double  }{bind:{txt}%15.8f    }{space 1}{bind:         }{bind:  }{res}{res}Weights for 2012{p_end}
+{p 0 48}{bind:wkany          }{txt}{bind: int     }{bind:{txt}%15.0f    }{space 1}{bind:WKANY5   }{bind:  }{res}{res}Working status (any){p_end}
+{p 0 48}{bind:wkhours        }{txt}{bind: int     }{bind:{txt}%4.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ work hours /year (farm, business, wage|salary){p_end}
+{p 0 48}{bind:wkhrs          }{txt}{bind: int     }{bind:{txt}%4.0f     }{space 1}{bind:         }{bind:  }{res}{res}HQ13 7.5&6.6 Work hours/year -person total{p_end}
+{p 0 48}{bind:ws14           }{txt}{bind: int     }{bind:{txt}%20.0f    }{space 1}{bind:WS14     }{bind:  }{res}{res}HQ13 7.14 Government, NREGA, private{p_end}
+{p 0 48}{bind:feduc          }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:ED6      }{bind:  }{res}{res}Father's education{p_end}
+{p 0 48}{bind:meduc          }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:ED6      }{bind:  }{res}{res}Mother's education{p_end}
+{p 0 48}{bind:cg11x          }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG13     }{bind:  }{res}{res}HQ26 15.13 Own: Electric fan{p_end}
+{p 0 48}{bind:cg15x          }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG17     }{bind:  }{res}{res}HQ26 15.17 Own: Cell phone{p_end}
+{p 0 48}{bind:cg16x          }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG18     }{bind:  }{res}{res}HQ26 15.18 Own: Refrigerator{p_end}
+{p 0 48}{bind:cg19x          }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG22     }{bind:  }{res}{res}HQ26 15.22 Own: Air conditioner{p_end}
+{p 0 48}{bind:cg20x          }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG23     }{bind:  }{res}{res}HQ26 15.23 Own: Washing machine{p_end}
+{p 0 48}{bind:cg21x          }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG24     }{bind:  }{res}{res}HQ26 15.24 Own: Computer{p_end}
+{p 0 48}{bind:cg5x           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG7      }{bind:  }{res}{res}HQ26 15.7 Own: Mixer/grinder{p_end}
+{p 0 48}{bind:cg7x           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG9      }{bind:  }{res}{res}HQ26 15.9 Own: Black & White TV{p_end}
+{p 0 48}{bind:cg8x           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG10     }{bind:  }{res}{res}HQ26 15.10 Own: Colour TV{p_end}
+{p 0 48}{bind:cg9x           }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG11     }{bind:  }{res}{res}HQ26 15.11 Own: Air cooler{p_end}
+{p 0 48}{bind:cga            }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:CG6      }{bind:  }{res}{res}HQ26 15.6 Own: Generator set{p_end}
+{p 0 48}{bind:fma            }{txt}{bind: int     }{bind:{txt}%21.0f    }{space 1}{bind:FM13A    }{bind:  }{res}{res}HQ7 5.13a Irrigation type 1{p_end}
+{p 0 48}{bind:fmb            }{txt}{bind: int     }{bind:{txt}%21.0f    }{space 1}{bind:FM13B    }{bind:  }{res}{res}HQ7 5.13b Irrigation type 2{p_end}
+{p 0 48}{bind:fu1            }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:yesno    }{bind:  }{res}{res}2012 Electricity (Yes/No){p_end}
+{p 0 48}{bind:fu1a           }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}Electricity: N hours{p_end}
+{p 0 48}{bind:fu1b           }{txt}{bind: int     }{bind:{txt}%37.0f    }{space 1}{bind:FU1B     }{bind:  }{res}{res}EQ10 7.1b Electricity Payment{p_end}
+{p 0 48}{bind:fu1c           }{txt}{bind: int     }{bind:{txt}%4.0f     }{space 1}{bind:         }{bind:  }{res}{res}Electricity: Rupees{p_end}
+{p 0 48}{bind:fuelfreq_f     }{txt}{bind: int     }{bind:{txt}%13.0f    }{space 1}{bind:FU14C1   }{bind:  }{res}{res}EQ11 7.14c1 Fuel collection frequency: girls under 15{p_end}
+{p 0 48}{bind:fuelfreq_fadu  }{txt}{bind: int     }{bind:{txt}%13.0f    }{space 1}{bind:FU14A1   }{bind:  }{res}{res}EQ11 7.14a1 Fuel collection frequency: adult women{p_end}
+{p 0 48}{bind:fuelfreq_m     }{txt}{bind: int     }{bind:{txt}%13.0f    }{space 1}{bind:FU14D1   }{bind:  }{res}{res}EQ11 7.14d1 Fuel collection frequency: boys under 15{p_end}
+{p 0 48}{bind:gw             }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Ground Water available (Yes/No){p_end}
+{p 0 48}{bind:mm1c           }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:MM1C     }{bind:  }{res}{res}HQ22 13.1c How often radio: Children{p_end}
+{p 0 48}{bind:mm1w           }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:MM1W     }{bind:  }{res}{res}HQ22 13.1w How often radio: Women{p_end}
+{p 0 48}{bind:mm2c           }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:MM2C     }{bind:  }{res}{res}HQ22 13.2c How often newspaper: Children{p_end}
+{p 0 48}{bind:mm2w           }{txt}{bind: int     }{bind:{txt}%11.0f    }{space 1}{bind:MM2W     }{bind:  }{res}{res}HQ22 13.2w How often newspaper: Women{p_end}
+{p 0 48}{bind:mm4c           }{txt}{bind: int     }{bind:{txt}%20.0f    }{space 1}{bind:MM4C     }{bind:  }{res}{res}HQ22 13.4c TV hrs/day: Children{p_end}
+{p 0 48}{bind:mm4w           }{txt}{bind: int     }{bind:{txt}%20.0f    }{space 1}{bind:MM4W     }{bind:  }{res}{res}HQ22 13.4w TV hrs/day: Women{p_end}
+{p 0 48}{bind:poor           }{txt}{bind: int     }{bind:{txt}%9.0f     }{space 1}{bind:POOR     }{bind:  }{res}{res}Poverty{p_end}
+{p 0 48}{bind:sa4            }{txt}{bind: int     }{bind:{txt}%51.0f    }{space 1}{bind:SA4      }{bind:  }{res}{res}EQ10 6.4 Household Toilet{p_end}
+{p 0 48}{bind:walkfuel_f     }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ11 7.14c2 Fuel collection total time (minutes): girls under 15{p_end}
+{p 0 48}{bind:walkfuel_fadu  }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ11 7.14a2 Fuel collection total time (minutes): adult women{p_end}
+{p 0 48}{bind:walkfuel_m     }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ11 7.14d2 Fuel collection total time (minutes): boys under 15{p_end}
+{p 0 48}{bind:watertime_f    }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ9 5.6c Time spent getting water (minutes/day): girls under 15{p_end}
+{p 0 48}{bind:watertime_fadu }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ9 5.6a Time spent getting water (minutes/day): adult women{p_end}
+{p 0 48}{bind:watertime_m    }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}EQ9 5.6d Time spent getting water (minutes/day): boys under 15{p_end}
+{p 0 48}{bind:wsa            }{txt}{bind: int     }{bind:{txt}%23.0f    }{space 1}{bind:WA1A     }{bind:  }{res}{res}EQ9 5.1a Main water source: normally{p_end}
+{p 0 48}{bind:_merge_ih      }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:_merge   }{bind:  }{res}{res}merge summary: individual + household files{p_end}
+{p 0 48}{bind:govtsch_mdm    }{txt}{bind: double  }{bind:{txt}%9.6f     }{space 1}{bind:         }{bind:  }{res}{res}Prop of govt. schools w/ midday meals in village{p_end}
+{p 0 48}{bind:mdm            }{txt}{bind: double  }{bind:{txt}%9.6f     }{space 1}{bind:         }{bind:  }{res}{res}Prop of schools w/ midday meals in village{p_end}
+{p 0 48}{bind:privsch_mdm    }{txt}{bind: double  }{bind:{txt}%9.6f     }{space 1}{bind:         }{bind:  }{res}{res}Prop of priv. schools w/ midday meals in village{p_end}
+{p 0 48}{bind:_merge_ihs     }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:_merge   }{bind:  }{res}{res}merge summary: individual + household + school files{p_end}
+{p 0 48}{bind:firewood_prc   }{txt}{bind: float   }{bind:{txt}%9.2f     }{space 1}{bind:         }{bind:  }{res}{res}Firewood price (Rs.){p_end}
+{p 0 48}{bind:fyrelec        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Electricity since YYYY{p_end}
+{p 0 48}{bind:healthsubcenter}{txt}{bind: int     }{bind:{txt}%1.0f     }{space 1}{bind:         }{bind:  }{res}{res}VQ11 9.1 Health Subcenter Number{p_end}
+{p 0 48}{bind:hourselec      }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}Hours Per Day Electricity{p_end}
+{p 0 48}{bind:kerosene_prc   }{txt}{bind: float   }{bind:{txt}%9.2f     }{space 1}{bind:         }{bind:  }{res}{res}Kerosene price (Rs.){p_end}
+{p 0 48}{bind:safewater      }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:VI18K    }{bind:  }{res}{res}VQ9 7.18k Safe Drinking Water{p_end}
+{p 0 48}{bind:sanitation     }{txt}{bind: int     }{bind:{txt}%5.0f     }{space 1}{bind:VI18L    }{bind:  }{res}{res}VQ9 7.18l Sanitation/Latrines{p_end}
+{p 0 48}{bind:vi4a           }{txt}{bind: int     }{bind:{txt}%3.0f     }{space 1}{bind:         }{bind:  }{res}{res}Proportion of households with electricity in the village{p_end}
+{p 0 48}{bind:_merge_ihsv    }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:_merge   }{bind:  }{res}{res}merge summary: individual + household + school + village files{p_end}
+{p 0 48}{bind:fu12005        }{txt}{bind: int     }{bind:{txt}%12.0g    }{space 1}{bind:yesno    }{bind:  }{res}{res}2005 Electricity (Yes/No){p_end}
+{p 0 48}{bind:baseyear       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Baseyear{p_end}
+{p 0 48}{bind:pop            }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Population (district-wise){p_end}
+{p 0 48}{bind:pop_sqkm       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Population density (district-wise){p_end}
+{p 0 48}{bind:_merge_census  }{txt}{bind: byte    }{bind:{txt}%23.0g    }{space 1}{bind:_merge   }{bind:  }{res}{res}merge summary: with census + transmission line data files{p_end}
+{p 0 48}{bind:perfectat      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Perfect Attendance (Yes/No){p_end}
+{p 0 48}{bind:goodat         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Good Attendance (Yes/No){p_end}
+{p 0 48}{bind:hhassets1      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Log HH Assets{p_end}
+{p 0 48}{bind:income1        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Log Total income{p_end}
+{p 0 48}{bind:incomepc1      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Log Total income-per-capita{p_end}
+{p 0 48}{bind:copc1          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Log Consumption per capita{p_end}
+{p 0 48}{bind:wkany1         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Working status (any), redefined (Yes/No){p_end}
+{p 0 48}{bind:female         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Female dummy (Yes/No){p_end}
+{p 0 48}{bind:hhhead         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}HH head (Yes/No){p_end}
+{p 0 48}{bind:married        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Marital Status (Yes/No){p_end}
+{p 0 48}{bind:brahmin        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Brahmin (Yes/No){p_end}
+{p 0 48}{bind:forward        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Forward caste (Yes/No){p_end}
+{p 0 48}{bind:othback        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Oth background caste (Yes/No){p_end}
+{p 0 48}{bind:dalit          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Dalit (Yes/No){p_end}
+{p 0 48}{bind:adivasi        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Adivasi (Yes/No){p_end}
+{p 0 48}{bind:muslim         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Muslim (Yes/No){p_end}
+{p 0 48}{bind:csj            }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Christian, Sikh, Jain (Yes/No){p_end}
+{p 0 48}{bind:elecfree       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Electricity: Free (Yes/No){p_end}
+{p 0 48}{bind:elecpay        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Electricity: Paid (Yes/No){p_end}
+{p 0 48}{bind:elecoth        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Electricity: Other (Yes/No){p_end}
+{p 0 48}{bind:elecqual1      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Electricity: quality (fu1a > median){p_end}
+{p 0 48}{bind:elecqual2      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Electricity: quality (fu1a > hourselec){p_end}
+{p 0 48}{bind:elecqual3      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Electricity: quality (using fu1, fu1a > 18){p_end}
+{p 0 48}{bind:elecqual4      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Electricity: quality (using fu1, fu1a > hourselec){p_end}
+{p 0 48}{bind:hhage          }{txt}{bind: int     }{bind:{txt}%2.0f     }{space 1}{bind:         }{bind:  }{res}{res}Age of HH head{p_end}
+{p 0 48}{bind:hheduc         }{txt}{bind: int     }{bind:{txt}%22.0f    }{space 1}{bind:ED6      }{bind:  }{res}{res}Education of HH head{p_end}
+{p 0 48}{bind:hhfemale       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Female HH head (Yes/No){p_end}
+{p 0 48}{bind:privsch        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Private School dummy{p_end}
+{p 0 48}{bind:teacher_absence}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Teacher absence (Sometimes/Often = 1, else = 0) (Yes/No){p_end}
+{p 0 48}{bind:adolescents    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Adolescents (Yes/No){p_end}
+{p 0 48}{bind:read           }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Reading skill (Yes/No){p_end}
+{p 0 48}{bind:write          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Writing skill (Yes/No){p_end}
+{p 0 48}{bind:math           }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Numeracy skill (Yes/No){p_end}
+{p 0 48}{bind:agematch_ed5x  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Age-grade match ED5X (Yes/No){p_end}
+{p 0 48}{bind:agematch_cs5x  }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Age-grade match CS5X (Yes/No){p_end}
+{p 0 48}{bind:rural          }{txt}{bind: int     }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}RuraL dummy (Yes/No){p_end}
+{p 0 48}{bind:male           }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:yesno    }{bind:  }{res}{res}Male dummy (Yes/No){p_end}
+{p 0 48}{bind:tlinesdensity1 }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Trasmission line length density - per sqkm{p_end}
+{p 0 48}{bind:tlinesdensity2 }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Trasmission line length density - per capita{p_end}
+{p 0 48}{bind:stid           }{txt}{bind: int     }{bind:{txt}%21.0f    }{space 1}{bind:STATEID  }{bind:  }{res}{res}State code{p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. 
+. tab _merge_ih     , missing // diagnostics 
+
+         {txt}merge summary: {c |}
+ individual + household {c |}
+                  files {c |}      Freq.     Percent        Cum.
+{hline 24}{c +}{hline 35}
+            Matched (3) {c |}{res}    204,569      100.00      100.00
+{txt}{hline 24}{c +}{hline 35}
+                  Total {c |}{res}    204,569      100.00
+{txt}
+{com}. tab _merge_ihs    , missing // diagnostics 
+
+         {txt}merge summary: {c |}
+ individual + household {c |}
+         + school files {c |}      Freq.     Percent        Cum.
+{hline 24}{c +}{hline 35}
+        Master only (1) {c |}{res}     15,633        7.64        7.64
+{txt}            Matched (3) {c |}{res}    188,936       92.36      100.00
+{txt}{hline 24}{c +}{hline 35}
+                  Total {c |}{res}    204,569      100.00
+{txt}
+{com}. tab _merge_ihsv   , missing // diagnostics 
+
+         {txt}merge summary: {c |}
+ individual + household {c |}
+     + school + village {c |}
+                  files {c |}      Freq.     Percent        Cum.
+{hline 24}{c +}{hline 35}
+        Master only (1) {c |}{res}     70,107       34.27       34.27
+{txt}            Matched (3) {c |}{res}    134,462       65.73      100.00
+{txt}{hline 24}{c +}{hline 35}
+                  Total {c |}{res}    204,569      100.00
+{txt}
+{com}. tab _merge_census , missing // diagnostics 
+
+    {txt}merge summary: with {c |}
+  census + transmission {c |}
+        line data files {c |}      Freq.     Percent        Cum.
+{hline 24}{c +}{hline 35}
+        Master only (1) {c |}{res}      6,511        3.18        3.18
+{txt}            Matched (3) {c |}{res}    198,058       96.82      100.00
+{txt}{hline 24}{c +}{hline 35}
+                  Total {c |}{res}    204,569      100.00
+{txt}
+{com}. 
+. ********** CLOSE OUTPUT
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\36151.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}24 May 2023, 23:22:54
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
