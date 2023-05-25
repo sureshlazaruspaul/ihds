@@ -80,7 +80,7 @@ tlinesdensity1       // Trasmission line length density (Line length per sqkm)
 /*------------------------------------------------------------------------------
  define local macros ...
 ------------------------------------------------------------------------------*/
-local elecvar = " `$electricity' " 
+local elecvar = `" "$electricity" "'
 
 local depvars `" "agematch_ed5x" "read" "math" "write" "' // dependent variables ... 
 
