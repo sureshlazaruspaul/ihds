@@ -117,7 +117,7 @@ ren VMA1         healthsubcenter
 ren VI15L        safewater
 ren VI15M        sanitation
 
-local keepvars idvillage pcthhelec fyrelec hourselec firewood_prc kerosene_prc healthsubcenter safewater sanitation
+local keepvars idvillage VI4A fyrelec hourselec firewood_prc kerosene_prc healthsubcenter safewater sanitation
 local n_vars : word count `keepvars'
 
 keep `keepvars'
