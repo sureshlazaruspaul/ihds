@@ -199,7 +199,9 @@ foreach m of local depvars {
         di    "Education variable: `m'" 
         di    "-----------------------------------------------------------------"
 
-		pe biprobit (`m' = i.`elecvar' `cvars' `ovars' ) ( `elecvar' = `cvars' `ovars' `inst') , vce(robust) 
+		pe cap nois biprobit (`m' = i.`elecvar' `cvars' `ovars' ) ( `elecvar' = `cvars' `ovars' `inst') , vce(robust) 
+
+			if _rc continue
 
 		// AME Margins (check) 
 		di _n "{p}margins, at(`elecvar' = (0 1)) predict(pmarg1) force contrast(atcontrast(rb1._at)).{p_end}" 
