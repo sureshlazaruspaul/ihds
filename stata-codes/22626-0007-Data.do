@@ -118,8 +118,13 @@ ren VI15L        safewater
 ren VI15M        sanitation
 
 local keepvars idvillage pcthhelec fyrelec hourselec firewood_prc kerosene_prc healthsubcenter safewater sanitation
+local n_vars : word count `keepvars'
 
 keep `keepvars'
+
+egen nmiss = rmiss2( `keepvars' ) 
+
+keep if n_vars - nmiss > 1
 
 // rename all variables ... 
 ds idvillage , not
