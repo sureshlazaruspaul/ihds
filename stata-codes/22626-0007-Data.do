@@ -110,7 +110,7 @@ label variable VI4B05       "2005 Electricity since YYYY"
 label variable VI4C         "2005 Hours Per Day Electricity" 
 
 // rename variables 
-ren VI4A         pcthhelec
+*ren VI4A         pcthhelec
 ren VI4B05       fyrelec
 ren VI4C         hourselec
 ren VMA1         healthsubcenter
