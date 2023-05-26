@@ -198,7 +198,9 @@ foreach m of local depvars {
 
 	pe cmp setup
 
-	pe cmp ( `m' = `elecvar' `cvars' `ovars' ) ( `elecvar' = `cvars' `ovars' `inst'), ind($cmp_probit $cmp_probit) qui robust 
+	pe cap nois cmp ( `m' = `elecvar' `cvars' `ovars' ) ( `elecvar' = `cvars' `ovars' `inst'), ind($cmp_probit $cmp_probit) qui robust 
+
+		if _rc continue
 
 	pe replace `m' = 1 
 
