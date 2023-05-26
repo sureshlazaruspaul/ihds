@@ -204,7 +204,7 @@ foreach m of local depvars {
 
 		if _rc continue
 
-		pe rbiprobit tmeffects, tmeff(ate) // marginal effects
+		pe eststo: rbiprobit tmeffects, tmeff(ate) // marginal effects
 
 } 
 
