@@ -1,0 +1,378 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\36151-0009-Data.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}26 May 2023, 00:29:32
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. // set dir for data
+. //------------------------------------------------------------------------------
+. 
+. local dirpath "C:\ihds"
+{txt}
+{com}. 
+. cd `dirpath'
+{res}C:\ihds
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // Some Macros: 
+. //      Program append2empty: append to an empty dataset 
+. //      Program pe: Print Execute with loops
+. //------------------------------------------------------------------------------
+. 
+. capture program drop append2empty
+{txt}
+{com}. program define append2empty
+{txt}  1{com}.         tempvar qwerty // create tempvars 
+{txt}  2{com}.                 gen `qwerty' = 1
+{txt}  3{com}.         append using `1' // append all datasets  
+{txt}  4{com}. end 
+{txt}
+{com}. /*------------------------------------------------------------------------------
+> clear
+> append_empty somedataset
+> ------------------------------------------------------------------------------*/
+. 
+. program define pe
+{txt}  1{com}.         if `"`0'"' != " " {c -(}
+{txt}  2{com}.                 display as text `"`0'"'
+{txt}  3{com}.                 `0'
+{txt}  4{com}.                 display("")
+{txt}  5{com}.         {c )-}
+{txt}  6{com}. end
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // Github url
+. //------------------------------------------------------------------------------
+. 
+. local giturl = "https://raw.githubusercontent.com/sureshlazaruspaul/ihds/main" 
+{txt}
+{com}. 
+. 
+. 
+. //------------------------------------------------------------------------------
+. // read data ... 
+. //------------------------------------------------------------------------------
+. 
+. use "https://www.dropbox.com/s/aevp3m69m80yi1z/36151-0009-Data.dta?dl=1", clear
+{txt}(India Human Development Survey-II (IHDS-II), 2011-12, School Facilities)
+
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // reassign variables by removing formatting ...
+. //------------------------------------------------------------------------------
+. /*
+> foreach v of var * {c -(}
+>         cap label val `v'
+> {c )-}
+> */
+. 
+. 
+. do "`giturl'/supp-codes/36151-0009-Supplemental_syntax.do" // run supplemental file ...
+{txt}
+{com}. /*-------------------------------------------------------------------------*
+>  |                                                                         
+>  |            STATA SUPPLEMENTAL SYNTAX FILE FOR ICPSR 36151
+>  |          INDIA HUMAN DEVELOPMENT SURVEY-II (IHDS-II), 2011-12
+>  |                   (DATASET 0009: SCHOOL FACILITIES)
+>  |
+>  |
+>  | This Stata missing value recode program is provided for optional use with
+>  | the Stata system version of this data file as distributed by ICPSR.
+>  | The program replaces user-defined numeric missing values (e.g., -9)
+>  | with generic system missing "."  Note that Stata allows you to specify
+>  | up to 27 unique missing value codes.  Only variables with user-defined
+>  | missing values are included in this program.
+>  |
+>  | To apply the missing value recodes, users need to first open the
+>  | Stata data file on their system, apply the missing value recodes if
+>  | desired, then save a new copy of the data file with the missing values
+>  | applied.  Users are strongly advised to use a different filename when
+>  | saving the new file.
+>  |
+>  *------------------------------------------------------------------------*/
+. 
+. replace SC14A = . if (SC14A == 88)
+{txt}(9 real changes made, 9 to missing)
+
+{com}. replace PS10C = . if (PS10C == 3)
+{txt}(151 real changes made, 151 to missing)
+
+{com}. replace PS24C = . if (PS24C == 88)
+{txt}(4 real changes made, 4 to missing)
+
+{com}. replace SO34A = . if (SO34A == 8 | SO34A == 9)
+{txt}(952 real changes made, 952 to missing)
+
+{com}. replace SO34B = . if (SO34B == 8 | SO34B == 9)
+{txt}(958 real changes made, 958 to missing)
+
+{com}. replace SO34C = . if (SO34C == 8 | SO34C == 9)
+{txt}(961 real changes made, 961 to missing)
+
+{com}. replace SO34D = . if (SO34D == 8 | SO34D == 9)
+{txt}(956 real changes made, 956 to missing)
+
+{com}. replace SO34E = . if (SO34E == 8 | SO34E == 9)
+{txt}(970 real changes made, 970 to missing)
+
+{com}. replace SO35 = . if (SO35 == 8 | SO35 == 9)
+{txt}(47 real changes made, 47 to missing)
+
+{com}. replace SO42A = . if (SO42A == 9)
+{txt}(444 real changes made, 444 to missing)
+
+{com}. replace SO42B = . if (SO42B == 9)
+{txt}(444 real changes made, 444 to missing)
+
+{com}. replace SO42C = . if (SO42C == 9)
+{txt}(444 real changes made, 444 to missing)
+
+{com}. 
+. 
+. 
+{txt}end of do-file
+
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // transform/calc variables ... 
+. //------------------------------------------------------------------------------
+. 
+. // VILLAGE IDENTIFIER
+. g IDPSU = STATEID * 10000 + DISTID * 100 + PSUID 
+{txt}
+{com}. 
+. // DATA RESTRICTION
+. //      - drop if midday meal information is missing
+. drop if missing( PS10 )
+{txt}(8 observations deleted)
+
+{com}. 
+. // GOVT SCHOOL DUMMY
+. g GOVTSCH = ( SQGOVT == 1 )
+{txt}
+{com}. *replace GOVTSCH = . if missing( SQGOVT )
+. tab SQGOVT GOVTSCH , missing
+
+           {txt}{c |}        GOVTSCH
+  Govt Pvt {c |}         0          1 {c |}     Total
+{hline 11}{c +}{hline 22}{c +}{hline 10}
+      Govt {c |}{res}         0      2,252 {txt}{c |}{res}     2,252 
+{txt}       Pvt {c |}{res}     2,007          0 {txt}{c |}{res}     2,007 
+{txt}{hline 11}{c +}{hline 22}{c +}{hline 10}
+     Total {c |}{res}     2,007      2,252 {txt}{c |}{res}     4,259 
+{txt}
+{com}. 
+. // PRIV SCHOOL DUMMY 
+. g PRIVSCH = ( SQGOVT == 2 )
+{txt}
+{com}. *replace PRIVSCH = . if missing( SQGOVT )
+. tab SQGOVT PRIVSCH , missing
+
+           {txt}{c |}        PRIVSCH
+  Govt Pvt {c |}         0          1 {c |}     Total
+{hline 11}{c +}{hline 22}{c +}{hline 10}
+      Govt {c |}{res}     2,252          0 {txt}{c |}{res}     2,252 
+{txt}       Pvt {c |}{res}         0      2,007 {txt}{c |}{res}     2,007 
+{txt}{hline 11}{c +}{hline 22}{c +}{hline 10}
+     Total {c |}{res}     2,252      2,007 {txt}{c |}{res}     4,259 
+{txt}
+{com}. 
+. // MIDDAY MEAL DUMMY
+. g MDM = ( PS10 == 1 ) 
+{txt}
+{com}. *replace MDM = . if missing( PS10 )
+. tab PS10 MDM , missing
+
+    {txt}10. Do {c |}
+  children {c |}
+  get free {c |}
+   mid day {c |}
+   meal or {c |}          MDM
+free food? {c |}         0          1 {c |}     Total
+{hline 11}{c +}{hline 22}{c +}{hline 10}
+      No 0 {c |}{res}     1,807          0 {txt}{c |}{res}     1,807 
+{txt}     Yes 1 {c |}{res}         0      2,452 {txt}{c |}{res}     2,452 
+{txt}{hline 11}{c +}{hline 22}{c +}{hline 10}
+     Total {c |}{res}     1,807      2,452 {txt}{c |}{res}     4,259 
+{txt}
+{com}. 
+. // GOVT SCHOOL w/ MIDDAY MEAL DUMMY
+. g GOVTSCH_MDM = ( SQGOVT == 1 & PS10 == 1 )
+{txt}
+{com}. *replace GOVTSCH_MDM = . if missing( SQGOVT ) | missing( PS10 )
+. tab SQGOVT GOVTSCH_MDM , missing
+
+           {txt}{c |}      GOVTSCH_MDM
+  Govt Pvt {c |}         0          1 {c |}     Total
+{hline 11}{c +}{hline 22}{c +}{hline 10}
+      Govt {c |}{res}        34      2,218 {txt}{c |}{res}     2,252 
+{txt}       Pvt {c |}{res}     2,007          0 {txt}{c |}{res}     2,007 
+{txt}{hline 11}{c +}{hline 22}{c +}{hline 10}
+     Total {c |}{res}     2,041      2,218 {txt}{c |}{res}     4,259 
+{txt}
+{com}. tab PS10 GOVTSCH_MDM , missing
+
+    {txt}10. Do {c |}
+  children {c |}
+  get free {c |}
+   mid day {c |}
+   meal or {c |}      GOVTSCH_MDM
+free food? {c |}         0          1 {c |}     Total
+{hline 11}{c +}{hline 22}{c +}{hline 10}
+      No 0 {c |}{res}     1,807          0 {txt}{c |}{res}     1,807 
+{txt}     Yes 1 {c |}{res}       234      2,218 {txt}{c |}{res}     2,452 
+{txt}{hline 11}{c +}{hline 22}{c +}{hline 10}
+     Total {c |}{res}     2,041      2,218 {txt}{c |}{res}     4,259 
+{txt}
+{com}. 
+. // PRIV SCHOOL w/ MIDDAY MEAL DUMMY
+. g PRIVSCH_MDM = ( SQGOVT == 2 & PS10 == 1 )
+{txt}
+{com}. *replace PRIVSCH_MDM = . if missing( SQGOVT ) | missing( PS10 )
+. tab SQGOVT PRIVSCH_MDM , missing
+
+           {txt}{c |}      PRIVSCH_MDM
+  Govt Pvt {c |}         0          1 {c |}     Total
+{hline 11}{c +}{hline 22}{c +}{hline 10}
+      Govt {c |}{res}     2,252          0 {txt}{c |}{res}     2,252 
+{txt}       Pvt {c |}{res}     1,773        234 {txt}{c |}{res}     2,007 
+{txt}{hline 11}{c +}{hline 22}{c +}{hline 10}
+     Total {c |}{res}     4,025        234 {txt}{c |}{res}     4,259 
+{txt}
+{com}. tab PS10 PRIVSCH_MDM , missing
+
+    {txt}10. Do {c |}
+  children {c |}
+  get free {c |}
+   mid day {c |}
+   meal or {c |}      PRIVSCH_MDM
+free food? {c |}         0          1 {c |}     Total
+{hline 11}{c +}{hline 22}{c +}{hline 10}
+      No 0 {c |}{res}     1,807          0 {txt}{c |}{res}     1,807 
+{txt}     Yes 1 {c |}{res}     2,218        234 {txt}{c |}{res}     2,452 
+{txt}{hline 11}{c +}{hline 22}{c +}{hline 10}
+     Total {c |}{res}     4,025        234 {txt}{c |}{res}     4,259 
+{txt}
+{com}. 
+. //------------------------------------------------------------------------------
+. 
+. // sum by village 
+. collapse (sum) GOVTSCH PRIVSCH MDM GOVTSCH_MDM PRIVSCH_MDM , by( IDPSU )
+{res}{txt}
+{com}. 
+. // TOTAL NUMBER OF SCHOOLS in VILLAGE
+. g TOTSCH = GOVTSCH + PRIVSCH
+{txt}
+{com}. 
+. // PROP OF SCHOOLS in VILLAGE OFFERING MIDDAY MEALS
+. replace MDM = MDM / TOTSCH
+{txt}(1,905 real changes made)
+
+{com}. replace GOVTSCH_MDM = GOVTSCH_MDM / GOVTSCH 
+{txt}(99 real changes made, 78 to missing)
+
+{com}. replace PRIVSCH_MDM = PRIVSCH_MDM / PRIVSCH
+{txt}(323 real changes made, 317 to missing)
+
+{com}. 
+. local miss2zero MDM GOVTSCH_MDM PRIVSCH_MDM
+{txt}
+{com}. 
+. foreach k of local miss2zero {c -(}
+{txt}  2{com}.         replace `k' = 0 if missing( `k' )
+{txt}  3{com}.                 format `k' %9.4f 
+{txt}  4{com}. {c )-}
+{txt}(0 real changes made)
+(78 real changes made)
+(317 real changes made)
+
+{com}. 
+. 
+. //------------------------------------------------------------------------------
+. // rename variables ... 
+. //------------------------------------------------------------------------------
+. 
+. * none
+. 
+. ********** INDENTIFIER VARIABLES
+. local indvars IDPSU 
+{txt}
+{com}. 
+. ********** SCHOOL VARIABLES
+. local schoolvars MDM GOVTSCH_MDM PRIVSCH_MDM 
+{txt}
+{com}. 
+. 
+. 
+. ********** CHANGE FORMAT OF VARIABLES
+. // destring IDHH, replace
+. 
+. ********** KEEP RELEVANT VARIABLES
+. keep `indvars' `schoolvars' 
+{txt}
+{com}. 
+. 
+. // rename all variables ... 
+. rename *, lower 
+{res}{txt}
+{com}. 
+. // order variables alphabetically ... 
+. order _all, alphabetic
+{txt}
+{com}. 
+. local outfile "`dirpath'\36151-0009-Data_out.dta" 
+{txt}
+{com}. save `outfile', replace
+{txt}{p 0 4 2}
+(file {bf}
+C:\ihds\36151-0009-Data_out.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+C:\ihds\36151-0009-Data_out.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. //------------------------------------------------------------------------------
+. // describe variables ... 
+. //------------------------------------------------------------------------------
+. 
+. describe `r(varlist)'
+
+{txt}Contains data from {res}C:\ihds\36151-0009-Data_out.dta
+{txt} Observations:{res}         2,309                  India Human Development Survey-II (IHDS-II), 2011-12, School Facilities
+{txt}    Variables:{res}             4                  26 May 2023 00:29
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:govtsch_mdm    }{txt}{bind: double  }{bind:{txt}%9.4f     }{space 1}{bind:         }{bind:  }{res}{res}(sum) GOVTSCH_MDM{p_end}
+{p 0 48}{bind:idpsu          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:mdm            }{txt}{bind: double  }{bind:{txt}%9.4f     }{space 1}{bind:         }{bind:  }{res}{res}(sum) MDM{p_end}
+{p 0 48}{bind:privsch_mdm    }{txt}{bind: double  }{bind:{txt}%9.4f     }{space 1}{bind:         }{bind:  }{res}{res}(sum) PRIVSCH_MDM{p_end}
+{txt}{hline}
+Sorted by: {res}idpsu
+{txt}
+{com}. 
+. ********** CLOSE OUTPUT
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\ihds\36151-0009-Data.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}26 May 2023, 00:29:33
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
