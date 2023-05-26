@@ -125,6 +125,7 @@ keep `keepvars'
 egen nmiss = rmiss2( `keepvars' ) 
 
 keep if n_vars - nmiss > 1
+	drop nmiss 
 
 // rename all variables ... 
 ds idvillage , not
