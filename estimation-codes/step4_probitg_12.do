@@ -201,7 +201,7 @@ foreach m of local depvars {
 
         pe probit `m' i.`elecvar' `cvars' `ovars'  , vce( robust ) 
 
-		pe eststo: margins , dydx(`elecvar') // marginal effects
+		pe eststo: margins , dydx(`elecvar') post // marginal effects
 
 } 
 
