@@ -88,7 +88,7 @@ local cvars1 age   female copc1 nchildren hheduc   hhfemale hhage      mdm   pri
 
 local ovars stvars* crvars* // state, caste, religion, year dummies 
 
-local instr `" "vi4a tlinesdensity1" "' // instruments used
+local instr `" $instrvars "' // instruments used
 
 global sex = 0 // 0 = male, 1 = female 
 
