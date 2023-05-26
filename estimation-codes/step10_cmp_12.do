@@ -224,7 +224,7 @@ foreach m of local depvars {
 
 	pe replace `m' = 1 
 
-	pe eststo: margins, predict(pr eq(#1)) dydx(`elecvar') force subpop(if sample==1) // marginal effects
+	pe eststo: margins, predict(pr eq(#1)) dydx(`elecvar') force subpop(if sample==1) post // marginal effects
 
 } 
 
