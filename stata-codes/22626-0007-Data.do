@@ -136,7 +136,6 @@ rename * , lower
 order _all, alphabetic
 
 // describe the data & missings ... 
-describe `r(varlist)'
 mdesc 
 
 
