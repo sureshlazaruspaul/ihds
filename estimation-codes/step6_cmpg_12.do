@@ -206,7 +206,7 @@ foreach m of local depvars {
 
 	pe replace `m' = 1 
 
-	pe eststo: margins, predict(pr eq(#1)) dydx(`elecvar') force // marginal effect
+	pe eststo: margins, predict(pr eq(#1)) dydx(`elecvar') force post // marginal effect
 
 } 
 
