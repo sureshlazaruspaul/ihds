@@ -197,7 +197,7 @@ foreach m of local depvars {
         di    "Education variable: `m'" 
         di    "-----------------------------------------------------------------"
 
-	pe reg `elecvar' `cvars' `ovars' `inst' 
+	pe qui reg `elecvar' `cvars' `ovars' `inst' 
 	
 		pe predict v2hat, resid 
 
