@@ -198,7 +198,7 @@ foreach m of local depvars {
         di    "Education variable: `m'" 
         di    "-----------------------------------------------------------------"
 
-	pe psmatch2 i.`elecvar' `cvars' `ovars' , kernel kerneltype(biweight) outcome(`m') bwidth( $bwidth ) common trim( 10 ) 
+	pe psmatch2 `elecvar' `cvars' `ovars' , kernel kerneltype(biweight) outcome(`m') bwidth( 0.1 ) common trim( 10 ) 
 		pe pstest `cvars' `ovars' , both rubin 
 
 	pe glm `m' i.`elecvar' `cvars' `ovars' if _support == 1 , fam(bin) link(probit) vce( robust )  
