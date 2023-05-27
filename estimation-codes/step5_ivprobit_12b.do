@@ -197,7 +197,7 @@ foreach m of local depvars {
         di    "Education variable: `m'" 
         di    "-----------------------------------------------------------------"
 
-	pe ivprobit `m' `cvars' `ovars' (`elecvar' = `inst') , twostep first 
+	pe ivprobit `m' `cvars' `ovars' (`elecvar' = `inst') , first 
 
 	pe eststo: margins, dydx(`elecvar') force post 
 
