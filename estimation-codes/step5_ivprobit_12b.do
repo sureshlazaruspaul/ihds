@@ -199,7 +199,7 @@ foreach m of local depvars {
 
 	pe ivprobit `m' `cvars' `ovars' (`elecvar' = `inst') , twostep first 
 
-	pe eststo: margins, dydx(`elecvar') predict(pr) force post 
+	pe eststo: margins, dydx(`elecvar') force post 
 
 } 
 
