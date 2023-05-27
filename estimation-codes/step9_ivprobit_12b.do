@@ -217,7 +217,7 @@ foreach m of local depvars {
 
 	pe svyset psuid [pw = weight] , singleunit(scaled) strata(newstrat) 
 
-        pe svy, subpop(sample) : reg `elecvar' `cvars' `ovars' `inst' 
+        pe qui svy, subpop(sample) : reg `elecvar' `cvars' `ovars' `inst' 
 
 			pe predict v2hat, resid 
 
