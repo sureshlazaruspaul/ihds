@@ -81,8 +81,8 @@ local elecvar $electricity
 
 local depvars `" "agematch_ed5x" "read" "math" "write" "' // dependent variables ... 
 
-local cvars  age i.female copc1 nchildren hheduc i.hhfemale hhage cs4x mdm i.privsch i.ch12x i.ch13x ch14x cs9x cs11x
-local cvars1 age   female copc1 nchildren hheduc   hhfemale hhage cs4x mdm   privsch   ch12x   ch13x ch14x cs9x cs11x 
+local cvars  age i.female copc1 nchildren hheduc i.hhfemale hhage cs4x mdm i.privsch i.ch12x i.ch13x ch14x cs9x cs11x sm2x i.smf i.smc i.smcb i.smd watertime_fadu watertime_madu watertime_f watertime_m walkfuel_fadu walkfuel_madu walkfuel_f walkfuel_m fuelfreq_fadu fuelfreq_madu fuelfreq_f fuelfreq_m
+local cvars1 age   female copc1 nchildren hheduc   hhfemale hhage cs4x mdm   privsch   ch12x   ch13x ch14x cs9x cs11x sm2x   smf   smc   smcb   smd watertime_fadu watertime_madu watertime_f watertime_m walkfuel_fadu walkfuel_madu walkfuel_f walkfuel_m fuelfreq_fadu fuelfreq_madu fuelfreq_f fuelfreq_m 
 
 local ovars  i.stateid i.groups8x // state, caste, religion, year dummies 
 
