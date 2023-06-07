@@ -83,8 +83,9 @@ tlinesdensity1       // Trasmission line length density (Line length per sqkm)
 local elecvar $electricity
 
 local depvars `" "agematch_ed5x" "read" "math" "write" "' // dependent variables ... 
-local cvars  age          copc1 nchildren hheduc i.hhfemale hhage cs4x mdm i.privsch // i.female 
-local cvars1 age          copc1 nchildren hheduc   hhfemale hhage cs4x mdm   privsch //   female
+
+local cvars `" $cvars "' 
+local cvars1 `" $cvars1 "' 
 
 local ovars  i.stateid i.groups8x // state, caste, religion, year dummies 
 
