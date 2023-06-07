@@ -84,7 +84,8 @@ local elecvar $electricity
 
 local depvars `" "agematch_ed5x" "read" "math" "write" "' // dependent variables ... 
 
-local cvars1 age   female copc1 nchildren hheduc   hhfemale hhage      mdm   privsch 
+local cvars `" $cvars "' 
+local cvars1 `" $cvars1 "' 
 
 local ovars stvars* crvars* // state, caste, religion, year dummies 
 
