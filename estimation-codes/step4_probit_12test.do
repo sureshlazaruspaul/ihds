@@ -116,7 +116,7 @@ foreach m of local depvars {
         //--------------------------------------------------------------------------
 
 
-
+/*
         local newvars walkfuel watertime
         foreach z of local newvars {
 		pe replace `z'_fadu = 0 if mi( `z'_fadu )
@@ -124,10 +124,13 @@ foreach m of local depvars {
 		pe replace `z'_f    = 0 if mi( `z'_f    )
 		pe replace `z'_m    = 0 if mi( `z'_m    )
 	} 
+*/
 
 	pe gen ch1213     = ch12x + ch13x 
 	pe gen water_time1 = watertime_fadu + watertime_f + watertime_m 
 	pe gen walk_fuel1  = walkfuel_fadu  + walkfuel_f  + walkfuel_m
+	pe gen water_time2 = watertime_fadu + watertime_f 
+	pe gen walk_fuel2  = walkfuel_fadu  + walkfuel_f
 	pe gen water_time  = watertime_fadu + watertime_madu + watertime_f + watertime_m 
 	pe gen walk_fuel   = walkfuel_fadu  + walkfuel_madu  + walkfuel_f  + walkfuel_m
 
